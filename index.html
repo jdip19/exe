@@ -18,16 +18,30 @@
 
 <body>
     <div class="container">
-        <ul>
-            <li><a href="projects/Meal-Management/index.html">Tffin Management</a></li>
-            <li><a href="projects/HTML-PDF/index.html">HTML to PDf</a></li>
-        </ul>
+         <ul id="project-list"></ul>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+        <script>
+            // Get the UL element where you want to add the links
+            const projectList = document.getElementById('project-list');
+    
+            // Define your project folder names
+            const projectFolders = ['Meal-Management', 'HTML-PDF', 'IAN','Fig-Plugin'];
+    
+            // Iterate over the project folders and create links
+            projectFolders.forEach(folderName => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `projects/${folderName}/index.html`;
+                link.textContent = folderName;
+                listItem.appendChild(link);
+                projectList.appendChild(listItem);
+            });
+        </script>
 </body>
 
 </html>
