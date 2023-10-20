@@ -1,85 +1,33 @@
 <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>PDF</title>
+    <title>Projects</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="asset/CSS/bootstrap.css">
-    <link rel="stylesheet" href="asset/CSS/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <body>
-
-    <div id="my-element" class="container flex-column">
-
-        <div class="flex-column align-items-center flex-fill">
-            <div class="heading">Raj Services</div>
-            <div>204-205, BUSINESS BAY, ROYAL PARK STREET NO.-6,KALAVAD ROAD
-                RAJKOT-360005</div>
-        </div>
-
-        <div class="justify-content-between">
-            <div>CODE : 1642105</div>
-            <div class="flex-column">
-                <div>MONTH : JUN-2023 </div>
-                <div>Page no. : 1 </div>
-            </div>
-        </div>
-
-        <div class="mx-auto">
-            <div>
-                <h5>GROUP WAGE SUMMARY</h5>
-            </div>
-        </div>
-
-        <div class="flex-row justify-content-between tbl-head">
-            <div>SR NO</div>
-            <div>GR NO</div>
-            <div>GROUP NAME</div>
-            <div>CITY</div>
-            <div>TOTAL EMP.</div>
-            <div>TOTAL PRES.</div>
-            <div>BASIC+DA GROSS</div>
-            <div>O.T. GROSS</div>
-            <div>ALL. GROSS</div>
-            <div>TOTAL GROSS</div>
-            <div>DED. GROSS</div>
-            <div>NET AMT PAYABLE</div>
-        </div>
-
-        <div id="outputContainer" class="main row">
-
-            <!-- <div class="flex-row justify-content-between tbl-row">
-                <div>1</div>
-                <div>12</div>
-                <div>LIOLO CERAMICA PVT.</div>
-                <div>RAJKOT</div>
-                <div>58</div>
-                <div>1476</div>
-                <div>1866904</div>
-                <div>0</div>
-                <div>587354</div>
-                <div>1866904</div>
-                <div>49286</div>
-                <div>1817618</div>
-            </div> -->
-
-        </div>
-
+    <div class="container">
+         <ul id="project-list">
+            <li><a href="FlexPDF.html">FlexPDF</a></li>
+            <li><a href="TBLPDF.html">TBLPDF</a></li>
+         </ul>
     </div>
 
-    <script src="asset/JS/custom.js"></script>
-    <script src="asset/JS/bootstrap.bundle.js"></script>
-    <script>
-         generateAndAppendRow();
-         genPDF();
-    </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+        <script src="projects/Master Assets/JS/masterjs.js"></script>
 </body>
 
 </html>
