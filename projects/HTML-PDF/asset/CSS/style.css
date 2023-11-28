@@ -3,12 +3,12 @@
     src: url('Font/cour.ttf') format('truetype');
 }
 
-body {
+/* body {
     font-family: Courier, monospace;
     font-size: 16px;
     text-transform: uppercase;
     margin: 64px 64px;
-}
+} */
 
 .heading {
     font-size: 20px;
