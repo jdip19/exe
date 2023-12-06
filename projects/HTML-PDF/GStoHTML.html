@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html lang="en">
 
 <head>
@@ -43,24 +39,29 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script>
+
+        const apikey = 'AIzaSyD2kgNMxmI5v1NGy_3X09TEvJ7kDkaVI_I'
         // Corrected Google Sheets API URL
         const sheetId = '18MBrXzoospGvhp28-tTm8huEvyf9HbZueJ1lM801o-Q'; // Replace with your Google Sheet ID
 
         async function getProducts() {
             try {
                 // Fetch data from Google Sheets API
-                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Products?key=YOUR_API_KEY`);
+                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Products?key=${apikey}`);
                 const data = await response.json();
 
                 // Clear existing table rows
                 document.getElementById('product-table').innerHTML = '';
 
                 // Populate table with data
-                data.values.forEach(row => {
+                for (let i = 1; i < data.values.length; i++) {
+                    const row = data.values[i];
                     const [product, price] = row;
                     const tr = document.createElement('tr');
-                    const tdProduct = document.createElement('td');
-                    const tdPrice = document.createElement('td');
+
+                    // Create cells and make them editable
+                    const tdProduct = createEditableCell(product);
+                    const tdPrice = createEditableCell(price);
 
                     tdProduct.textContent = product;
                     tdPrice.textContent = price;
@@ -69,10 +70,68 @@
                     tr.appendChild(tdPrice);
 
                     document.getElementById('product-table').appendChild(tr);
-                });
+                }
             } catch (error) {
                 console.error('Error fetching data from Google Sheets:', error);
             }
+        }
+
+        async function updateGoogleSheet(row, col, newValue) {
+            try {
+                const range = `Products!${String.fromCharCode(65 + col)}${row + 1}`;
+                const updateData = {
+                    values: [[newValue]],
+                };
+
+                const response = await fetch(
+                    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?valueInputOption=RAW&key=${apikey}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(updateData),
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`Error updating Google Sheets: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+
+        function createEditableCell(value) {
+            const td = document.createElement('td');
+            td.textContent = value;
+            td.classList.add('editable');
+
+            td.addEventListener('click', function () {
+                // Create an input field and set its value
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = td.textContent;
+
+                // Replace the text content with the input field
+                td.textContent = '';
+                td.appendChild(input);
+
+                // Focus on the input field
+                input.focus();
+
+                // Add an event listener to handle input changes
+                input.addEventListener('blur', function () {
+                    // When the input field loses focus, update the cell content
+                    td.textContent = input.value;
+
+                    // Update the Google Sheets document
+                    updateGoogleSheet(td.parentElement.rowIndex - 1, td.cellIndex, input.value);
+                });
+            });
+
+            return td;
         }
 
         getProducts();
