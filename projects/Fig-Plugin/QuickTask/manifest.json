@@ -1,13 +1,12 @@
 {
-  "name": "SheetView",
-  "id": "1288835553051586719",
+  "name": "QuickTask",
+  "id": "1319644305156389480",
   "api": "1.0.0",
   "main": "code.js",
   "capabilities": [],
   "enableProposedApi": false,
   "editorType": [
-    "figma",
-    "figjam"
+    "figma"
   ],
   "ui": "ui.html",
   "networkAccess": {

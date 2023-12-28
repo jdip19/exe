@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Figma Plugin</title>
+  </head>
+  <body>
+    <!-- Main screen with buttons -->
+    <div id="mainScreen">
+      <button id="createRectanglesButton">Create Rectangles</button>
+      <button id="changeTextButton">Change Text</button>
+    </div>
+
+    <!-- Textarea view -->
+    <div id="textareaView" style="display: none;">
+      <textarea id="inputText" placeholder="Enter text"></textarea>
+      <button id="uppercaseButton">Uppercase</button>
+      <button id="lowercaseButton">Lowercase</button>
+      <button id="capitalizeFirstButton">Capitalize First</button>
+      <button id="sentenceCaseButton">Sentence Case</button>
+      <button id="copyButton">Copy</button>
+      <button id="pasteTextButton">Paste Text</button>
+      <button id="backButtonTextarea">Back</button>
+    </div>
+
+    <!-- Rectangles view -->
+    <div id="rectanglesView" style="display: none;">
+      <input type="text" id="inputCount" placeholder="Enter count" />
+      <button id="createRectanglesButtonInView">Create Rectangles</button>
+      <button id="backButtonRectangles">Back</button>
+    </div>
+
+    <script>
+      document.getElementById('createRectanglesButton').onclick = () => {
+        showView('rectanglesView');
+      };
+
+      document.getElementById('changeTextButton').onclick = () => {
+        showView('textareaView');
+      };
+
+      document.getElementById('createRectanglesButtonInView').onclick = () => {
+        const inputCount = document.getElementById('inputCount');
+        const count = parseInt(inputCount.value) || 1;
+        parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
+      };
+
+      document.getElementById('uppercaseButton').onclick = () => {
+        manipulateText((text) => text.toUpperCase());
+      };
+
+      document.getElementById('lowercaseButton').onclick = () => {
+        manipulateText((text) => text.toLowerCase());
+      };
+
+      document.getElementById('capitalizeFirstButton').onclick = () => {
+        manipulateText((text) => text.replace(/^.|\s\S/g, (match) => match.toUpperCase()));
+      };
+
+      document.getElementById('sentenceCaseButton').onclick = () => {
+        manipulateText((text) => text.replace(/^.|\.\s\S/g, (match) => match.toUpperCase()));
+      };
+
+      document.getElementById('copyButton').onclick = () => {
+        const inputText = document.getElementById('inputText');
+        inputText.select();
+        document.execCommand('copy');
+      };
+
+      document.getElementById('pasteTextButton').onclick = () => {
+        parent.postMessage({ pluginMessage: { type: 'paste-text', text: document.getElementById('inputText').value } }, '*');
+      };
+
+      // Back buttons
+      document.getElementById('backButtonTextarea').onclick = () => {
+        showView('mainScreen');
+      };
+
+      document.getElementById('backButtonRectangles').onclick = () => {
+        showView('mainScreen');
+      };
+
+      // Function to show a specific view and hide others
+      function showView(viewId) {
+        document.getElementById('mainScreen').style.display = 'none';
+        document.getElementById('textareaView').style.display = 'none';
+        document.getElementById('rectanglesView').style.display = 'none';
+
+        document.getElementById(viewId).style.display = 'block';
+      }
+
+      // Function to manipulate text based on a given function
+      function manipulateText(manipulationFunction) {
+        const inputText = document.getElementById('inputText');
+        inputText.value = manipulationFunction(inputText.value);
+      }
+    </script>
+  </body>
+</html>

@@ -1,9 +1,9 @@
 
-<button id="create">Start</button>
+<button id="create">Uppercase</button>
 <script>
 
 document.getElementById('create').onclick = () => {
-  //const textbox = document.getElementById('count');
+const textbox = document.getElementById('count');
   
   parent.postMessage({ pluginMessage: { type: 'start-tm', count } }, '*')
 }
