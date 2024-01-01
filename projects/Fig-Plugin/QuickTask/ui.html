@@ -1,100 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Figma Plugin</title>
-  </head>
-  <body>
-    <!-- Main screen with buttons -->
-    <div id="mainScreen">
-      <button id="createRectanglesButton">Create Rectangles</button>
-      <button id="changeTextButton">Change Text</button>
-    </div>
 
-    <!-- Textarea view -->
-    <div id="textareaView" style="display: none;">
-      <textarea id="inputText" placeholder="Enter text"></textarea>
-      <button id="uppercaseButton">Uppercase</button>
-      <button id="lowercaseButton">Lowercase</button>
-      <button id="capitalizeFirstButton">Capitalize First</button>
-      <button id="sentenceCaseButton">Sentence Case</button>
-      <button id="copyButton">Copy</button>
-      <button id="pasteTextButton">Paste Text</button>
-      <button id="backButtonTextarea">Back</button>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-brands/css/uicons-brands.css'>
+  <title>Figma Plugin</title>
+  <style>
+    /* @import url('https://cdn-uicons.flaticon.com/2.0.0/uicons-brands/css/uicons-brands.css'); */
+    body
+    {
+      margin: 0;
+      background: #303030;
+    }
+    #mainScreen button{
+      border: none;
+      width: 100%;
+      padding: 8px 12px;
+      border-bottom: 1px solid #222222;
+      text-align: left;
+      background: 0;
+      color: white;
+    }
+    #textareaView button{
+      border: 1px solid #222222;
+      width: 50%;
+      padding: 8px 12px;
+      background: 0;
+      color: white;
+    }
+    #textareaView textarea{
+      border: 1px solid #222222;
+      width: 100%;
+      background: 0;
+      color: white;
+    }
 
-    <!-- Rectangles view -->
-    <div id="rectanglesView" style="display: none;">
-      <input type="text" id="inputCount" placeholder="Enter count" />
-      <button id="createRectanglesButtonInView">Create Rectangles</button>
-      <button id="backButtonRectangles">Back</button>
-    </div>
+  </style>
+</head>
 
-    <script>
-      document.getElementById('createRectanglesButton').onclick = () => {
-        showView('rectanglesView');
-      };
+<body>
+  <!-- Main screen with buttons -->
+  <div id="mainScreen">
+    <button id="createRectanglesButton">Create Rectangles</button>
+    <button id="changeTextButton">Change Text </button>
+  </div>
 
-      document.getElementById('changeTextButton').onclick = () => {
-        showView('textareaView');
-      };
+  <!-- Textarea view -->
+  <div id="textareaView" style="display: none;">
+    <textarea id="inputText" placeholder="Enter text"></textarea>
+    <button id="copyButton"><i class="fi fi-sr-copy-alt"></i></button>
+    <button id="pasteTextButton">Paste Text</button>
+    <button id="uppercaseButton">Uppercase</button>
+    <button id="lowercaseButton">Lowercase</button>
+    <button id="capitalizeFirstButton">Capitalize First</button>
+    <button id="sentenceCaseButton">Sentence Case</button>
+    <button id="backButtonTextarea">Back</button>
+  </div>
 
-      document.getElementById('createRectanglesButtonInView').onclick = () => {
-        const inputCount = document.getElementById('inputCount');
-        const count = parseInt(inputCount.value) || 1;
-        parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
-      };
+  <!-- Rectangles view -->
+  <div id="rectanglesView" style="display: none;">
+    <input type="text" id="inputCount" placeholder="Enter count" />
+    <button id="createRectanglesButtonInView">Create Rectangles</button>
+    <button id="backButtonRectangles">Back</button>
+  </div>
 
-      document.getElementById('uppercaseButton').onclick = () => {
-        manipulateText((text) => text.toUpperCase());
-      };
+  <script>
+    document.getElementById('createRectanglesButton').onclick = () => {
+      showView('rectanglesView');
+    };
 
-      document.getElementById('lowercaseButton').onclick = () => {
-        manipulateText((text) => text.toLowerCase());
-      };
+    document.getElementById('changeTextButton').onclick = () => {
+      showView('textareaView');
+    };
 
-      document.getElementById('capitalizeFirstButton').onclick = () => {
-        manipulateText((text) => text.replace(/^.|\s\S/g, (match) => match.toUpperCase()));
-      };
+    document.getElementById('createRectanglesButtonInView').onclick = () => {
+      const inputCount = document.getElementById('inputCount');
+      const count = parseInt(inputCount.value) || 1;
+      parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
+    };
 
-      document.getElementById('sentenceCaseButton').onclick = () => {
-        manipulateText((text) => text.replace(/^.|\.\s\S/g, (match) => match.toUpperCase()));
-      };
+    document.getElementById('uppercaseButton').onclick = () => {
+      manipulateText((text) => text.toUpperCase());
+    };
 
-      document.getElementById('copyButton').onclick = () => {
-        const inputText = document.getElementById('inputText');
-        inputText.select();
-        document.execCommand('copy');
-      };
+    document.getElementById('lowercaseButton').onclick = () => {
+      manipulateText((text) => text.toLowerCase());
+    };
 
-      document.getElementById('pasteTextButton').onclick = () => {
-        parent.postMessage({ pluginMessage: { type: 'paste-text', text: document.getElementById('inputText').value } }, '*');
-      };
+    document.getElementById('capitalizeFirstButton').onclick = () => {
+      //manipulateText((text) => text.toLowerCase());
+      manipulateText((text) => text.replace(/^.|\s\S/g, (match) => match.toUpperCase()));
+    };
 
-      // Back buttons
-      document.getElementById('backButtonTextarea').onclick = () => {
-        showView('mainScreen');
-      };
+    document.getElementById('sentenceCaseButton').onclick = () => {
+      //manipulateText((text) => text.toLowerCase());
+      manipulateText((text) => text.replace(/^.|\.\s\S/g, (match) => match.toUpperCase()));
+    };
 
-      document.getElementById('backButtonRectangles').onclick = () => {
-        showView('mainScreen');
-      };
+    document.getElementById('copyButton').onclick = () => {
+      const inputText = document.getElementById('inputText');
+      inputText.select();
+      document.execCommand('copy');
+    };
 
-      // Function to show a specific view and hide others
-      function showView(viewId) {
-        document.getElementById('mainScreen').style.display = 'none';
-        document.getElementById('textareaView').style.display = 'none';
-        document.getElementById('rectanglesView').style.display = 'none';
+    document.getElementById('pasteTextButton').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'paste-text', text: document.getElementById('inputText').value } }, '*');
+    };
 
-        document.getElementById(viewId).style.display = 'block';
-      }
+    // Back buttons
+    document.getElementById('backButtonTextarea').onclick = () => {
+      showView('mainScreen');
+    };
 
-      // Function to manipulate text based on a given function
-      function manipulateText(manipulationFunction) {
-        const inputText = document.getElementById('inputText');
-        inputText.value = manipulationFunction(inputText.value);
-      }
-    </script>
-  </body>
+    document.getElementById('backButtonRectangles').onclick = () => {
+      showView('mainScreen');
+    };
+
+    // Function to show a specific view and hide others
+    function showView(viewId) {
+      document.getElementById('mainScreen').style.display = 'none';
+      document.getElementById('textareaView').style.display = 'none';
+      document.getElementById('rectanglesView').style.display = 'none';
+
+      document.getElementById(viewId).style.display = 'block';
+    }
+
+    // Function to manipulate text based on a given function
+    function manipulateText(manipulationFunction) {
+      const inputText = document.getElementById('inputText');
+      inputText.value = manipulationFunction(inputText.value);
+    }
+    figma.loadFontAsync({ family: 'Inter', style: 'Bold' })
+      .then(() => {
+        // Set the text after the font is loaded
+        textNode.characters = 'Your text here';
+      })
+      .catch((error) => {
+        console.error('Error loading font:', error);
+      });
+
+
+    textNode.fontName = { family: 'Roboto', style: 'Regular' };
+    textNode.characters = 'Your text here';
+
+
+  </script>
+</body>
+
 </html>

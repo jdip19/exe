@@ -19,16 +19,20 @@ figma.ui.onmessage = msg => {
     loadView(currentView);
   } else if (msg.type === 'paste-text') {
     const text = msg.text;
-    
+
     // Check if there is a text node selected
     if (figma.currentPage.selection.length === 1 && figma.currentPage.selection[0].type === 'TEXT') {
       const textNode = figma.currentPage.selection[0] as TextNode;
-      
-      // Set the text of the selected text node
-      textNode.characters = text;
 
-      // Close the plugin after pasting
-      figma.closePlugin();
+      // Load the 'Inter Bold' font before setting the text
+      figma.loadFontAsync({ family: 'Inter', style: 'Regular' })
+        .then(() => {
+          // Set the text after the font is loaded
+          textNode.characters = text;
+        })
+        .catch((error) => {
+          console.error('Error loading font:', error);
+        });
     } else {
       // Inform the user that they need to select a text layer
       figma.notify('Please select a text layer to paste the text.');
@@ -53,6 +57,8 @@ figma.ui.onmessage = msg => {
     figma.viewport.scrollAndZoomIntoView(nodes);
   }
 };
+
+
 
 // Function to load a specific HTML view
 function loadView(view: string) {
