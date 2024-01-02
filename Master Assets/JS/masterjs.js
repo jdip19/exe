@@ -7,10 +7,13 @@ function genLink(){
 
     // Iterate over the project folders and create links
     projectFolders.forEach(folderName => {
+        const icon =document.createElement('i')
+        icon.className="fi fi-rr-arrow-small-right";
         const listItem = document.createElement('li');
         const link = document.createElement('a');
         link.href = `./projects/${folderName}/index.html`;
         link.textContent = folderName;
+        listItem.appendChild(icon)
         listItem.appendChild(link);
         projectList.appendChild(listItem);
     });
