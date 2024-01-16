@@ -3,7 +3,7 @@ function genLink(){
     const projectList = document.getElementById('project-list');
     
     // Define your project folder names
-    const projectFolders = ['Meal-Management', 'Front-End', 'IAN','Fig-Plugin'];
+    const projectFolders = ['Meal-Management', 'Front-End', 'IAN','Fig-Plugin','Batch-Files','ClockSheet','my-static-website','hidiary'];
 
     // Iterate over the project folders and create links
     projectFolders.forEach(folderName => {
