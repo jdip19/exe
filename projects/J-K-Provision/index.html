@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Responsive Cards</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        body {
+            background-color: rgb(237, 237, 237);
+            
+        }
+
+        .card {
+            display: flex;
+            width: fit-content;
+            flex-direction: column;
+            align-items: flex-start;
+            border-radius: 12px;
+            border: 1px solid #979797;
+        }
+
+        .row {
+            display: flex;
+            height: 106px;
+            align-items: flex-start;
+            align-self: stretch;
+        }
+
+        .htxt {
+            display: flex;
+            padding: 24px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            flex: 1 0 0;
+            align-self: stretch;
+        }
+
+        .img {
+            display: flex;
+            align-items: flex-start;
+            flex: 1 0 0;
+            align-self: stretch;
+        }
+
+        .pricetxt {
+            display: flex;
+            padding: 16px 24px;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1 0 0;
+        }
+
+        p.card-text {
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+
+                <div class="card">
+                    <div class="row">
+                        <div class="htxt">
+                            <h3 class="card-title">Moong Dal</h3>
+                            <p class="card-text"><i class="bi bi-clock"></i> 01:00 PM • 25-01-24</p>
+                        </div>
+                        <div class="img">
+                            <img src="https://www.tradeindia.com/_next/image/?url=https%3A%2F%2Ftiimg.tistatic.com%2Ffp%2F1%2F007%2F805%2F100-natural-and-pure-food-grade-spilted-green-moong-dal-50-kilogram-packaging-size--493.jpg&w=384&q=15"
+                                class="img-fluid rounded-start card-img" alt="Card Image">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pricetxt">
+                            <div><input type="number" class="form-control" placeholder="₹" value="10" ></div>
+                            <h5>100gm</h5>
+                        </div>
+                        <div class="pricetxt">
+                            <div><input type="number" class="form-control" placeholder="₹" value="" ></div>
+                            <h5>250gm</h5>
+                        </div>
+                        <div class="pricetxt">
+                            <div><input type="number" class="form-control" placeholder="Write any amount" value="" ></div>
+                            <h5>500gm</h5>
+                        </div>
+                        <div class="pricetxt">
+                            <div><input type="number" class="form-control" placeholder="Write any amount" value="" ></div>
+                            <h5>1kg</h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS and Popper.js (optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-uyz5MnW6Q0v5z7FdBP5y/sTbSb6emqmL4t/ea2C+Fmk0Kd1Qj47C5ag5B+5yibxM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
