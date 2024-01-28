@@ -1,0 +1,134 @@
+body {
+  background-color: rgb(237, 237, 237);
+}
+
+.col-md-6 {
+  position: relative;
+}
+
+.bname {
+  background-color: var(--bs-blue);
+  color: #fff;
+  padding: 0.6rem;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  border-radius: 0.4em;
+}
+
+.bname h2 {
+  margin: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+img {
+  height: 7em;
+  object-fit: cover;
+}
+
+.p-w-box {
+  padding: 0;
+}
+
+p.card-text {
+  color: gray;
+}
+
+.p-w-box input {
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.card-footer.justify-content-center {
+  display: flex;
+  gap: 2em;
+  flex-wrap: wrap;
+}
+
+.card-footer.justify-content-center .p-w-box {
+  width: min-content;
+}
+
+.price {
+  display: flex;
+}
+
+div.weight {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.btn-floating {
+  position: fixed;
+  bottom: 5%;
+  /* Adjust percentage as needed */
+  right: 5%;
+  /* Adjust percentage as needed */
+  z-index: 1000;
+}
+
+#editCardModal div.mt-3 {
+  display: flex;
+  gap: 0.4rem;
+}
+
+#editCardModal div.mt-3 :nth-child(2) {
+  width: 100%;
+}
+
+#editCardModal button.btn.btn-primary {
+  width: -webkit-fill-available;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 10px;
+  background: linear-gradient(
+      45deg,
+      rgba(169, 169, 169, 0) 0%,
+      rgba(169, 169, 169, 0) 43%,
+      #a9a9a9 45%,
+      #a9a9a9 55%,
+      rgba(169, 169, 169, 0) 57%,
+      rgba(169, 169, 169, 0) 100%
+    ),
+    linear-gradient(
+      135deg,
+      transparent 0%,
+      transparent 43%,
+      #a9a9a9 45%,
+      #a9a9a9 55%,
+      transparent 57%,
+      transparent 100%
+    );
+}
+
+h6 {
+  font-size: 0.8rem;
+  color: gray;
+}
+
+.modal-title span {
+  color: gray;
+}
+
+#edtime {
+  padding: 0 0.4rem;
+}
+
+.minput {
+  margin-bottom: 0.4rem;
+}
+
+.modal {
+  top: 25%;
+  left: 0;
+}
