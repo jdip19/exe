@@ -1,20 +1,22 @@
-//opening edit model
-$(document).ready(function () {
-  // Handle double-click on the card
-  $('#clickable').on('dblclick', function () {
-      // Extract the ID from the clicked card
-      var cardId = $(this).find('.card-id span').text();
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js';
+import { getDatabase, ref, on } from 'https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js';
 
-      // Update the modal content with the ID
-      $('#modalCardId').text(cardId);
+// Your Firebase config object
+const firebaseConfig = {
+  apiKey: "AIzaSyDYF1MoFUCozgh6PfsH-nM1avUTbxSM_rY",
+  authDomain: "my-store-11-6b8f5.firebaseapp.com",
+  databaseURL:"https://my-store-11-6b8f5-default-rtdb.firebaseio.com",
+  projectId: "my-store-11-6b8f5",
+  storageBucket: "my-store-11-6b8f5.appspot.com",
+  messagingSenderId: "719774944841",
+  appId: "1:719774944841:web:9ac216f8ffb2e49bcc7998"
+};
 
-      // Show the modal
-      $('#editCardModal').modal('show');
-  });
-});
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-import { database } from "./config.js";
-// Initialize Firebase with your config
+// Get a reference to the database service
+const database = getDatabase(app);
 
 document.addEventListener("DOMContentLoaded", function () {
   const cardsContainer = document.querySelector('.list');
@@ -39,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <img src="${data.itmimg}" class="rounded-start card-img" alt="Card Image">
         </div>
       </div>
-      <div class="container card-footer justify-content-center">
+      <div class="conatiner card-footer justify-content-center">
         <!-- Add other card details based on your data -->
       </div>
     `;
@@ -47,21 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
     return card;
   }
 
-  // Define the reference to 'Items' in the Firebase database
-  const itemsRef = database.ref('Items');
+  const itemsRef = ref(database, 'Items');
 
-  // Use 'on' to listen for real-time updates
   on(itemsRef, 'value', (snapshot) => {
     const items = snapshot.val();
-  
+
     // Clear existing cards
     cardsContainer.innerHTML = '';
-  
+
     // Iterate through each item and create a card
     for (const itemId in items) {
       const cardData = items[itemId];
       const card = createCard(cardData);
-  
+
       // Append the card to the container
       cardsContainer.appendChild(card);
     }
