@@ -1,11 +1,28 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js';
-import { getDatabase, ref, on } from 'https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js';
+//opening edit model
+$(document).ready(function () {
+  // Handle double-click on the card
+  $('#clickable').on('dblclick', function () {
+      // Extract the ID from the clicked card
+      var cardId = $(this).find('.card-id span').text();
 
-// Your Firebase config object
+      // Update the modal content with the ID
+      $('#modalCardId').text(cardId);
+
+      // Show the modal
+      $('#editCardModal').modal('show');
+  });
+});
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDYF1MoFUCozgh6PfsH-nM1avUTbxSM_rY",
   authDomain: "my-store-11-6b8f5.firebaseapp.com",
-  databaseURL:"https://my-store-11-6b8f5-default-rtdb.firebaseio.com",
+  databaseURL: "https://my-store-11-6b8f5-default-rtdb.firebaseio.com",
   projectId: "my-store-11-6b8f5",
   storageBucket: "my-store-11-6b8f5.appspot.com",
   messagingSenderId: "719774944841",
@@ -15,8 +32,36 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+import { getDatabase,ref,get,set,child,update,remove } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+const db = getDatabase();
+
+var edTime=document.getElementById("edtime")
+
+function readData()
+{
+    const dbref =ref(db);
+
+    get(child(dbref,"Items/"+1)).then((snapshot)=>{
+        if(snapshot.exists()){
+            edTime.innerHTML=snapshot.val().edtime;
+        }
+        else{
+            alert("data not found");
+        }
+    })
+    .catch((error)=>{
+        alert("error occured"+error);
+    })
+
+}
+   
+
+// Initialize Firebase
+const database = getDatabase();
+
 // Get a reference to the database service
-const database = getDatabase(app);
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const cardsContainer = document.querySelector('.list');
@@ -48,14 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return card;
   }
+});
 
   const itemsRef = ref(database, 'Items');
 
-  on(itemsRef, 'value', (snapshot) => {
-    const items = snapshot.val();
-
-    // Clear existing cards
-    cardsContainer.innerHTML = '';
+  onValue(itemsRef, (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      const items = snapshot.val();
+      cardsContainer.innerHTML = '';
 
     // Iterate through each item and create a card
     for (const itemId in items) {
@@ -65,5 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Append the card to the container
       cardsContainer.appendChild(card);
     }
+    });
+  }, {
+    onlyOnce: true
   });
-});
+  
