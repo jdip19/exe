@@ -34,6 +34,9 @@ img {
 p.card-text {
   color: gray;
 }
+.card-title{
+  font-weight: bolder!important;
+}
 
 .p-w-box input {
   padding: 0;
