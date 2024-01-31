@@ -30,9 +30,6 @@ img {
   object-fit: cover;
 }
 
-.p-w-box {
-  padding: 0;
-}
 
 p.card-text {
   color: gray;
@@ -42,25 +39,32 @@ p.card-text {
   padding: 0;
   background: none;
   border: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
 }
 
-.card-footer.justify-content-center {
+.card-footer {
   display: flex;
-  gap: 2em;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: .8rem;
 }
 
-.card-footer.justify-content-center .p-w-box {
-  width: min-content;
+.card-footer .p-w-box {
+  width: 8vh;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  place-items: center;
+  text-align: center;
 }
 
 .price {
-  display: flex;
+  display: inline-flex;
 }
 
 div.weight {
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 1rem;
+  color: gray;
 }
 
 .btn-floating {
