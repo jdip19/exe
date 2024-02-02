@@ -49,6 +49,9 @@
                             <div id="modal-body" class="modal-body">
                                 <form id="updateItm">
                                     <div class="minput">
+                                        <p class="card-text"><i class="bi bi-clock"></i>&nbsp;<span id="edTime"></span></p>
+                                    </div>
+                                    <div class="minput">
                                         <label>Item Image Link</label>
                                         <input id="itmImg" type="text" class="form-control"
                                             placeholder="Enter image link here">
@@ -116,7 +119,7 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
 
-        import { getDatabase, ref, onValue, get, set, child } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+        import { getDatabase, ref, onValue, get, set, update, child, remove } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 
         const database = getDatabase();
         const itemsRef = ref(database, 'Items');
@@ -250,19 +253,18 @@
                 const itemRef = child(itemsRef, "/" + cardId);
 
                 // Fetch data from the database based on the cardId
-                get(itemRef)
+                get(itemRef,)
                     .then((snapshot) => {
                         if (snapshot.exists()) {
                             // Access the data using snapshot.val()
                             const data = snapshot.val();
 
                             // Update your modal elements with the fetched data
-                            $('#itmNm').val(data.itmnm);
                             $('#itmImg').val(data.itmimg);
+                            $('#itmNm').val(data.itmnm);
                             $('#ippKg').val(data.ppkg);
+                            $('#edTime').text(formatCustomDateTime(data.edtime));
 
-
-                            console.log("Fetched Data:", data);
                         } else {
                             console.warn("No data found for card " + cardId);
                         }
@@ -271,17 +273,17 @@
                         console.error("Error fetching data:", error);
                     });
 
-                $(document).on('onclick', '#saveAndClose', function () {
-
-                    update(ref(itemsRef, "/" + cardId), {
-                        itmnm: $('#itmNm').val()
+                $(document).on('click', '#saveAndClose', function () {
+                    update(itemRef, {
+                        itmimg: $('#itmImg').val(),
+                        itmnm: $('#itmNm').val(),
+                        ppkg: $('#ippKg').val(),
+                        edtime: new Date().getTime() / 1000
                     }).then(() => {
                         alert("Data Updated Successfully");
                     }).catch((error) => {
-                        alert("Error updating data:" + error);
+                        alert("Error updating data: " + error);
                     });
-
-
                 });
 
             });
