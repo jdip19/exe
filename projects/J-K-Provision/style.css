@@ -11,6 +11,9 @@ body {
 .row.align-items-center  .col-md-4 {
   width: 40%;
 }
+.cusPrice::before{
+content: "₹";
+}
 
 .bname {
   background-color: var(--bs-blue);
