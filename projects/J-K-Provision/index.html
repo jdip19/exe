@@ -47,28 +47,28 @@
                                     aria-label="Close"></button>
                             </div>
                             <div id="modal-body" class="modal-body">
-                                <form>
+                                <form id="updateItm">
                                     <div class="minput">
                                         <label>Item Image Link</label>
-                                        <input id="imglink" type="text" class="form-control"
-                                            placeholder="Enter image link here" >
+                                        <input id="itmImg" type="text" class="form-control"
+                                            placeholder="Enter image link here">
                                     </div>
                                     <div class="minput">
                                         <label>Item Name</label>
-                                        <input id="itemname" type="text" class="form-control"
-                                            placeholder="Enter item name" >
+                                        <input id="itmNm" type="text" class="form-control"
+                                            placeholder="Enter item name">
                                     </div>
                                     <div class="minput">
                                         <label>Item Value of KG</label>
-                                        <input id="ippkg" type="number" class="form-control"
-                                            placeholder="Enter price of KG" >
+                                        <input id="ippKg" type="number" class="form-control"
+                                            placeholder="Enter price of KG">
                                     </div>
                                     <div class="mt-3">
                                         <div><button type="button" class="btn btn-danger" data-bs-dismiss="modal"
                                                 id="deleteItem" aria-label="Delete"><i
                                                     class="bi bi-trash3-fill"></i></button></div>
                                         <div><button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                                id="saveandclose" aria-label="SaveandClose">Save & Close</button></div>
+                                                id="saveAndClose" aria-label="SaveandClose">Save & Close</button></div>
                                     </div>
                                 </form>
                             </div>
@@ -116,9 +116,10 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
 
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+        import { getDatabase, ref, onValue, get, set, child } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 
         const database = getDatabase();
+        const itemsRef = ref(database, 'Items');
 
 
 
@@ -126,16 +127,20 @@
         document.addEventListener("DOMContentLoaded", function () {
             const cardsContainer = document.querySelector('.list');
             const searchInput = document.getElementById('searchInput');
-            const modeldiv =document.getElementById("modal-body");
+
+            const modeldiv = document.getElementById("modal-body");
+            const itmnm = document.getElementById("itmNm");
+            const itmimg = document.getElementById("itmImg");
+            const ippkg = document.getElementById("ippKg");
 
             // Function to create a card element
             function createCard(data, itemId) {
                 const card = document.createElement('div');
                 card.classList.add('card');
-                const model=document.createElement('div');
-                
+                const model = document.createElement('div');
 
-                    card.innerHTML = `
+
+                card.innerHTML = `
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
@@ -167,7 +172,7 @@
                 </div>
             </div>
         `;
-        model.innerHTML=`<form>
+                model.innerHTML = `<form>
                                     <div class="minput">
                                         <label>Item Image Link</label>
                                         <input id="imglink" type="text" class="form-control"
@@ -214,8 +219,8 @@
 
             // Function to fetch data from Firebase
             function fetchDataFromFirebase() {
-                const itemsRef = ref(database, 'Items');
-               // const itemsRefbyID = ref(database, 'Items/' + itemId);
+
+                // const itemsRefbyID = ref(database, 'Items/' + itemId);
 
                 onValue(itemsRef, (snapshot) => {
                     const items = snapshot.val();
@@ -234,6 +239,41 @@
                     });
                 });
             }
+            // Use event delegation to handle the double-click event
+            $(document).on('dblclick', '#clickable', function () {
+                // Extract the ID from the clicked card
+                var cardId = $(this).find('#itmid').text();
+                console.log("Clicked Card ID:", cardId);
+
+                // Update the modal content with the ID
+                $('#modalCardId').text(cardId);
+
+                // Show the modal
+                $('#editCardModal').modal('show');
+
+                const itemRef = child(itemsRef, "/" + cardId);
+                console.log("itmRef"+itemRef);
+
+                // Fetch data from the database based on the cardId
+                get(itemRef)
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            // Access the data using snapshot.val()
+                            const data = snapshot.val();
+
+                            // Update your modal elements with the fetched data
+                            $('#itmNm').val(data.itmnm);
+                            // Update other fields as needed
+
+                            console.log("Fetched Data:", data);
+                        } else {
+                            console.warn("No data found for card " + cardId);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching data:", error);
+                    });
+            });
             function filterCards(searchText) {
                 const cards = document.querySelectorAll('.card');
 
