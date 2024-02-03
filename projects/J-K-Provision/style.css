@@ -21,7 +21,7 @@ content: "₹";
   padding: 0.6rem;
   text-align: center;
   margin-bottom: 0.4rem;
-  border-radius: 0.4em;
+  border-radius:0 0 .4em 0.4em;
 }
 
 .bname h2 {
