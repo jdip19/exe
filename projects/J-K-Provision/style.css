@@ -27,7 +27,9 @@ content: "₹";
 .bname h2 {
   margin: 0;
 }
-
+input#searchInput{
+  border: none;
+}
 .list {
   display: flex;
   flex-direction: column;
@@ -149,4 +151,7 @@ h6 {
 .modal {
   top: 25%;
   left: 0;
+}
+.modal-content {
+  border:none ;
 }
