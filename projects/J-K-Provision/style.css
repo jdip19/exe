@@ -16,6 +16,8 @@ content: "₹";
 }
 
 .bname {
+  position: fixed;
+  z-index: 10;
   background-color: var(--bs-blue);
   color: #fff;
   padding: 0.6rem;
