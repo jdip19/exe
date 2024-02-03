@@ -26,7 +26,7 @@
             </div>
         </div>
     </section>
-    <div class="container" style="position: absolute; top: 20%;">
+    <div class="container" style="position: absolute; top: 8rem;">
         <div class=" row justify-content-center">
             <div class="col-md-12 col-md-6 mt-2">
                 <div class="list">
@@ -61,7 +61,8 @@
                                                 <label>Item Name</label>
                                                 <input id="itmNm" type="text" class="form-control"
                                                     placeholder="Enter item name">
-                                            </div><div class="minput">
+                                            </div>
+                                            <div class="minput">
                                                 <label>1KG Price</label>
                                                 <input id="ippKg" type="number" class="form-control"
                                                     placeholder="Enter price of KG">
@@ -87,7 +88,7 @@
 
                 <div class="floatingdiv">
 
-                    <button title="Adding Item" class="btn btn-floating btn-primary" id="addItem" onclick="aBtn()">
+                    <button title="Adding Item" class="btn btn-floating btn-primary" id="addItem">
                         <i class="bi bi-plus"></i>
                     </button>
 
@@ -106,8 +107,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
         <script type="module">
 
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-            import { getDatabase, ref, onValue, get, set, update, child, remove } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+            import { initializeApp} from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+            import { getDatabase, ref, onValue, get, set, update, child, remove} from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
 
             const firebaseConfig = {
                 apiKey: "AIzaSyDYF1MoFUCozgh6PfsH-nM1avUTbxSM_rY",
@@ -200,8 +201,6 @@
                     });
                 });
 
-                // Call the function to fetch data
-                fetchDataFromFirebase();
 
                 // Function to handle custom price input
                 function handleCustomPriceInput(inputElement, data) {
@@ -227,13 +226,14 @@
                     fetchDataForCard(itemRef);
                     $(document).on('click', '#saveAndClose', handleSaveAndClose);
                 }
-
+                
                 function fetchDataForCard(itemRef) {
                     get(itemRef)
-                        .then((snapshot) => {
+                    .then((snapshot) => {
                             if (snapshot.exists()) {
                                 const data = snapshot.val();
                                 updateModalElements(data);
+                                
                             } else {
                                 console.warn("No data found for card " + cardId);
                             }
@@ -248,7 +248,6 @@
                     $('#itmImg').attr("src", data.itmimg);
                     $('#itmNm').val(data.itmnm);
                     $('#ippKg').val(data.ppkg);
-
                 }
                 let copiedContent; // Define the variable globally
 
@@ -280,31 +279,39 @@
                         alert("Error updating data: " + error);
                     });
                 }
+                let lastCount;
                 function fetchDataFromFirebase() {
                     onValue(itemsRef, (snapshot) => {
                         const items = snapshot.val();
                         cardsContainer.innerHTML = ''; // Clear existing cards
 
                         Object.keys(items).forEach((itemId) => {
+                            lastCount = Object.keys(snapshot.val()).length;
                             const cardData = items[itemId];
                             const card = createCard(cardData, itemId);
                             cardsContainer.appendChild(card); // Append the card to the container
+                            
                         });
                     });
                 }
-
+                
                 function filterCards(searchText) {
                     const cards = document.querySelectorAll('.card');
-
+                    
                     cards.forEach((card) => {
                         const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
                         const cardId = card.querySelector('.card-id').textContent.toLowerCase();
-
+                        
                         card.style.display = (searchText === '' || cardTitle.includes(searchText) || cardId.includes(searchText))
-                            ? 'block'
-                            : 'none';
+                        ? 'block'
+                        : 'none';
                     });
                 }
+                $(document).on('click', '#addItem', function () {
+                    lastCount=lastCount+1;
+                    console.log("Total Items " + lastCount);
+                    
+                });
                 function formatCustomDateTime(timestamp) {
                     const options = { day: 'numeric', month: 'numeric', year: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true };
                     const dateObject = new Date(timestamp * 1000);
