@@ -15,15 +15,19 @@
 </style>
 
 <body>
-    <div class="row bname">
-        <h2>Jay Khodiyar</h2>
-        <p>General Store</p>
-        <div class="form-group">
-            <input type="search" class="form-control" placeholder="Search Here.." id="searchInput">
+    <section class="header">
+        <div class="container bname">
+            <div class="row">
+                <h2>Jay Khodiyar</h2>
+                <p>General Store</p>
+                <div class="form-group">
+                    <input type="search" class="form-control" placeholder="Search Here.." id="searchInput">
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="container" style="position: absolute; top: 20%;"">
-        <div class="row justify-content-center">
+    </section>
+    <div class="container" style="position: absolute; top: 20%;">
+        <div class=" row justify-content-center">
             <div class="col-md-12 col-md-6 mt-2">
                 <div class="list">
                     <div class="mx-auto text-center p-4">
@@ -53,27 +57,19 @@
                                 <form id="updateItm">
                                     <div class="row align-items-center">
                                         <div class="col-md-8">
-
                                             <div class="minput">
                                                 <label>Item Name</label>
                                                 <input id="itmNm" type="text" class="form-control"
                                                     placeholder="Enter item name">
-                                            </div>
-                                            <div class="minput">
-                                                <label>Item Image Link</label>
-                                                <input id="itmImgI" type="text" class="form-control"
-                                                    placeholder="Enter image link here">
+                                            </div><div class="minput">
+                                                <label>1KG Price</label>
+                                                <input id="ippKg" type="number" class="form-control"
+                                                    placeholder="Enter price of KG">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <img src="" id="itmImg" alt="">
                                         </div>
-                                    </div>
-                                    
-                                    <div class="minput">
-                                        <label>Item Value of KG</label>
-                                        <input id="ippKg" type="number" class="form-control"
-                                            placeholder="Enter price of KG">
                                     </div>
                                     <div class="mt-3">
                                         <div><button type="button" class="btn btn-danger" data-bs-dismiss="modal"
@@ -98,51 +94,51 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Bootstrap JS and Popper.js (optional) -->
-
-    <!-- Bootstrap JS and Popper.js (optional) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-    <script type="module">
-
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-        import { getDatabase, ref, onValue, get, set, update, child, remove } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDYF1MoFUCozgh6PfsH-nM1avUTbxSM_rY",
-            authDomain: "my-store-11-6b8f5.firebaseapp.com",
-            databaseURL: "https://my-store-11-6b8f5-default-rtdb.firebaseio.com",
-            projectId: "my-store-11-6b8f5",
-            storageBucket: "my-store-11-6b8f5.appspot.com",
-            messagingSenderId: "719774944841",
-            appId: "1:719774944841:web:9ac216f8ffb2e49bcc7998"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase();
-        const itemsRef = ref(database, 'Items');
 
 
+        <!-- Bootstrap JS and Popper.js (optional) -->
+
+        <!-- Bootstrap JS and Popper.js (optional) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+        <script type="module">
+
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+            import { getDatabase, ref, onValue, get, set, update, child, remove } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyDYF1MoFUCozgh6PfsH-nM1avUTbxSM_rY",
+                authDomain: "my-store-11-6b8f5.firebaseapp.com",
+                databaseURL: "https://my-store-11-6b8f5-default-rtdb.firebaseio.com",
+                projectId: "my-store-11-6b8f5",
+                storageBucket: "my-store-11-6b8f5.appspot.com",
+                messagingSenderId: "719774944841",
+                appId: "1:719774944841:web:9ac216f8ffb2e49bcc7998"
+            };
+
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const database = getDatabase();
+            const itemsRef = ref(database, 'Items');
 
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const cardsContainer = document.querySelector('.list');
-            const searchInput = document.getElementById('searchInput');
 
-            const modeldiv = document.getElementById("modal-body");
 
-            // Function to create a card element
-            function createCard(data, itemId) {
-                const card = document.createElement('div');
-                card.classList.add('card');
+            document.addEventListener("DOMContentLoaded", function () {
+                const cardsContainer = document.querySelector('.list');
+                const searchInput = document.getElementById('searchInput');
 
-                card.innerHTML = `
+                const modeldiv = document.getElementById("modal-body");
+
+                // Function to create a card element
+                function createCard(data, itemId) {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+
+                    card.innerHTML = `
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
@@ -175,135 +171,150 @@
             </div>
                `;
 
-                // Event listener for the .cusPrice input within the dynamically created card
-                card.querySelector('#cusPrice').addEventListener('input', function () {
-                    handleCustomPriceInput(this, data);
-                });
+                    // Event listener for the .cusPrice input within the dynamically created card
+                    card.querySelector('#cusPrice').addEventListener('input', function () {
+                        handleCustomPriceInput(this, data);
+                    });
 
-                return card;
-            }
-            searchInput.addEventListener('input', function () {
-                const searchText = this.value.trim().toLowerCase();
-                filterCards(searchText);
-            });
-
-            $(document).on('dblclick', '#clickable', function () {
-                const cardId = $(this).find('#itmid').text();
-                $('#modalCardId').text(cardId);
-                $('#editCardModal').modal('show');
-
-                const itemRef = child(itemsRef, "/" + cardId);
-                fetchDataForCard(itemRef);
-
-                $(document).on('click', '#saveAndClose', function () {
-                    handleSaveAndClose(cardId);
-                });
-            });
-
-            // Call the function to fetch data
-            fetchDataFromFirebase();
-
-            // Function to handle custom price input
-            function handleCustomPriceInput(inputElement, data) {
-                const customPrice = parseFloat(inputElement.value);
-                const weightElement = inputElement.closest('.card').querySelector('.weight');
-
-                if (!isNaN(customPrice)) {
-                    const weightValue = Math.round((1000 / data.ppkg) * customPrice);
-                    weightElement.textContent = weightValue + 'gm';
-                } else {
-                    console.log('Invalid input for customPrice');
+                    return card;
                 }
-            }
-            fetchDataFromFirebase();
-
-
-            function handleCardDoubleClick() {
-                const cardId = $(this).find('#itmid').text();
-                $('#modalCardId').text(cardId);
-                $('#editCardModal').modal('show');
-
-                const itemRef = child(itemsRef, "/" + cardId);
-                fetchDataForCard(itemRef);
-                $(document).on('click', '#saveAndClose', handleSaveAndClose);
-            }
-
-            function fetchDataForCard(itemRef) {
-                get(itemRef)
-                    .then((snapshot) => {
-                        if (snapshot.exists()) {
-                            const data = snapshot.val();
-                            updateModalElements(data);
-                        } else {
-                            console.warn("No data found for card " + cardId);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching data:", error);
-                    });
-            }
-            // Function to update modal elements with fetched data
-            function updateModalElements(data) {
-                $('#edTime').text(formatCustomDateTime(data.edtime));
-                $('#itmImgI').val(data.itmimg);
-                $('#itmNm').val(data.itmnm);
-                $('#ippKg').val(data.ppkg);
-                
-                $('#itmImg').attr("src", data.itmimg);
-            }
-
-            // Function to handle save and close button click
-            function handleSaveAndClose(cardId) {
-                const itemRef = child(itemsRef, "/" + cardId);
-                update(itemRef, {
-                    itmimg: $('#itmImgI').val(),
-                    itmnm: $('#itmNm').val(),
-                    ppkg: $('#ippKg').val(),
-                    edtime: new Date().getTime() / 1000
-                }).then(() => {
-                    location.reload();
-                    setTimeout(() => {
-                        showToast("Data Updated Successfully");
-                    }, 3000);
-                }).catch((error) => {
-                    alert("Error updating data: " + error);
+                searchInput.addEventListener('input', function () {
+                    const searchText = this.value.trim().toLowerCase();
+                    filterCards(searchText);
                 });
-            }
-            function fetchDataFromFirebase() {
-                onValue(itemsRef, (snapshot) => {
-                    const items = snapshot.val();
-                    cardsContainer.innerHTML = ''; // Clear existing cards
+                searchInput.addEventListener('input', function () {
+                    const searchText = this.value.trim().toLowerCase();
+                    filterCards(searchText);
+                });
 
-                    Object.keys(items).forEach((itemId) => {
-                        const cardData = items[itemId];
-                        const card = createCard(cardData, itemId);
-                        cardsContainer.appendChild(card); // Append the card to the container
+                $(document).on('dblclick', '#clickable', function () {
+                    const cardId = $(this).find('#itmid').text();
+                    $('#modalCardId').text(cardId);
+                    $('#editCardModal').modal('show');
+
+                    const itemRef = child(itemsRef, "/" + cardId);
+                    fetchDataForCard(itemRef);
+
+                    $(document).on('click', '#saveAndClose', function () {
+                        handleSaveAndClose(cardId);
                     });
                 });
-            }
 
-            function filterCards(searchText) {
-                const cards = document.querySelectorAll('.card');
+                // Call the function to fetch data
+                fetchDataFromFirebase();
 
-                cards.forEach((card) => {
-                    const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
-                    const cardId = card.querySelector('.card-id').textContent.toLowerCase();
+                // Function to handle custom price input
+                function handleCustomPriceInput(inputElement, data) {
+                    const customPrice = parseFloat(inputElement.value);
+                    const weightElement = inputElement.closest('.card').querySelector('.weight');
 
-                    card.style.display = (searchText === '' || cardTitle.includes(searchText) || cardId.includes(searchText))
-                        ? 'block'
-                        : 'none';
+                    if (!isNaN(customPrice)) {
+                        const weightValue = Math.round((1000 / data.ppkg) * customPrice);
+                        weightElement.textContent = weightValue + 'gm';
+                    } else {
+                        console.log('Invalid input for customPrice');
+                    }
+                }
+                fetchDataFromFirebase();
+
+
+                function handleCardDoubleClick() {
+                    const cardId = $(this).find('#itmid').text();
+                    $('#modalCardId').text(cardId);
+                    $('#editCardModal').modal('show');
+
+                    const itemRef = child(itemsRef, "/" + cardId);
+                    fetchDataForCard(itemRef);
+                    $(document).on('click', '#saveAndClose', handleSaveAndClose);
+                }
+
+                function fetchDataForCard(itemRef) {
+                    get(itemRef)
+                        .then((snapshot) => {
+                            if (snapshot.exists()) {
+                                const data = snapshot.val();
+                                updateModalElements(data);
+                            } else {
+                                console.warn("No data found for card " + cardId);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching data:", error);
+                        });
+                }
+                // Function to update modal elements with fetched data
+                function updateModalElements(data) {
+                    $('#edTime').text(formatCustomDateTime(data.edtime));
+                    $('#itmImg').attr("src", data.itmimg);
+                    $('#itmNm').val(data.itmnm);
+                    $('#ippKg').val(data.ppkg);
+
+                }
+                let copiedContent; // Define the variable globally
+
+                $(document).ready(function () {
+                    $('#itmImg').on('dblclick', function () {
+                        navigator.clipboard.readText().then(function (content) {
+                            copiedContent = content; // Set the global variable
+                            $('#itmImg').attr('src', copiedContent);
+                        }).catch(function (err) {
+                            console.error('Failed to read clipboard content: ', err);
+                        });
+                    });
                 });
-            }
-            function formatCustomDateTime(timestamp) {
-                const options = { day: 'numeric', month: 'numeric', year: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true };
-                const dateObject = new Date(timestamp * 1000);
-                return dateObject.toLocaleString('en-GB', options);
-            }
-            function showToast(message) {
-                // Create a new toast element
-                const toast = document.createElement('div');
-                // Add toast header
-                toast.innerHTML = `<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+
+                // Function to handle save and close button click
+                function handleSaveAndClose(cardId) {
+                    const itemRef = child(itemsRef, "/" + cardId);
+                    update(itemRef, {
+                        itmimg: copiedContent,
+                        itmnm: $('#itmNm').val(),
+                        ppkg: $('#ippKg').val(),
+                        edtime: new Date().getTime() / 1000
+                    }).then(() => {
+                        location.reload();
+                        setTimeout(() => {
+                            showToast("Data Updated Successfully");
+                        }, 3000);
+                    }).catch((error) => {
+                        alert("Error updating data: " + error);
+                    });
+                }
+                function fetchDataFromFirebase() {
+                    onValue(itemsRef, (snapshot) => {
+                        const items = snapshot.val();
+                        cardsContainer.innerHTML = ''; // Clear existing cards
+
+                        Object.keys(items).forEach((itemId) => {
+                            const cardData = items[itemId];
+                            const card = createCard(cardData, itemId);
+                            cardsContainer.appendChild(card); // Append the card to the container
+                        });
+                    });
+                }
+
+                function filterCards(searchText) {
+                    const cards = document.querySelectorAll('.card');
+
+                    cards.forEach((card) => {
+                        const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
+                        const cardId = card.querySelector('.card-id').textContent.toLowerCase();
+
+                        card.style.display = (searchText === '' || cardTitle.includes(searchText) || cardId.includes(searchText))
+                            ? 'block'
+                            : 'none';
+                    });
+                }
+                function formatCustomDateTime(timestamp) {
+                    const options = { day: 'numeric', month: 'numeric', year: '2-digit', hour: 'numeric', minute: 'numeric', hour12: true };
+                    const dateObject = new Date(timestamp * 1000);
+                    return dateObject.toLocaleString('en-GB', options);
+                }
+                function showToast(message) {
+                    // Create a new toast element
+                    const toast = document.createElement('div');
+                    // Add toast header
+                    toast.innerHTML = `<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
                 <!-- Then put toasts within -->
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
@@ -320,14 +331,14 @@
                 </div>
                 </div>`;
 
-                document.body.appendChild(toast);
-                const bsToast = new bootstrap.Toast(toast);
-                bsToast.show();
-            }
+                    document.body.appendChild(toast);
+                    const bsToast = new bootstrap.Toast(toast);
+                    bsToast.show();
+                }
 
-        });
-    </script>
-    <script src="main.js"></script>
+            });
+        </script>
+        <script src="main.js"></script>
 
 
 </body>
