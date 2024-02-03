@@ -63,20 +63,22 @@ p.card-text {
 }
 
 .card-footer .p-w-box {
-  width: 8vh;
+  width: min-content;
   font-size: 1.2rem !important;
   font-weight: 500 !important;
   place-items: center;
   text-align: center;
+  margin: 0 auto;
 }
 
-.price {
+.price,.cusPriceDiv {
   display: inline-flex;
 }
 
 div.weight {
   font-size: 1rem;
   color: gray;
+  padding: 0 0.2rem;
 }
 
 .btn-floating {
