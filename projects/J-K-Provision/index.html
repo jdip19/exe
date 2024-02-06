@@ -24,8 +24,11 @@
                     <input type="search" class="form-control" placeholder="Search Here.." id="searchInput">
                 </div>
             </div>
+
+            <button type="button" class="btn btn-primary" id="SuccesTost">Show live toast</button>
         </div>
     </section>
+
     <div class="container" style="position: absolute; top: 8rem;">
         <div class=" row justify-content-center">
             <div class="col-md-12 col-md-6 mt-2">
@@ -86,6 +89,8 @@
                     </div>
                 </div>
 
+
+
                 <div class="floatingdiv">
 
                     <button title="Adding Item" class="btn btn-floating btn-primary" id="addItem">
@@ -96,15 +101,25 @@
             </div>
         </div>
 
+        <div class="toast-container bottom-0 start-50 translate-middle-x" id="toastPlacement">
+            <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <!-- This div will be populated with the message content -->
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
 
         <!-- Bootstrap JS and Popper.js (optional) -->
 
         <!-- Bootstrap JS and Popper.js (optional) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
-            integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
         <script type="module">
 
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
@@ -187,6 +202,13 @@
                     const searchText = this.value.trim().toLowerCase();
                     filterCards(searchText);
                 });
+
+
+                $(document).on('click', '#SuccesTost', function () {
+                    showToast("Km baki")
+                });
+
+
 
                 $(document).on('dblclick', '#clickable', function () {
                     const cardId = $(this).find('#itmid').text();
@@ -387,27 +409,36 @@
                     return dateObject.toLocaleString('en-GB', options);
                 }
                 function showToast(message) {
+                    // Select the toast container
+                    const toastContainer = document.getElementById('toastPlacement');
+
                     // Create a new toast element
                     const toast = document.createElement('div');
-                    // Add toast header
-                    toast.innerHTML = `<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
-                <!-- Then put toasts within -->
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <img src="..." class="rounded mr-2" alt="...">
-                    <strong class="mr-auto">Bootstrap</strong>
-                    <small>11 mins ago</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="toast-body">
-                   ${message}
-                </div>
-                </div>
-                </div>`;
+                    toast.classList.add('toast', 'align-items-center');
+                    toast.setAttribute('role', 'alert');
+                    toast.setAttribute('aria-live', 'assertive');
+                    toast.setAttribute('aria-atomic', 'true');
 
-                    document.body.appendChild(toast);
+                    // Create a div for the toast body and add the message
+                    const toastBody = document.createElement('div');
+                    toastBody.classList.add('toast-body');
+                    toastBody.textContent = message;
+
+                    // Create a button to dismiss the toast
+                    const closeButton = document.createElement('button');
+                    closeButton.setAttribute('type', 'button');
+                    closeButton.classList.add('btn-close', 'me-2', 'm-auto');
+                    closeButton.setAttribute('data-bs-dismiss', 'toast');
+                    closeButton.setAttribute('aria-label', 'Close');
+
+                    // Append the toast body and close button to the toast element
+                    toast.appendChild(toastBody);
+                    toast.appendChild(closeButton);
+
+                    // Append the toast element to the toast container
+                    toastContainer.appendChild(toast);
+
+                    // Show the toast
                     const bsToast = new bootstrap.Toast(toast);
                     bsToast.show();
                 }

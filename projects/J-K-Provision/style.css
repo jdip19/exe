@@ -28,6 +28,10 @@ content: "₹";
   margin-bottom: 0.4rem;
   border-radius:0 0 .4em 0.4em;
 }
+div#toastPlacement{
+position: fixed;
+padding: 1em;
+}
 
 .bname h2 {
   margin: 0;
