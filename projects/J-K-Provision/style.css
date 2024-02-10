@@ -58,7 +58,9 @@ p.card-text {
 .card-title{
   font-weight: bolder!important;
 }
-
+span#itmNmEng {
+  display: none;
+}
 .p-w-box input {
   padding: 0;
   background: none;

@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
                         <h6 class="card-id">#<span id="itmid">${itemId}</span></h6>
-                        <h5 class="card-title">${data.itmnm}</h5>
+                        <h5 class="card-title"><span id="itmNmGuj">${data.itmnmguj}</span><span id="itmNmEng">${data.itmnm}</span></h5>
                         <p class="card-text"><i class="bi bi-clock"></i> ${formatCustomDateTime(
                           data.edtime
                         )}</p>
@@ -107,8 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const itemRef = child(itemsRef, "/" + cardId);
     fetchDataForCard(itemRef);
-    console.log(ModelcardId);
-    console.log(cardId);
 
     $(document).on("click", "#saveAndClose", function () {
       handleSaveAndClose(cardId);
@@ -185,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
         edtime: new Date().getTime() / 1000,
       })
         .then(() => {
-          showToast(cardId + " Updated Succesfully");
+          showToast(cardId + " Updated Succesfully","primary");
         })
         .catch((error) => {
           alert("Error updating data: " + error);
@@ -212,37 +210,37 @@ document.addEventListener("DOMContentLoaded", function () {
           cardsContainer.appendChild(card); // Append the card to the container
         });
   
-        lastCount = existingIds.length;
-        showToast("Added " + lastCount + " rows", "primary");
       } else {
         // Handle case when there's no data available (e.g., app is offline)
         showToast("No data available. Please check your network connection.", "warning");
       }
+      showToast("Total " + existingIds.length + " items available", "primary");
     });
   }
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
 
     cards.forEach((card) => {
-      const cardTitle = card
-        .querySelector(".card-title")
-        .textContent.toLowerCase();
-      const cardId = card.querySelector(".card-id").textContent.toLowerCase();
+        const cardId = card.querySelector(".card-id").textContent.toLowerCase();
+        const cardItemNameEng = card.querySelector("#itmNmEng").textContent.toLowerCase();
+        const cardItemNameGuj = card.querySelector("#itmNmGuj").textContent.toLowerCase();
 
-      card.style.display =
-        searchText === "" ||
-        cardTitle.includes(searchText) ||
-        cardId.includes(searchText)
-          ? "block"
-          : "none";
+        // Check if the English or Gujarati item name contains the search text
+        const englishMatch = cardItemNameEng.includes(searchText);
+        const gujaratiMatch = cardItemNameGuj.includes(searchText);
+
+        card.style.display =
+            searchText === "" || englishMatch || gujaratiMatch || cardId.includes(searchText)
+            ? "block"
+            : "none";
     });
-  }
+}
+
 
   function removeItm(itemRef, cardId) {
-    console.log(cardId);
     remove(itemRef)
       .then(() => {
-        showToast("Card " + cardId + " Deleted", "danger");
+        showToast("Card #" + cardId + " Deleted", "danger");
         // setTimeout(() => {
         //   location.reload();
         // }, 3000);
@@ -265,7 +263,8 @@ document.addEventListener("DOMContentLoaded", function () {
       set(child(itemsRef, uniqID.toString()), {
         // Use child() to create a reference to the specific child
         itmimg: "https://cdn.kibrispdr.org/data/657/image-icon-png-0.jpg",
-        itmnm: "વસ્તુ નુ નામ ",
+        itmnm: "Item Name",
+        itmnmguj: "વસ્તુ નુ નામ",
         ppkg: 100,
         edtime: new Date().getTime() / 1000,
       })
@@ -275,6 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => {
           alert("Error updating data: " + error);
         });
+
     } else {
       console.log("Not Want to");
     }
