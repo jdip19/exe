@@ -24,6 +24,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
 const itemsRef = ref(database, "Items");
+//.database().enablePersistence();
 
 document.addEventListener("DOMContentLoaded", function () {
   const cardsContainer = document.querySelector(".list");
@@ -202,17 +203,23 @@ document.addEventListener("DOMContentLoaded", function () {
     onValue(itemsRef, (snapshot) => {
       items = snapshot.val(); // Update the global 'items'
       cardsContainer.innerHTML = ""; // Clear existing cards
-
-      Object.keys(items).forEach((itemId) => {
-        lastCount = Object.keys(snapshot.val()).length;
-        existingIds.push(parseInt(itemId));
-        const cardData = items[itemId];
-        const card = createCard(cardData, itemId);
-        cardsContainer.appendChild(card); // Append the card to the container
-      });
+  
+      if (items) {
+        Object.keys(items).forEach((itemId) => {
+          existingIds.push(parseInt(itemId));
+          const cardData = items[itemId];
+          const card = createCard(cardData, itemId);
+          cardsContainer.appendChild(card); // Append the card to the container
+        });
+  
+        lastCount = existingIds.length;
+        showToast("Added " + lastCount + " rows", "primary");
+      } else {
+        // Handle case when there's no data available (e.g., app is offline)
+        showToast("No data available. Please check your network connection.", "warning");
+      }
     });
   }
-
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
 
@@ -235,10 +242,10 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(cardId);
     remove(itemRef)
       .then(() => {
-        showToast("Card " + cardId + " Deleted");
-        setTimeout(() => {
-          location.reload();
-        }, 3000);
+        showToast("Card " + cardId + " Deleted", "danger");
+        // setTimeout(() => {
+        //   location.reload();
+        // }, 3000);
       })
       .catch((error) => {
         alert("Error updating data: " + error);
@@ -285,13 +292,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateObject = new Date(timestamp * 1000);
     return dateObject.toLocaleString("en-GB", options);
   }
-  function showToast(message) {
+  function showToast(message, color) {
     // Select the toast container
     const toastContainer = document.getElementById("toastPlacement");
 
     // Create a new toast element
     const toast = document.createElement("div");
-    toast.classList.add("toast", "d-flex", "p-2", "justify-content-between");
+    toast.classList.add("toast", "d-flex", "p-2", "justify-content-between", `bg-${color}`);
     toast.setAttribute("role", "alert");
     toast.setAttribute("aria-live", "assertive");
     toast.setAttribute("aria-atomic", "true");
@@ -318,5 +325,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the toast
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
-  }
+}
+
 });

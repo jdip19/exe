@@ -165,3 +165,11 @@ h6 {
 .modal-content {
   border:none ;
 }
+
+.bg-danger,.bg-primary{
+  color: #fff;
+  fill:#fff;
+}
+.btn-close{
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(212deg) brightness(120) contrast(120%);
+}
