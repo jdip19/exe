@@ -8,16 +8,10 @@
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
-
-// Variable to store the current view
-let currentView = 'mainScreen';
+figma.ui.resize(300, 400);
 
 figma.ui.onmessage = msg => {
-  if (msg.type === 'load-view') {
-    // Update the current view based on the message
-    currentView = msg.view;
-    loadView(currentView);
-  } else if (msg.type === 'paste-text') {
+  if (msg.type === 'paste-text') {
     const text = msg.text;
 
     // Check if there is a text node selected
@@ -37,28 +31,30 @@ figma.ui.onmessage = msg => {
       // Inform the user that they need to select a text layer
       figma.notify('Please select a text layer to paste the text.');
     }
-  } else if (msg.type === 'update-text') {
-    const inputText = document.getElementById('inputText') as HTMLTextAreaElement;
-    inputText.value = msg.updatedText;
-  } else if (msg.type === 'create-rectangles') {
-    const nodes: SceneNode[] = [];
-    const rectangleWidth = 200; // Set the desired width
+  } else if (msg.type === 'createTextLayer') {
+    const inputText = msg.text; // Extract the text from the message
+    const lines = inputText.split('\n'); // Split the text into lines
 
-    for (let i = 0; i < msg.count; i++) {
-      const rect = figma.createRectangle();
-      rect.x = i * (rectangleWidth + 10); // Add some spacing between rectangles
-      rect.resize(rectangleWidth, rect.height); // Set the width explicitly
-      rect.fills = [{ type: 'SOLID', color: { r: 1, g: 0.5, b: 0 } }];
-      figma.currentPage.appendChild(rect);
-      nodes.push(rect);
-    }
+    // Load the font asynchronously
+    figma.loadFontAsync({ family: 'Inter', style: 'Regular' }).then(() => {
+        // Font loaded, proceed to create text nodes
+        lines.forEach((line: string, index: number) => {
+            const textNode = figma.createText();
+            textNode.x = 50;
+            textNode.y = index * 50; // Adjust the spacing as needed
+            textNode.characters = line;
 
-    figma.currentPage.selection = nodes;
-    figma.viewport.scrollAndZoomIntoView(nodes);
-  }
+            figma.currentPage.appendChild(textNode);
+
+            // Set the font for the text node
+            textNode.fontName = { family: 'Inter', style: 'Regular' };
+        });
+    }).catch((error) => {
+        console.error('Error loading font:', error);
+    });
+}
+
 };
-
-
 
 // Function to load a specific HTML view
 function loadView(view: string) {
@@ -66,6 +62,7 @@ function loadView(view: string) {
 }
 
 // Load the initial view
-loadView(currentView);
+loadView('textareaView');
+
 
 //figma.closePlugin();

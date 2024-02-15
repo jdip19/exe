@@ -4,8 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel='stylesheet'
-    href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
   <title>Figma Plugin</title>
   <style>
     :root {
@@ -13,15 +11,14 @@
       --margin-lr: 0.8rem;
     }
 
-    .draggable_modal--positionedContainer--8AmbN {
-      position: fixed;
-      z-index: 7;
-
+    .draggable_modal--positionedContainer--8AmbN.js-fullscreen-prevent-event-capture {
+      height: 400px !important;
     }
 
-    iframe {
-      width: 100% !important;
+    .draggable_modal--frame--LKZW-,iframe#plugin-iframe-in-modal {
+        height: 100%!important;
     }
+    
 
     body {
       margin: 0;
@@ -40,8 +37,8 @@
     }
 
     #textareaView {
-      height: max-content;
-      margin: 0 var(--margin-lr);
+      height: 90%;
+      padding: 1em;
     }
 
     .controller {
@@ -55,7 +52,9 @@
     .controller div {
       margin: 0 !important;
     }
-
+    #pasteToTextbox{
+      margin: 0 0 var(--margin-tb) 0;
+    }
     .controller button {
       width: max-content;
       padding: 8px 12px;
@@ -76,7 +75,7 @@
 
     #textArea {
       display: flex;
-      height: 32%;
+      height: 70%;
     }
 
     #textareaView textarea {
@@ -84,6 +83,7 @@
       width: 100%;
       background: 0;
       color: white;
+      padding: 0.4rem;
     }
 
     svg {
@@ -95,29 +95,25 @@
 </head>
 
 <body>
-  <!-- Main screen with buttons -->
-  <div id="mainScreen">
-    <button id="changeTextButton">Change Text </button>
-    <button id="createRectanglesButton">Create Rectangles</button>
-  </div>
+  
 
-  <!-- Textarea view -->
-  <div id="textareaView" style="display: none;">
-    <div id="nav">
-      <button id="backButtonTextarea"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <g id="_01_align_center" data-name="01 align center">
-            <path
-              d="M19,11H9l3.293-3.293L10.879,6.293,6.586,10.586a2,2,0,0,0,0,2.828l4.293,4.293,1.414-1.414L9,13H19Z" />
-          </g>
-        </svg>
-      </button>
+  <div id="textareaView">
+    <div class="controller">
+      <div>
+        <button id="pasteToTextbox">Paste</button>
+      </div>
     </div>
-
     <div id="textArea">
       <textarea id="inputText" placeholder="Enter text"></textarea>
     </div>
 
     <div class="controller">
+      <div>
+        <button id="uppercaseButton">UPP</button>
+        <button id="lowercaseButton">low</button>
+        <button id="capitalizeFirstButton">CaF</button>
+        <button id="sentenceCaseButton">San</button>
+      </div>
       <div>
         <button id="copyButton"><svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_381_7629)">
@@ -151,37 +147,42 @@
           </svg>
 
         </button>
-      </div>
-      <div>
-        <button id="uppercaseButton">UPP</button>
-        <button id="lowercaseButton">low</button>
-        <button id="capitalizeFirstButton">CaF</button>
-        <button id="sentenceCaseButton">San</button>
+
       </div>
     </div>
   </div>
 
-  <!-- Rectangles view -->
-  <div id="rectanglesView" style="display: none;">
-    <input type="text" id="inputCount" placeholder="Enter count" />
-    <button id="createRectanglesButtonInView">Create Rectangles</button>
-    <button id="backButtonRectangles">Back</button>
-  </div>
+
+  <!-- Textarea view -->
+
+
 
   <script>
-    document.getElementById('createRectanglesButton').onclick = () => {
-      showView('rectanglesView');
+
+
+    let inputText = document.getElementById('inputText');
+
+    document.getElementById('pasteToTextbox').onclick = () => {
+      console.log("pasteToTextbox Pressed");
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        navigator.clipboard.readText()
+          .then((copiedText) => {
+            inputText.value = copiedText;
+            parent.postMessage({ pluginMessage: { type: 'paste-text', text: copiedText } }, '*');
+          })
+          .catch((error) => {
+            console.error('Error pasting text:', error);
+          });
+      } else {
+        // Fallback mechanism: prompt user to manually paste
+        const pasteText = prompt('Please paste the copied text here:');
+        if (pasteText !== null) {
+          inputText.value = pasteText;
+          parent.postMessage({ pluginMessage: { type: 'paste-text', text: pasteText } }, '*');
+        }
+      }
     };
 
-    document.getElementById('changeTextButton').onclick = () => {
-      showView('textareaView');
-    };
-
-    document.getElementById('createRectanglesButtonInView').onclick = () => {
-      const inputCount = document.getElementById('inputCount');
-      const count = parseInt(inputCount.value) || 1;
-      parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
-    };
 
     document.getElementById('uppercaseButton').onclick = () => {
       manipulateText((text) => text.toUpperCase());
@@ -202,73 +203,39 @@
     };
 
     document.getElementById('copyButton').onclick = () => {
-      const inputText = document.getElementById('inputText');
       inputText.select();
       document.execCommand('copy');
     };
 
-    document.getElementById('pasteTextButton').onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'paste-text', text: document.getElementById('inputText').value } }, '*');
-    };
-
-    let inputTextValue; // Declare outside the event handler
-
     document.getElementById('createTextLayersButton').onclick = () => {
-      const lines = inputTextValue.split('\n');
-
-      lines.forEach((line, index) => {
-        const textNode = figma.createText();
-        textNode.x = 50;
-        textNode.y = index * 50; // Adjust the spacing as needed
-        textNode.characters = line;
-
-        figma.currentPage.appendChild(textNode);
-
-        // Load font for each text node
-        figma.loadFontAsync({ family: 'Inter', style: 'Bold' })
-          .then(() => {
-            textNode.fontName = { family: 'Inter', style: 'Bold' };
-          })
-          .catch((error) => {
-            console.error('Error loading font:', error);
-          });
-      });
-    };
-    // Back buttons
-    document.getElementById('backButtonTextarea').onclick = () => {
-      showView('mainScreen');
+      parent.postMessage({ pluginMessage: { type: 'createTextLayer', text: inputText.value } }, '*');
     };
 
-    document.getElementById('backButtonRectangles').onclick = () => {
-      showView('mainScreen');
+    document.getElementById('pasteTextButton').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'paste-text', text: inputText.value } }, '*');
     };
-
-    // Function to show a specific view and hide others
-    function showView(viewId) {
-      document.getElementById('mainScreen').style.display = 'none';
-      document.getElementById('textareaView').style.display = 'none';
-      document.getElementById('rectanglesView').style.display = 'none';
-
-      document.getElementById(viewId).style.display = 'block';
-    }
 
     // Function to manipulate text based on a given function
     function manipulateText(manipulationFunction) {
-      const inputText = document.getElementById('inputText');
       inputText.value = manipulationFunction(inputText.value);
     }
     figma.loadFontAsync({ family: 'Inter', style: 'Bold' })
       .then(() => {
-        // Set the text after the font is loaded
+        // Create or select the text node before setting the characters
+        const textNode = figma.createText(); // Create a new text node
         textNode.characters = 'Your text here';
+
+        // Alternatively, if you want to select an existing text node:
+        // const textNode = figma.currentPage.selection[0] as TextNode;
+
+        // Set the font after the text node is created/selected
+        textNode.fontName = { family: 'Inter', style: 'Bold' };
       })
       .catch((error) => {
         console.error('Error loading font:', error);
       });
 
 
-    textNode.fontName = { family: 'Roboto', style: 'Regular' };
-    textNode.characters = 'Your text here';
 
 
   </script>
