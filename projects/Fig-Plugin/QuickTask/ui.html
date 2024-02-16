@@ -15,10 +15,11 @@
       height: 400px !important;
     }
 
-    .draggable_modal--frame--LKZW-,iframe#plugin-iframe-in-modal {
-        height: 100%!important;
+    .draggable_modal--frame--LKZW-,
+    iframe#plugin-iframe-in-modal {
+      height: 100% !important;
     }
-    
+
 
     body {
       margin: 0;
@@ -52,9 +53,11 @@
     .controller div {
       margin: 0 !important;
     }
-    #pasteToTextbox{
+
+    #pasteToTextbox {
       margin: 0 0 var(--margin-tb) 0;
     }
+
     .controller button {
       width: max-content;
       padding: 8px 12px;
@@ -95,7 +98,7 @@
 </head>
 
 <body>
-  
+
 
   <div id="textareaView">
     <div class="controller">
@@ -164,23 +167,18 @@
 
     document.getElementById('pasteToTextbox').onclick = () => {
       console.log("pasteToTextbox Pressed");
+
       if (navigator.clipboard && navigator.clipboard.readText) {
-        navigator.clipboard.readText()
-          .then((copiedText) => {
-            inputText.value = copiedText;
-            parent.postMessage({ pluginMessage: { type: 'paste-text', text: copiedText } }, '*');
-          })
-          .catch((error) => {
-            console.error('Error pasting text:', error);
-          });
-      } else {
-        // Fallback mechanism: prompt user to manually paste
-        const pasteText = prompt('Please paste the copied text here:');
-        if (pasteText !== null) {
-          inputText.value = pasteText;
-          parent.postMessage({ pluginMessage: { type: 'paste-text', text: pasteText } }, '*');
-        }
-      }
+      // Read the text from the clipboard
+      navigator.clipboard.readText()
+        .then((copiedText) => {
+          console.log(cop);
+          parent.postMessage({ pluginMessage: { type: 'pasteToTextbox', text:copiedText} }, '*');
+        })
+        .catch((error) => {
+          console.error('Error pasting text:', error);
+        });
+    } 
     };
 
 
@@ -219,22 +217,6 @@
     function manipulateText(manipulationFunction) {
       inputText.value = manipulationFunction(inputText.value);
     }
-    figma.loadFontAsync({ family: 'Inter', style: 'Bold' })
-      .then(() => {
-        // Create or select the text node before setting the characters
-        const textNode = figma.createText(); // Create a new text node
-        textNode.characters = 'Your text here';
-
-        // Alternatively, if you want to select an existing text node:
-        // const textNode = figma.currentPage.selection[0] as TextNode;
-
-        // Set the font after the text node is created/selected
-        textNode.fontName = { family: 'Inter', style: 'Bold' };
-      })
-      .catch((error) => {
-        console.error('Error loading font:', error);
-      });
-
 
 
 
