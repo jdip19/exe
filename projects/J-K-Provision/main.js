@@ -29,6 +29,7 @@ const itemsRef = ref(database, "Items");
 document.addEventListener("DOMContentLoaded", function () {
   const cardsContainer = document.querySelector(".list");
   const searchInput = document.getElementById("searchInput");
+  let currentTime = new Date().getTime() / 1000;
 
   const modeldiv = document.getElementById("modal-body");
 
@@ -42,7 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
                         <h6 class="card-id">#<span id="itmid">${itemId}</span></h6>
-                        <h5 class="card-title"><span id="itmNmGuj">${data.itmnmguj}</span><span id="itmNmEng">${data.itmnm}</span></h5>
+                        <h5 class="card-title"><span id="itmNmGuj">${
+                          data.itmnmguj
+                        }</span><span id="itmNmEng">${data.itmnm}</span></h5>
                         <p class="card-text"><i class="bi bi-clock"></i> ${formatCustomDateTime(
                           data.edtime
                         )}</p>
@@ -100,7 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   $(document).on("dblclick", "#clickable", function () {
     const ModelcardId = $(this).find("#itmid").text();
+
     $("#modalCardId").text(ModelcardId);
+    $("#modal-title").text("Editing");
     $("#editCardModal").modal("show");
 
     const cardId = $("#modalCardId").text();
@@ -109,13 +114,19 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchDataForCard(itemRef);
 
     $(document).on("click", "#saveAndClose", function () {
-      handleSaveAndClose(cardId);
+      handleSaveAndClose(itemRef, cardId);
     });
     $(document).on("click", "#removeItm", function () {
       removeItm(itemRef, cardId);
     });
   });
-
+  function updateModalElements(data) {
+    $("#edTime").text(formatCustomDateTime(data.edtime));
+    $("#itmImg").attr("src", data.itmimg);
+    $("#itmNmguj").val(data.itmnmguj);
+    $("#itmNm").val(data.itmnm);
+    $("#ippKg").val(data.ppkg);
+  }
   // Function to handle custom price input
   function handleCustomPriceInput(inputElement, data) {
     const customPrice = parseFloat(inputElement.value);
@@ -147,43 +158,36 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
   // Function to update modal elements with fetched data
-  function updateModalElements(data) {
-    $("#edTime").text(formatCustomDateTime(data.edtime));
-    $("#itmImg").attr("src", data.itmimg);
-    $("#itmNm").val(data.itmnm);
-    $("#ippKg").val(data.ppkg);
-  }
+
   let copiedContent; // Define the variable globally
 
-  $(document).ready(function () {
-    $("#itmImg").on("dblclick", function () {
-      navigator.clipboard
-        .readText()
-        .then(function (content) {
-          copiedContent = content; // Set the global variable
-          $("#itmImg").attr("src", copiedContent);
-        })
-        .catch(function (err) {
-          console.error("Failed to read clipboard content: ", err);
-        });
-    });
+  $("#itmImg").on("dblclick", function () {
+    navigator.clipboard
+      .readText()
+      .then(function (content) {
+        copiedContent = content; // Set the global variable
+        $("#itmImg").attr("src", copiedContent);
+      })
+      .catch(function (err) {
+        console.error("Failed to read clipboard content: ", err);
+      });
   });
+  $(document).ready(function () {});
 
   // Function to handle save and close button click
-  function handleSaveAndClose(cardId) {
-    const itemRef = child(itemsRef, "/" + cardId);
-
+  function handleSaveAndClose(itemRef, cardId) {
     // Check if $('#itmImg').val() is defined before updating itmimg
     const itmimgValue = $("#itmImg").attr("src");
     if (typeof itmimgValue !== "undefined") {
       update(itemRef, {
         itmimg: itmimgValue,
+        itmnmguj: $("#itmNmguj").val(),
         itmnm: $("#itmNm").val(),
         ppkg: $("#ippKg").val(),
-        edtime: new Date().getTime() / 1000,
+        edtime: currentTime,
       })
         .then(() => {
-          showToast(cardId + " Updated Succesfully","primary");
+          showToast(cardId + " Updated Succesfully", "primary");
         })
         .catch((error) => {
           alert("Error updating data: " + error);
@@ -201,7 +205,8 @@ document.addEventListener("DOMContentLoaded", function () {
     onValue(itemsRef, (snapshot) => {
       items = snapshot.val(); // Update the global 'items'
       cardsContainer.innerHTML = ""; // Clear existing cards
-  
+      existingIds.length = 0; // Clear existingIds array
+
       if (items) {
         Object.keys(items).forEach((itemId) => {
           existingIds.push(parseInt(itemId));
@@ -209,33 +214,44 @@ document.addEventListener("DOMContentLoaded", function () {
           const card = createCard(cardData, itemId);
           cardsContainer.appendChild(card); // Append the card to the container
         });
-  
+
+        showToast(
+          "Total " + existingIds.length + " items available",
+          "primary"
+        );
       } else {
-        // Handle case when there's no data available (e.g., app is offline)
-        showToast("No data available. Please check your network connection.", "warning");
+        showToast(
+          "No data available. Please check your network connection.",
+          "warning"
+        );
       }
-      showToast("Total " + existingIds.length + " items available", "primary");
     });
   }
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
 
     cards.forEach((card) => {
-        const cardId = card.querySelector(".card-id").textContent.toLowerCase();
-        const cardItemNameEng = card.querySelector("#itmNmEng").textContent.toLowerCase();
-        const cardItemNameGuj = card.querySelector("#itmNmGuj").textContent.toLowerCase();
+      const cardId = card.querySelector(".card-id").textContent.toLowerCase();
+      const cardItemNameEng = card
+        .querySelector("#itmNmEng")
+        .textContent.toLowerCase();
+      const cardItemNameGuj = card
+        .querySelector("#itmNmGuj")
+        .textContent.toLowerCase();
 
-        // Check if the English or Gujarati item name contains the search text
-        const englishMatch = cardItemNameEng.includes(searchText);
-        const gujaratiMatch = cardItemNameGuj.includes(searchText);
+      // Check if the English or Gujarati item name contains the search text
+      const englishMatch = cardItemNameEng.includes(searchText);
+      const gujaratiMatch = cardItemNameGuj.includes(searchText);
 
-        card.style.display =
-            searchText === "" || englishMatch || gujaratiMatch || cardId.includes(searchText)
-            ? "block"
-            : "none";
+      card.style.display =
+        searchText === "" ||
+        englishMatch ||
+        gujaratiMatch ||
+        cardId.includes(searchText)
+          ? "block"
+          : "none";
     });
-}
-
+  }
 
   function removeItm(itemRef, cardId) {
     remove(itemRef)
@@ -249,34 +265,62 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Error updating data: " + error);
       });
   }
+  function footerData() {
+    const modalFooterData = `<div class="p-w-box">
+    <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
+    <div class="weight" id="weight">${Math.round((1000 / 100) * 10)}gm</div>
+</div>
+  <div class="p-w-box">
+      <div class="price">₹<span id="price250">${100 / 4}</span></div>
+      <div class="weight" id="weight250">250gm</div>
+  </div>
+  <div class="p-w-box">
+      <div class="price">₹<span id="price500">${ 100/ 2}</span></div>
+      <div class="weight" id="weight500">500gm</div>
+  </div>`;
+
+    $("#modalFooter").html(modalFooterData);
+  }
+  
 
   $(document).on("click", "#addItem", function () {
     // Assuming itemRef is the reference to the 'Items' collectio
     const wantToAddItem = window.confirm("Want to add an item?");
+    footerData();
 
     if (wantToAddItem) {
       let uniqID = 1;
       while (existingIds.includes(uniqID)) {
         uniqID++;
       }
+      $("#editCardModal").modal("show");
+      $("#modal-title").text("Adding");
+      $("#modalCardId").text(uniqID);
+      $("#edTime").text(formatCustomDateTime(currentTime));
+      $("#itmImg").attr(
+        "src",
+        "https://th.bing.com/th?id=OLC.R2v+CiwcE2AjwQ480x360&rs=1&pid=ImgDetMain"
+      );
+      $("#itmNmguj").val("વસ્તુ નુ નામ");
+      $("#itmNm").val("Item Name");
+      $("#ippKg").val(100);
 
-      set(child(itemsRef, uniqID.toString()), {
-        // Use child() to create a reference to the specific child
-        itmimg: "https://cdn.kibrispdr.org/data/657/image-icon-png-0.jpg",
-        itmnm: "Item Name",
-        itmnmguj: "વસ્તુ નુ નામ",
-        ppkg: 100,
-        edtime: new Date().getTime() / 1000,
-      })
-        .then(() => {
-          location.reload();
-        })
-        .catch((error) => {
-          alert("Error updating data: " + error);
-        });
-
+      // set(child(itemsRef, uniqID.toString()), {
+      //   // Use child() to create a reference to the specific child
+      //   itmimg: "https://th.bing.com/th?id=OLC.R2v+CiwcE2AjwQ480x360&rs=1&pid=ImgDetMain",
+      //   itmnm: "Item Name",
+      //   itmnmguj: "વસ્તુ નુ નામ",
+      //   ppkg: 100,
+      //   edtime: currentTime,
+      // })
+      //   .then(() => {
+      //     location.reload();
+      //   })
+      //   .catch((error) => {
+      //     alert("Error updating data: " + error);
+      //   });
     } else {
-      console.log("Not Want to");
+      console.log("Not Want to...");
     }
   });
 
@@ -298,7 +342,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Create a new toast element
     const toast = document.createElement("div");
-    toast.classList.add("toast", "d-flex", "p-2", "justify-content-between", `bg-${color}`);
+    toast.classList.add(
+      "toast",
+      "d-flex",
+      "p-2",
+      "justify-content-between",
+      `bg-${color}`
+    );
     toast.setAttribute("role", "alert");
     toast.setAttribute("aria-live", "assertive");
     toast.setAttribute("aria-atomic", "true");
@@ -325,6 +375,5 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the toast
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
-}
-
+  }
 });

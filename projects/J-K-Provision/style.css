@@ -147,11 +147,19 @@ h6 {
   font-size: 0.8rem;
   color: gray;
 }
-
-.modal-title span {
+h5#modal-title {
+  display: inline-block;
+}
+.modal-title + span {
+  color: var(--bs-primary);
+  font-size: 1.25rem;
+}
+button.close {
+  border: 0;
+  background: none;
+  font-size: 2rem;
   color: gray;
 }
-
 #edtime {
   padding: 0 0.4rem;
 }
@@ -161,8 +169,9 @@ h6 {
 }
 
 .modal {
-  top: 25%;
-  left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .modal-content {
   border:none ;
