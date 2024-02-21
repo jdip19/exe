@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Figma Plugin</title>
+  <title>QuickText</title>
   <style>
     :root {
       --margin-tb: 0.8rem;
@@ -103,11 +103,14 @@
   <div id="textareaView">
     <div class="controller">
       <div>
-        <button id="pasteToTextbox"><svg width="9" height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.14645 7.85355C4.34171 8.04882 4.65829 8.04882 4.85355 7.85355L8.03553 4.67157C8.2308 4.47631 8.2308 4.15973 8.03553 3.96447C7.84027 3.7692 7.52369 3.7692 7.32843 3.96447L4.5 6.79289L1.67157 3.96447C1.47631 3.7692 1.15973 3.7692 0.964466 3.96447C0.769204 4.15973 0.769204 4.47631 0.964466 4.67157L4.14645 7.85355ZM4 0.5V7.5H5V0.5H4Z" fill="white"/>
-</svg>
+        <button id="pasteToTextbox"><svg width="9" height="8" viewBox="0 0 9 8" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M4.14645 7.85355C4.34171 8.04882 4.65829 8.04882 4.85355 7.85355L8.03553 4.67157C8.2308 4.47631 8.2308 4.15973 8.03553 3.96447C7.84027 3.7692 7.52369 3.7692 7.32843 3.96447L4.5 6.79289L1.67157 3.96447C1.47631 3.7692 1.15973 3.7692 0.964466 3.96447C0.769204 4.15973 0.769204 4.47631 0.964466 4.67157L4.14645 7.85355ZM4 0.5V7.5H5V0.5H4Z"
+              fill="white" />
+          </svg>
 
-          </button>
+        </button>
       </div>
     </div>
     <div id="textArea">
@@ -119,11 +122,14 @@
         <button id="uppercaseButton">UPP</button>
         <button id="lowercaseButton">low</button>
         <button id="capitalizeFirstButton">CaF</button>
-        <button id="sentenceCaseButton">San</button>
+        <button id="sentenceCaseButton">Sen</button>
       </div>
       <div>
-        <button id="pasteTextButton"><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.35355 4.35355C7.54882 4.15829 7.54882 3.84171 7.35355 3.64645L4.17157 0.464466C3.97631 0.269204 3.65973 0.269204 3.46447 0.464466C3.2692 0.659728 3.2692 0.976311 3.46447 1.17157L6.29289 4L3.46447 6.82843C3.2692 7.02369 3.2692 7.34027 3.46447 7.53553C3.65973 7.7308 3.97631 7.7308 4.17157 7.53553L7.35355 4.35355ZM-5.96244e-09 4.5L7 4.5L7 3.5L5.96244e-09 3.5L-5.96244e-09 4.5Z" fill="white"/>
+        <button id="pasteToFigma"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7.35355 4.35355C7.54882 4.15829 7.54882 3.84171 7.35355 3.64645L4.17157 0.464466C3.97631 0.269204 3.65973 0.269204 3.46447 0.464466C3.2692 0.659728 3.2692 0.976311 3.46447 1.17157L6.29289 4L3.46447 6.82843C3.2692 7.02369 3.2692 7.34027 3.46447 7.53553C3.65973 7.7308 3.97631 7.7308 4.17157 7.53553L7.35355 4.35355ZM-5.96244e-09 4.5L7 4.5L7 3.5L5.96244e-09 3.5L-5.96244e-09 4.5Z"
+              fill="white" />
           </svg>
         </button>
         <button id="copyButton"><svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -198,18 +204,19 @@
       manipulateText((text) => text.replace(/^.|\.\s\S/g, (match) => match.toUpperCase()));
     };
 
+    document.getElementById('pasteToFigma').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'paste-text', text: inputText.value } }, '*');
+    };
+
     document.getElementById('copyButton').onclick = () => {
       inputText.select();
       document.execCommand('copy');
     };
 
-    document.getElementById('createTextLayersButton').onclick = () => {
+    document.getElementById('createTextLayersButton').onclick = () => {      
       parent.postMessage({ pluginMessage: { type: 'createTextLayer', text: inputText.value } }, '*');
     };
 
-    document.getElementById('pasteTextButton').onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'paste-text', text: inputText.value } }, '*');
-    };
 
     // Function to manipulate text based on a given function
     function manipulateText(manipulationFunction) {

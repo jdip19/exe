@@ -1,7 +1,7 @@
 {
-  "name": "QuickTask",
+  "name": "QuickText",
   "version": "1.0.0",
-  "description": "Your Figma Plugin",
+  "description": "To Chnage Text Quickly",
   "main": "code.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
