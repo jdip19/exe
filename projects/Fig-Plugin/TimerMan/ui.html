@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuickText</title>
+  <style>
+    :root {
+      --margin-tb: 0.8rem;
+      --margin-lr: 0.8rem;
+    }
+
+    .draggable_modal--positionedContainer--8AmbN.js-fullscreen-prevent-event-capture {
+      height: 300px !important;
+    }
+
+    .draggable_modal--frame--LKZW-,
+    iframe#plugin-iframe-in-modal {
+      height: 100% !important;
+    }
+
+
+    body {
+      margin: 0;
+      background: #303030;
+     
+    }
+
+    #mainScreen button {
+      border: none;
+      width: 100%;
+      padding: 8px 12px;
+      border-bottom: 1px solid #222222;
+      text-align: left;
+      background: 0;
+      color: white;
+    }
+
+    #TimerView {
+      padding: 1em;
+    }
+
+    .controller {
+      display: flex;
+      flex-direction: column;
+      margin: 0 !important;
+      gap: 0.4rem;
+      max-height: -webkit-fill-available;
+    }
+
+    .controller div {
+      margin: 0 !important;
+    }
+
+    #pasteToTextbox {
+      margin: 0 0 var(--margin-tb) 0;
+    }
+
+    .controller button {
+      width: 50px;
+      background: #000000;
+      color: white;
+      height: 40px;
+    }
+
+    #backButtonTextarea {
+      background: 0;
+      border-style: hidden;
+      padding: 0;
+    }
+
+    #TimerView div {
+      margin: 0 0 var(--margin-tb) 0;
+    }
+
+    #textArea {
+      display: flex;
+      height: 66%;
+      position: relative;
+    }
+
+    span#clearTextbox {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+      top: 10px;
+      display: none;
+    }
+
+    #TimerView textarea {
+      border: 1px solid #222222;
+      width: 100%;
+      background: 0;
+      color: white;
+      padding: 0.4rem;
+    }
+
+    svg {
+      width: 16px;
+      height: auto;
+      fill: #fff;
+    }
+
+    #clearTextbox .svg {
+      fill: #fff;
+      width: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="TimerView">
+    <div class="controller">
+      <div>
+        <button id="Timerbutton" title="Hit start as soon as possible"><svg width="9"
+            height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M4.14645 7.85355C4.34171 8.04882 4.65829 8.04882 4.85355 7.85355L8.03553 4.67157C8.2308 4.47631 8.2308 4.15973 8.03553 3.96447C7.84027 3.7692 7.52369 3.7692 7.32843 3.96447L4.5 6.79289L1.67157 3.96447C1.47631 3.7692 1.15973 3.7692 0.964466 3.96447C0.769204 4.15973 0.769204 4.47631 0.964466 4.67157L4.14645 7.85355ZM4 0.5V7.5H5V0.5H4Z"
+              fill="white" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+    let sheetID="";
+
+    const Timerbutton = document.getElementById("Timerbutton");
+
+    Timerbutton.onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'toggleTimer' } }, '*');
+    };
+
+
+
+    
+
+
+  </script>
+</body>
+
+</html>
