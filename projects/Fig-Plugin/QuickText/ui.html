@@ -59,11 +59,10 @@
     }
 
     .controller button {
-      width: max-content;
-      padding: 8px 12px;
+      width: 50px;
       background: #000000;
       color: white;
-      height: 32px;
+      height: 40px;
     }
 
     #backButtonTextarea {
@@ -79,6 +78,15 @@
     #textArea {
       display: flex;
       height: 66%;
+      position: relative;
+    }
+
+    span#clearTextbox {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+      top: 10px;
+      display: none;
     }
 
     #textareaView textarea {
@@ -94,45 +102,55 @@
       height: auto;
       fill: #fff;
     }
+
+    #clearTextbox .svg {
+      fill: #fff;
+      width: 12px;
+    }
   </style>
 </head>
 
 <body>
-
-
   <div id="textareaView">
     <div class="controller">
       <div>
-        <button id="pasteToTextbox"><svg width="9" height="8" viewBox="0 0 9 8" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <button id="pasteToTextbox" title="Layer to Textbox (Please Use this 😕| Insted of copy-paste)"><svg width="9"
+            height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4.14645 7.85355C4.34171 8.04882 4.65829 8.04882 4.85355 7.85355L8.03553 4.67157C8.2308 4.47631 8.2308 4.15973 8.03553 3.96447C7.84027 3.7692 7.52369 3.7692 7.32843 3.96447L4.5 6.79289L1.67157 3.96447C1.47631 3.7692 1.15973 3.7692 0.964466 3.96447C0.769204 4.15973 0.769204 4.47631 0.964466 4.67157L4.14645 7.85355ZM4 0.5V7.5H5V0.5H4Z"
               fill="white" />
           </svg>
-
         </button>
       </div>
     </div>
     <div id="textArea">
-      <textarea id="inputText" placeholder="Enter text"></textarea>
+      <textarea id="inputText" placeholder="Enter text" type="search"autofocus></textarea>
+      <span id="clearTextbox"><svg class="svg" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+          viewBox="0 0 12 12">
+          <path fill="#FFF" fill-opacity="1" fill-rule="nonzero" stroke="none"
+            d="m6 5.293 4.789-4.79.707.708-4.79 4.79 4.79 4.789-.707.707-4.79-4.79-4.789 4.79-.707-.707L5.293 6 .502 1.211 1.21.504 6 5.294z">
+          </path>
+        </svg></span>
     </div>
 
     <div class="controller">
       <div>
-        <button id="uppercaseButton">UPP</button>
-        <button id="lowercaseButton">low</button>
-        <button id="capitalizeFirstButton">CaF</button>
-        <button id="sentenceCaseButton">Sen</button>
+        <button id="uppercaseButton" title="to Upper Case (Like Parents 👩‍🤝‍🧑)">UPP</button>
+        <button id="lowercaseButton" title="to Lower Case (Like Small Kids 👶)">low</button>
+        <button id="sentenceCaseButton" title="to Sentance Case (Like United Family 👨‍👩‍👧‍👧)">Sen</button>
+        <button id="capitalizeFirstButton" title="to Capital First (Like Divided Family 👨‍👦‍👦)">CaF</button>
+        <button id="inverseCaseButton" title="to Inverse (Like to braiwash siblings 🔀)">iNv</button>
       </div>
       <div>
-        <button id="pasteToFigma"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+        <button id="pasteToFigma" title="Textbox to Layer (Again! Please Use this 😕| Insted of copy-paste)"><svg
+            width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M7.35355 4.35355C7.54882 4.15829 7.54882 3.84171 7.35355 3.64645L4.17157 0.464466C3.97631 0.269204 3.65973 0.269204 3.46447 0.464466C3.2692 0.659728 3.2692 0.976311 3.46447 1.17157L6.29289 4L3.46447 6.82843C3.2692 7.02369 3.2692 7.34027 3.46447 7.53553C3.65973 7.7308 3.97631 7.7308 4.17157 7.53553L7.35355 4.35355ZM-5.96244e-09 4.5L7 4.5L7 3.5L5.96244e-09 3.5L-5.96244e-09 4.5Z"
               fill="white" />
           </svg>
         </button>
-        <button id="copyButton"><svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button id="copyButton" title="Textbox to Clipboard (Copy & paste in whole universe 🌌)"><svg
+            viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_381_7629)">
               <path
                 d="M320 426.667H106.667C78.3873 426.633 51.2759 415.384 31.2794 395.387C11.2828 375.391 0.0338743 348.279 0 320L0 106.667C0.0338743 78.3873 11.2828 51.2759 31.2794 31.2794C51.2759 11.2828 78.3873 0.0338743 106.667 0L320 0C348.279 0.0338743 375.391 11.2828 395.387 31.2794C415.384 51.2759 426.633 78.3873 426.667 106.667V320C426.633 348.279 415.384 375.391 395.387 395.387C375.391 415.384 348.279 426.633 320 426.667ZM512 405.333V128C512 122.342 509.752 116.916 505.752 112.915C501.751 108.914 496.325 106.667 490.667 106.667C485.009 106.667 479.582 108.914 475.582 112.915C471.581 116.916 469.333 122.342 469.333 128V405.333C469.333 422.307 462.591 438.586 450.588 450.588C438.586 462.591 422.307 469.333 405.333 469.333H128C122.342 469.333 116.916 471.581 112.915 475.582C108.914 479.582 106.667 485.009 106.667 490.667C106.667 496.325 108.914 501.751 112.915 505.752C116.916 509.752 122.342 512 128 512H405.333C433.613 511.966 460.724 500.717 480.721 480.721C500.717 460.724 511.966 433.613 512 405.333Z"
@@ -145,8 +163,9 @@
             </defs>
           </svg>
         </button>
-        <button id="createTextLayersButton"><svg width="512" height="512" viewBox="0 0 512 512" fill="#ffffff"
-            xmlns="http://www.w3.org/2000/svg">
+        <button id="createTextLayersButton"
+          title="Breaklines to Individual Text Layer (You have to be lazy enough to use this 😛)"><svg width="512"
+            height="512" viewBox="0 0 512 512" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
             <rect x="78.6973" y="237.307" width="354.604" height="34.3523" rx="17.1761" fill="#ffffff" />
             <path
               d="M97.7049 52C91.0331 52 84.6346 54.6504 79.9169 59.368C75.1992 64.0857 72.5488 70.4843 72.5488 77.1561V147.62C72.5488 164.233 79.1482 180.166 90.8952 191.913C102.642 203.661 118.575 210.261 135.188 210.261H376.813C385.039 210.261 393.185 208.641 400.785 205.493C408.385 202.345 415.29 197.731 421.107 191.914C426.924 186.097 431.538 179.192 434.686 171.592C437.834 163.992 439.454 155.846 439.454 147.62V77.1561C439.454 70.4843 436.804 64.0857 432.086 59.368C427.369 54.6504 420.97 52 414.298 52H97.7049Z"
@@ -163,14 +182,11 @@
   </div>
 
 
-  <!-- Textarea view -->
-
-
-
   <script>
 
 
     let inputText = document.getElementById('inputText');
+    clearButton = document.getElementById("clearTextbox");
 
     document.getElementById('pasteToTextbox').onclick = () => {
       parent.postMessage({ pluginMessage: { type: 'pasteToTextbox' } }, '*');
@@ -185,6 +201,19 @@
         }
       }
     };
+
+    clearButton.addEventListener('click', () => {
+      inputText.value = '';
+      clearButton.style.display = 'none';
+    });
+
+    inputText.addEventListener('input', () => {
+      if (inputText.value.trim() !== '') {
+        clearButton.style.display = 'inline'; // Show the clear button
+      } else {
+        clearButton.style.display = 'none';
+      }
+    });
 
     document.getElementById('uppercaseButton').onclick = () => {
       manipulateText((text) => text.toUpperCase());
@@ -203,6 +232,21 @@
       manipulateText((text) => text.toLowerCase());
       manipulateText((text) => text.replace(/^.|\.\s\S/g, (match) => match.toUpperCase()));
     };
+    document.getElementById('inverseCaseButton').onclick = () => {
+      document.getElementById('inverseCaseButton').onclick = () => {
+        // Toggle the case of each character in the text content
+        const manipulatedText = inputText.value.split('').map(char => {
+          if (char === char.toUpperCase()) {
+            return char.toLowerCase();
+          } else {
+            return char.toUpperCase();
+          }
+        }).join('');
+
+        // Set the manipulated text back to the input element
+        inputText.value = manipulatedText;
+      };
+    };
 
     document.getElementById('pasteToFigma').onclick = () => {
       parent.postMessage({ pluginMessage: { type: 'paste-text', text: inputText.value } }, '*');
@@ -213,7 +257,7 @@
       document.execCommand('copy');
     };
 
-    document.getElementById('createTextLayersButton').onclick = () => {      
+    document.getElementById('createTextLayersButton').onclick = () => {
       parent.postMessage({ pluginMessage: { type: 'createTextLayer', text: inputText.value } }, '*');
     };
 

@@ -1,5 +1,5 @@
 figma.showUI(__html__);
-figma.ui.resize(300, 400);
+figma.ui.resize(300, 460);
 
 figma.ui.onmessage = msg => {
   if (msg.type === 'pasteToTextbox') {
@@ -82,6 +82,7 @@ figma.ui.onmessage = msg => {
     }).catch((error) => {
       console.error('Error loading font:', error);
     });
+    figma.notify(lines.length+' Text layer created');
   }
 };
 
