@@ -12,7 +12,7 @@ figma.ui.onmessage = msg => {
       timerRunning = false;
       endTime = Date.now();
       const duration = endTime - startTime;
-      saveTimerData(startTime, endTime, duration);
+      saveTimerData(startTime, endTime, duration);  
       figma.notify(`Timer stopped. Duration: ${formatTime(duration)}`);
     } else {
       // Start timer
@@ -23,26 +23,49 @@ figma.ui.onmessage = msg => {
   }
 };
 
+interface TimerData {
+  start: number;
+  end: number;
+  duration: number;
+}
+
+
 function saveTimerData(start: number, end: number, duration: number) {
-  const timerData = { start, end, duration };
-  const key = 'timerData'; // Use a unique key for storing timer data
-  figma.clientStorage.setAsync(key, timerData).then(() => {
-    console.log('Timer data saved:', timerData);
-    formatAsCSV(data); // Save timer data as CSV
+  const key = 'timerData';
+  const data = { start, end, duration };
+
+  figma.clientStorage.getAsync(key).then((existingData: TimerData[]) => {
+    const newData = existingData || []; // Initialize as empty array if no data found
+    newData.push(data);
+  
+    // Save updated timer data to client storage
+    figma.clientStorage.setAsync(key, newData).then(() => {
+      console.log('Timer data saved:', newData);
+      downloadTimerDataAsJSON(newData); // Download timer data as JSON
+    }).catch(err => {
+      console.error('Error saving timer data:', err);
+    });
   }).catch(err => {
-    console.error('Error saving timer data:', err);
+    console.error('Error retrieving timer data:', err);
   });
 }
 
-function formatAsCSV(data: TimerData[]): string {
-  // Define the CSV header
-  const headers = Object.keys(data[0]).join(',');
 
-  // Format each row of data as a CSV line
-  const rows = data.map(item => Object.values(item).join(','));
 
-  // Combine the header and rows
-  return `${headers}\n${rows.join('\n')}`;
+function downloadTimerDataAsJSON(data: TimerData[]) {
+  const jsonData = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'timer_data.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // Clean up
+  URL.revokeObjectURL(url);
 }
 
 function formatTime(ms: number): string {
@@ -90,4 +113,3 @@ loadView('textareaView');
 //     console.error('Error submitting data:', error);
 //   });
 // }
-loadView('textareaView');
