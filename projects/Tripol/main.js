@@ -1,12 +1,13 @@
 
 
 // Define API endpoint and form elements
-let api = "https://cors-anywhere.herokuapp.com/https://script.google.com/macros/s/AKfycbzm69nT_c9cEpmQvkdy-2MIIqsIwoiEhkNKHTrK7e4kkoT1HLTKJ4tOrMEBZxzdcj3I5w/exec";
+let api = "https://script.google.com/macros/s/AKfycbzm69nT_c9cEpmQvkdy-2MIIqsIwoiEhkNKHTrK7e4kkoT1HLTKJ4tOrMEBZxzdcj3I5w/exec";
 
 let form = document.getElementById("addSpending");
 let paidBy = document.getElementById("paidBy");
 let paid = document.getElementById("paid");
 let saveAndClose = document.getElementById("saveAndClose");
+let DataContainer = document.getElementById('data-container');
 
 // Add event listener to the "Add Bill" button
 saveAndClose.addEventListener("click", addData);
@@ -155,31 +156,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   function fetchDataFromSheet() {
-    // onValue(itemsRef, (snapshot) => {
-    //   items = snapshot.val(); // Update the global 'items'
-    //   cardsContainer.innerHTML = ""; // Clear existing cards
-    //   existingIds.length = 0; // Clear existingIds array
-
-    //   if (items) {
-    //     Object.keys(items).forEach((itemId) => {
-    //       existingIds.push(parseInt(itemId));
-    //       const cardData = items[itemId];
-    //       const card = createCard(cardData, itemId);
-    //       cardsContainer.appendChild(card); // Append the card to the container
-    //     });
-
-    //     showToast(
-    //       "Total " + existingIds.length + " items available",
-    //       "primary"
-    //     );
-    //   } else {
-    //     showToast(
-    //       "No data available. Please check your network connection.",
-    //       "warning"
-    //     );
-    //   }
-    // });
+    fetch(api)
+      .then(res => res.json())
+      .then(data => {
+        let bill = data.bill;
+        // Map each bill item to a string of Bootstrap card HTML
+        let cardsHTML = bill.map(each => {
+          return `
+               
+                <div class="row align-items-center">
+                <div class="col-md-4">
+                <img src="https://cdn.iconscout.com/icon/free/png-512/free-bill-3083106-2591978.png" class="rounded-start card-img" alt="Card Image">
+            </div>
+                <div class="col-md-8">
+                    <div id="clickable" class="card-body">
+                        <h6 class="card-id">#<span id="itmid">${each[0]}</span></h6>
+                        <h5 class="card-title"><span id="itmNmGuj">${each[1]}</span></h5>
+                        <p class="card-text"><i class="bi bi-clock"></i> ${formatCustomDateTime(each[0])}</p>
+                        </div>
+                        </div>
+                </div>
+                `;
+        });
+        // Join the array of card HTML strings and set the innerHTML of the container element to it
+        DataContainer.innerHTML = cardsHTML.join("");
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }
+  fetchDataFromSheet();
+
+
+
+
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
 
