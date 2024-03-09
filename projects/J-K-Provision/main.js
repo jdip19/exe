@@ -29,6 +29,7 @@ const itemsRef = ref(database, "Items");
 document.addEventListener("DOMContentLoaded", function () {
   const cardsContainer = document.querySelector(".list");
   const searchInput = document.getElementById("searchInput");
+  const itmNm = document.getElementById("itmNm");
   let currentTime = new Date().getTime() / 1000;
 
   const modeldiv = document.getElementById("modal-body");
@@ -43,43 +44,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
                         <h6 class="card-id">#<span id="itmid">${itemId}</span></h6>
-                        <h5 class="card-title"><span id="itmNmGuj">${
-                          data.itmnmguj
-                        }</span><span id="itmNmEng">${data.itmnm}</span></h5>
+                        <h5 class="card-title"><span id="itmNmGuj">${data.itmnmguj
+      }</span><span id="itmNmEng">${data.itmnm}</span></h5>
                         <p class="card-text"><i class="bi bi-clock"></i> ${formatCustomDateTime(
-                          data.edtime
-                        )}</p>
+        data.edtime
+      )}</p>
                         </div>
                         </div>
                 <div class="col-md-4">
-                    <img src="${
-                      data.itmimg
-                    }" class="rounded-start card-img" alt="Card Image">
+                    <img src="${data.itmimg
+      }" class="rounded-start card-img" alt="Card Image">
                 </div>
             </div>
             <div class="container card-footer">
                 <div class="p-w-box">
                     <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
                     <div class="weight" id="weight">${Math.round(
-                      (1000 / data.ppkg) * 10
-                    )}gm</div>
+        (1000 / data.ppkg) * 10
+      )}gm</div>
                 </div>
                 <div class="p-w-box">
-                    <div class="price">₹<span id="price2">${
-                      data.ppkg / 4
-                    }</span></div>
+                    <div class="price">₹<span id="price2">${data.ppkg / 4
+      }</span></div>
                     <div class="weight" id="weight250">250gm</div>
                 </div>
                 <div class="p-w-box">
-                    <div class="price">₹<span id="price3">${
-                      data.ppkg / 2
-                    }</span></div>
+                    <div class="price">₹<span id="price3">${data.ppkg / 2
+      }</span></div>
                     <div class="weight" id="weight500">500gm</div>
                 </div>
                 <div class="p-w-box">
-                    <div class="price">₹<span id="price4">${
-                      data.ppkg
-                    }</span></div>
+                    <div class="price">₹<span id="price4">${data.ppkg
+      }</span></div>
                     <div class="weight" id="weight1">1kg</div>
                 </div>
             </div>
@@ -96,10 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchText = this.value.trim().toLowerCase();
     filterCards(searchText);
   });
-  searchInput.addEventListener("input", function () {
-    const searchText = this.value.trim().toLowerCase();
-    filterCards(searchText);
-  });
+
 
   $(document).on("dblclick", "#clickable", function () {
     const ModelcardId = $(this).find("#itmid").text();
@@ -172,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Failed to read clipboard content: ", err);
       });
   });
-  $(document).ready(function () {});
+  $(document).ready(function () { });
 
   // Function to handle save and close button click
   function handleSaveAndClose(itemRef, cardId) {
@@ -245,9 +238,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.style.display =
         searchText === "" ||
-        englishMatch ||
-        gujaratiMatch ||
-        cardId.includes(searchText)
+          englishMatch ||
+          gujaratiMatch ||
+          cardId.includes(searchText)
           ? "block"
           : "none";
     });
@@ -265,23 +258,46 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Error updating data: " + error);
       });
   }
-  function footerData() {
-    const modalFooterData = `<div class="p-w-box">
-    <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
-    <div class="weight" id="weight">${Math.round((1000 / 100) * 10)}gm</div>
-</div>
-  <div class="p-w-box">
-      <div class="price">₹<span id="price250">${100 / 4}</span></div>
-      <div class="weight" id="weight250">250gm</div>
-  </div>
-  <div class="p-w-box">
-      <div class="price">₹<span id="price500">${ 100/ 2}</span></div>
-      <div class="weight" id="weight500">500gm</div>
-  </div>`;
+  // Get the input element
+  const itmNmInput = document.getElementById("ippKg");
 
+  // Add an event listener for the "input" event
+  itmNmInput.addEventListener("input", function () {
+    // Call the footerData function whenever the input value changes
+    footerData();
+  });
+
+  // Define the footerData function
+  function footerData() {
+    // Get the input value from itmNm element
+    const inputValue = itmNmInput.value;
+
+    const weight250 = parseFloat((inputValue / 4).toFixed(2));
+    const weight500 = parseFloat((inputValue / 2).toFixed(2));
+    const price10 = Math.round((1000 / inputValue) * 10);
+
+    // Generate the modal footer HTML with dynamic weight values
+    const modalFooterData = `
+        <div class="p-w-box">
+            <div class="price">₹<span id="price10">10</span></div>
+            <div class="weight" id="weight10">${price10}gm</div>
+        </div>
+        <div class="p-w-box">
+            <div class="price">₹<span id="price250">${weight250}</span></div>
+            <div class="weight" id="weight250">250gm</div>
+        </div>
+        <div class="p-w-box">
+            <div class="price">₹<span id="price500">${weight500}</span></div>
+            <div class="weight" id="weight500">500gm</div>
+        </div>
+    `;
+
+    // Update the modal footer HTML
     $("#modalFooter").html(modalFooterData);
   }
-  
+
+
+
 
   $(document).on("click", "#addItem", function () {
     // Assuming itemRef is the reference to the 'Items' collectio
