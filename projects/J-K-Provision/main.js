@@ -21,6 +21,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+let items = {};
+const existingIds = [];
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
 const itemsRef = ref(database, "Items");
@@ -29,7 +31,6 @@ const itemsRef = ref(database, "Items");
 document.addEventListener("DOMContentLoaded", function () {
   const cardsContainer = document.querySelector(".list");
   const searchInput = document.getElementById("searchInput");
-  const itmNm = document.getElementById("itmNm");
   let currentTime = new Date().getTime() / 1000;
 
   const modeldiv = document.getElementById("modal-body");
@@ -39,55 +40,60 @@ document.addEventListener("DOMContentLoaded", function () {
     const card = document.createElement("div");
     card.classList.add("card");
 
-    card.innerHTML = `
+    // Check if the data object is not null or undefined
+    if (data) {
+      card.innerHTML = `
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
                         <h6 class="card-id">#<span id="itmid">${itemId}</span></h6>
                         <h5 class="card-title"><span id="itmNmGuj">${data.itmnmguj
-      }</span><span id="itmNmEng">${data.itmnm}</span></h5>
+        }</span><span id="itmNmEng">${data.itmnm}</span></h5>
                         <p class="card-text"><i class="bi bi-clock"></i> ${formatCustomDateTime(
-        data.edtime
-      )}</p>
+          data.edtime
+        )}</p>
                         </div>
                         </div>
                 <div class="col-md-4">
                     <img src="${data.itmimg
-      }" class="rounded-start card-img" alt="Card Image">
+        }" class="rounded-start card-img" alt="Card Image">
                 </div>
             </div>
             <div class="container card-footer">
                 <div class="p-w-box">
                     <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
                     <div class="weight" id="weight">${Math.round(
-        (1000 / data.ppkg) * 10
-      )}gm</div>
+          (1000 / data.ppkg) * 10
+        )}gm</div>
                 </div>
                 <div class="p-w-box">
                     <div class="price">₹<span id="price2">${data.ppkg / 4
-      }</span></div>
+        }</span></div>
                     <div class="weight" id="weight250">250gm</div>
                 </div>
                 <div class="p-w-box">
                     <div class="price">₹<span id="price3">${data.ppkg / 2
-      }</span></div>
+        }</span></div>
                     <div class="weight" id="weight500">500gm</div>
                 </div>
                 <div class="p-w-box">
                     <div class="price">₹<span id="price4">${data.ppkg
-      }</span></div>
+        }</span></div>
                     <div class="weight" id="weight1">1kg</div>
                 </div>
             </div>
                `;
+      // Event listener for the .cusPrice input within the dynamically created card
+      card.querySelector("#cusPrice").addEventListener("input", function () {
+        handleCustomPriceInput(this, data);
+      });
+    }
 
-    // Event listener for the .cusPrice input within the dynamically created card
-    card.querySelector("#cusPrice").addEventListener("input", function () {
-      handleCustomPriceInput(this, data);
-    });
+
 
     return card;
   }
+
   searchInput.addEventListener("input", function () {
     const searchText = this.value.trim().toLowerCase();
     filterCards(searchText);
@@ -96,21 +102,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   $(document).on("dblclick", "#clickable", function () {
     const ModelcardId = $(this).find("#itmid").text();
+    console.log("this" + ModelcardId);
 
     $("#modalCardId").text(ModelcardId);
     $("#modal-title").text("Editing");
     $("#editCardModal").modal("show");
 
-    const cardId = $("#modalCardId").text();
 
-    const itemRef = child(itemsRef, "/" + cardId);
+
+    const itemRef = child(itemsRef, "/" + ModelcardId);
     fetchDataForCard(itemRef);
 
     $(document).on("click", "#saveAndClose", function () {
-      handleSaveAndClose(itemRef, cardId);
+      handleSaveAndClose(itemRef, ModelcardId);
+      console.log("" + ModelcardId);
+
     });
     $(document).on("click", "#removeItm", function () {
-      removeItm(itemRef, cardId);
+      removeItm(itemRef, ModelcardId);
     });
   });
   function updateModalElements(data) {
@@ -167,9 +176,52 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   $(document).ready(function () { });
 
+  $(document).on("click", "#addItem", function () {
+    // Assuming itemRef is the reference to the 'Items' collectio
+    const wantToAddItem = window.confirm("Want to add an item?");
+    footerData();
+
+    if (wantToAddItem) {
+      let uniqID = 1;
+      while (existingIds.includes(uniqID)) {
+        uniqID++;
+      }
+      $("#editCardModal").modal("show");
+      $("#modal-title").text("Adding");
+      $("#modalCardId").text(uniqID);
+      $("#edTime").text(formatCustomDateTime(currentTime));
+      $("#itmImg").attr(
+        "src",
+        "https://th.bing.com/th?id=OLC.R2v+CiwcE2AjwQ480x360&rs=1&pid=ImgDetMain"
+      );
+      $("#itmNmguj").val("વસ્તુ નુ નામ");
+      $("#itmNm").val("Item Name");
+      $("#ippKg").val(100);
+
+      $(document).on("click", "#saveAndClose", function () {
+        set(child(itemsRef, uniqID.toString()), {
+          // Use child() to create a reference to the specific child
+          itmimg: $("#itmImg").attr("src"),
+          itmnm: $("#itmNm").val(),
+          itmnmguj: $("#itmNmguj").val(),
+          ppkg: $("#ippKg").val(),
+          edtime: currentTime,
+        })
+          .then(() => {
+            location.reload();
+          })
+          .catch((error) => {
+            alert("Error updating data: " + error);
+          });
+      });
+    } else {
+      console.log("Not Want to...");
+    }
+  });
+
+
   // Function to handle save and close button click
-  function handleSaveAndClose(itemRef, cardId) {
-    // Check if $('#itmImg').val() is defined before updating itmimg
+  function handleSaveAndClose(itemRef, ModelcardId) {
     const itmimgValue = $("#itmImg").attr("src");
     if (typeof itmimgValue !== "undefined") {
       update(itemRef, {
@@ -178,29 +230,59 @@ document.addEventListener("DOMContentLoaded", function () {
         itmnm: $("#itmNm").val(),
         ppkg: $("#ippKg").val(),
         edtime: currentTime,
-      })
-        .then(() => {
-          showToast(cardId + " Updated Succesfully", "primary");
-        })
-        .catch((error) => {
-          alert("Error updating data: " + error);
-        });
+      }).then(() => {
+        location.reload();
+        setTimeout(() => {
+          showToast(ModelcardId + " Updated Successfully", "primary");
+        }, 1000); // Delay showToast by 1000 milliseconds (1 second)
+      }).catch((error) => {
+        alert("Error updating data: " + error);
+      });
     } else {
       alert("itmimg value is undefined. Cannot perform update.");
     }
   }
 
-  let items = [];
-  const existingIds = [];
-  let lastCount;
+
+  // Initialize items as an empty object
 
   function fetchDataFromFirebase() {
-    onValue(itemsRef, (snapshot) => {
-      items = snapshot.val(); // Update the global 'items'
-      cardsContainer.innerHTML = ""; // Clear existing cards
-      existingIds.length = 0; // Clear existingIds array
+    if (navigator.onLine) {
+      onValue(itemsRef, (snapshot) => {
+        items = snapshot.val() || {}; // Update the global 'items' with fetched data
+        cardsContainer.innerHTML = ""; // Clear existing cards
+        existingIds.length = 0; // Clear existingIds array
 
-      if (items) {
+        if (Object.keys(items).length > 0) {
+          Object.keys(items).forEach((itemId) => {
+            existingIds.push(parseInt(itemId));
+            const cardData = items[itemId];
+            const card = createCard(cardData, itemId);
+            cardsContainer.appendChild(card); // Append the card to the container
+          });
+
+          // Store data in local storage
+          localStorage.setItem("items", JSON.stringify(items));
+
+          showToast(
+            "Total " + existingIds.length + " items available (from Firebase)",
+            "primary"
+          );
+        } else {
+          showToast(
+            "No data available. Please check your network connection.",
+            "warning"
+          );
+        }
+      });
+    } else {
+      // Fetch data from local storage
+      const localItems = JSON.parse(localStorage.getItem("items"));
+      if (localItems) {
+        items = localItems; // Update the global 'items' with data from local storage
+        cardsContainer.innerHTML = ""; // Clear existing cards
+        existingIds.length = 0; // Clear existingIds array
+
         Object.keys(items).forEach((itemId) => {
           existingIds.push(parseInt(itemId));
           const cardData = items[itemId];
@@ -209,17 +291,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         showToast(
-          "Total " + existingIds.length + " items available",
+          "Total " + existingIds.length + " items available (from local storage)",
           "primary"
         );
       } else {
         showToast(
-          "No data available. Please check your network connection.",
+          "No data available in local storage. Please check your network connection.",
           "warning"
         );
       }
-    });
+    }
   }
+
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
 
@@ -249,10 +332,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function removeItm(itemRef, cardId) {
     remove(itemRef)
       .then(() => {
+        location.reload();
+      }).then(() => {
         showToast("Card #" + cardId + " Deleted", "danger");
-        // setTimeout(() => {
-        //   location.reload();
-        // }, 3000);
       })
       .catch((error) => {
         alert("Error updating data: " + error);
@@ -299,46 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  $(document).on("click", "#addItem", function () {
-    // Assuming itemRef is the reference to the 'Items' collectio
-    const wantToAddItem = window.confirm("Want to add an item?");
-    footerData();
 
-    if (wantToAddItem) {
-      let uniqID = 1;
-      while (existingIds.includes(uniqID)) {
-        uniqID++;
-      }
-      $("#editCardModal").modal("show");
-      $("#modal-title").text("Adding");
-      $("#modalCardId").text(uniqID);
-      $("#edTime").text(formatCustomDateTime(currentTime));
-      $("#itmImg").attr(
-        "src",
-        "https://th.bing.com/th?id=OLC.R2v+CiwcE2AjwQ480x360&rs=1&pid=ImgDetMain"
-      );
-      $("#itmNmguj").val("વસ્તુ નુ નામ");
-      $("#itmNm").val("Item Name");
-      $("#ippKg").val(100);
-
-      // set(child(itemsRef, uniqID.toString()), {
-      //   // Use child() to create a reference to the specific child
-      //   itmimg: "https://th.bing.com/th?id=OLC.R2v+CiwcE2AjwQ480x360&rs=1&pid=ImgDetMain",
-      //   itmnm: "Item Name",
-      //   itmnmguj: "વસ્તુ નુ નામ",
-      //   ppkg: 100,
-      //   edtime: currentTime,
-      // })
-      //   .then(() => {
-      //     location.reload();
-      //   })
-      //   .catch((error) => {
-      //     alert("Error updating data: " + error);
-      //   });
-    } else {
-      console.log("Not Want to...");
-    }
-  });
 
   function formatCustomDateTime(timestamp) {
     const options = {
