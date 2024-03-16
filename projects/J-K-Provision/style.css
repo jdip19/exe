@@ -32,7 +32,9 @@ div#toastPlacement{
 position: fixed;
 padding: 1em;
 }
-
+.bg-success {
+  color: #fff
+}
 .bname h2 {
   margin: 0;
 }
@@ -169,7 +171,7 @@ button.close {
 }
 
 .modal {
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
