@@ -263,7 +263,9 @@
 
     let inputText = document.getElementById('inputText');
     clearButton = document.getElementById("clearTextbox");
+    const pasteToTextbox = document.getElementById("pasteToTextbox");
     const pasteToFigma = document.getElementById("pasteToFigma");
+    let textNode = 0;
 
     window.onload = function () {
       const inputText = document.getElementById('inputText');
@@ -271,35 +273,55 @@
         inputText.focus(); // Focus on the textarea when the plugin is loaded
       }
     };
-    document.getElementById('pasteToTextbox').onclick = () => {
-      parent.postMessage({ pluginMessage: { type: 'pasteToTextbox' } }, '*');
-    };
+
+
+
+
 
     window.onmessage = event => {
       const msg = event.data.pluginMessage;
-      if (msg.type === 'updateInputText') {
-        const inputText = document.getElementById('inputText');
-        if (inputText) {
-          inputText.value = msg.value;
-        }
+      console.log("onmessage" + msg);
+      switch (msg.type) {
+        case 'LnSelected':
+          pasteToFigma.innerHTML = msg.svg;
+          pasteToTextbox.onclick = () => {
+            console.log("layer not selected and button clicked");
+            if (navigator.clipboard && navigator.clipboard.readText) {
+              navigator.clipboard.readText().then(clipText => {
+                // Paste the clipboard value into the inputText field
+                inputText.value = clipText;
+                console.log("Clipboard value pasted to textbox:", clipText);
+              }).catch(error => {
+                console.error("Error reading clipboard:", error);
+              });
+            } else {
+              console.error("Clipboard API not supported");
+            }
+          };
+
+          pasteToFigma.onclick = () => {
+            console.log("layer not selected and paste button clicked");
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaM', text: inputText.value } }, '*');
+          };
+          break;
+
+        case "LSelected":
+          pasteToFigma.innerHTML = msg.svg;
+          pasteToTextbox.onclick = () => {
+            console.log("layer selected and button clicked");
+            inputText.value = msg.value;
+          };
+          pasteToFigma.onclick = () => {
+            console.log("layer selected and paste button clicked");
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: inputText.value } }, '*');
+          };
+          break;
+
+        default:
+          throw new Error(`Unknown message type ${msg.type}`);
       }
     };
 
-    window.onmessage = event => {
-      const msg = event.data.pluginMessage;
-      console.log(msg);
-      if (msg.type === 'ChangeSVGS') {
-        pasteToFigma.innerHTML = msg.svg;
-        pasteToFigma.onclick = () => {
-          parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: inputText.value } }, '*');
-        };
-      }else if (msg.type === 'ChangeSVGM') {
-        pasteToFigma.innerHTML = msg.svg;
-        pasteToFigma.onclick = () => {
-          parent.postMessage({ pluginMessage: { type: 'pasteToFigmaM', text: inputText.value } }, '*');
-        };
-      }
-    };
 
 
     inputText.addEventListener('keydown', event => {
