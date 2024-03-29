@@ -108,20 +108,28 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#modal-title").text("Editing");
     $("#editCardModal").modal("show");
 
-
-
     const itemRef = child(itemsRef, "/" + ModelcardId);
     fetchDataForCard(itemRef);
 
-    $(document).on("click", "#saveAndClose", function () {
-      handleSaveAndClose(itemRef, ModelcardId);
-      console.log("" + ModelcardId);
+    // Store the current card ID in a variable
+    let currentCardId = ModelcardId;
 
+    // Unbind previous event listeners for saveAndClose and removeItm
+    $(document).off("click", "#saveAndClose");
+    $(document).off("click", "#removeItm");
+
+    // Bind new event listeners for saveAndClose and removeItm
+    $(document).on("click", "#saveAndClose", function () {
+      handleSaveAndClose(itemRef, currentCardId); // Pass the current card ID to the function
+      console.log("" + currentCardId);
     });
+
     $(document).on("click", "#removeItm", function () {
-      removeItm(itemRef, ModelcardId);
+      removeItm(itemRef, currentCardId);
     });
   });
+
+
   function updateModalElements(data) {
     $("#edTime").text(formatCustomDateTime(data.edtime));
     $("#itmImg").attr("src", data.itmimg);
@@ -231,10 +239,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ppkg: $("#ippKg").val(),
         edtime: currentTime,
       }).then(() => {
-        location.reload();
-        setTimeout(() => {
-          showToast(ModelcardId + " Updated Successfully", "primary");
-        }, 1000); // Delay showToast by 1000 milliseconds (1 second)
+        //location.reload();
+        showToast(ModelcardId + " Updated Successfully", "success", "no");
+
       }).catch((error) => {
         alert("Error updating data: " + error);
       });
@@ -243,6 +250,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function removeItm(itemRef, cardId) {
+    remove(itemRef)
+      .then(() => {
+        location.reload();
+      }).then(() => {
+        showToast("Card #" + cardId + " Deleted", "danger");
+      })
+      .catch((error) => {
+        alert("Error updating data: " + error);
+      });
+  }
 
   // Initialize items as an empty object
 
@@ -328,18 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
           : "none";
     });
   }
-
-  function removeItm(itemRef, cardId) {
-    remove(itemRef)
-      .then(() => {
-        location.reload();
-      }).then(() => {
-        showToast("Card #" + cardId + " Deleted", "danger");
-      })
-      .catch((error) => {
-        alert("Error updating data: " + error);
-      });
-  }
+  ``
   // Get the input element
   const itmNmInput = document.getElementById("ippKg");
 
@@ -379,10 +386,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-
-
-
-
   function formatCustomDateTime(timestamp) {
     const options = {
       day: "numeric",
@@ -395,7 +398,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateObject = new Date(timestamp * 1000);
     return dateObject.toLocaleString("en-GB", options);
   }
-  function showToast(message, color) {
+
+  function showToast(message, color, autoClose = "yes") {
     // Select the toast container
     const toastContainer = document.getElementById("toastPlacement");
 
@@ -411,6 +415,11 @@ document.addEventListener("DOMContentLoaded", function () {
     toast.setAttribute("role", "alert");
     toast.setAttribute("aria-live", "assertive");
     toast.setAttribute("aria-atomic", "true");
+    toast.setAttribute("data-bs-dismiss", "toast");
+
+    if (autoClose === "no") {
+       toast.setAttribute("data-bs-autohide", "false");
+    } 
 
     // Create a div for the toast body and add the message
     const toastBody = document.createElement("div");
@@ -421,8 +430,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeButton = document.createElement("button");
     closeButton.setAttribute("type", "button");
     closeButton.classList.add("btn-close");
-    closeButton.setAttribute("data-bs-dismiss", "toast");
     closeButton.setAttribute("aria-label", "Close");
+    closeButton.setAttribute("data-bs-dismiss", "toast");
 
     // Append the toast body and close button to the toast element
     toast.appendChild(toastBody);
@@ -435,4 +444,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
   }
+
+
 });
