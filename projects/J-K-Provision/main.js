@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function () {
         edtime: currentTime,
       }).then(() => {
         //location.reload();
-        showToast(ModelcardId + " Updated Successfully", "success", "no");
+        showToast("#"+ModelcardId + " Updated Successfully", "success", "no");
 
       }).catch((error) => {
         alert("Error updating data: " + error);
@@ -270,18 +270,20 @@ document.addEventListener("DOMContentLoaded", function () {
         items = snapshot.val() || {}; // Update the global 'items' with fetched data
         cardsContainer.innerHTML = ""; // Clear existing cards
         existingIds.length = 0; // Clear existingIds array
-
+  
         if (Object.keys(items).length > 0) {
-          Object.keys(items).forEach((itemId) => {
+          // Sort items by edtime in descending order
+          const sortedItems = Object.entries(items).sort((a, b) => b[1].edtime - a[1].edtime);
+  
+          sortedItems.forEach(([itemId, cardData]) => {
             existingIds.push(parseInt(itemId));
-            const cardData = items[itemId];
             const card = createCard(cardData, itemId);
             cardsContainer.appendChild(card); // Append the card to the container
           });
-
+  
           // Store data in local storage
           localStorage.setItem("items", JSON.stringify(items));
-
+  
           showToast(
             "Total " + existingIds.length + " items available (from Firebase)",
             "primary"
@@ -300,14 +302,16 @@ document.addEventListener("DOMContentLoaded", function () {
         items = localItems; // Update the global 'items' with data from local storage
         cardsContainer.innerHTML = ""; // Clear existing cards
         existingIds.length = 0; // Clear existingIds array
-
-        Object.keys(items).forEach((itemId) => {
+  
+        // Sort items by edtime in descending order
+        const sortedItems = Object.entries(items).sort((a, b) => b[1].edtime - a[1].edtime);
+  
+        sortedItems.forEach(([itemId, cardData]) => {
           existingIds.push(parseInt(itemId));
-          const cardData = items[itemId];
           const card = createCard(cardData, itemId);
           cardsContainer.appendChild(card); // Append the card to the container
         });
-
+  
         showToast(
           "Total " + existingIds.length + " items available (from local storage)",
           "primary"
@@ -320,6 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+  
 
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
@@ -346,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
           : "none";
     });
   }
-  ``
+  
   // Get the input element
   const itmNmInput = document.getElementById("ippKg");
 
