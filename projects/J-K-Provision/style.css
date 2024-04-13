@@ -178,7 +178,9 @@ button.close {
 .modal-content {
   border:none ;
 }
-
+.cdppkg{
+  gap:4px;
+}
 .bg-danger,.bg-primary{
   color: #fff;
   fill:#fff;
