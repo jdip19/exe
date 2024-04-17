@@ -47,38 +47,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col-md-8">
                     <div id="clickable" class="card-body">
                         <h6 class="card-id">#<span id="itmid">${itemId}</span></h6>
-                        <h5 class="card-title"><span id="itmNmGuj">${data.itmnmguj
-        }</span><span id="itmNmEng">${data.itmnm}</span></h5>
+                        <h5 class="card-title"><span id="itmNmGuj">${
+                          data.itmnmguj
+                        }</span><span id="itmNmEng">${data.itmnm}</span></h5>
                         <p class="card-text"><i class="bi bi-clock"></i> ${formatCustomDateTime(
-          data.edtime
-        )}</p>
+                          data.edtime
+                        )}</p>
                         </div>
                         </div>
                 <div class="col-md-4">
-                    <img src="${data.itmimg
-        }" class="rounded-start card-img" alt="Card Image">
+                    <img src="${
+                      data.itmimg
+                    }" class="rounded-start card-img" alt="Card Image">
                 </div>
             </div>
             <div class="container card-footer">
                 <div class="p-w-box">
                     <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
                     <div class="weight" id="weight">${Math.round(
-          (1000 / data.ppkg) * 10
-        )}gm</div>
+                      (1000 / data.ppkg) * 10
+                    )}gm</div>
                 </div>
                 <div class="p-w-box">
-                    <div class="price">₹<span id="price2">${data.ppkg / 4
-        }</span></div>
+                    <div class="price">₹<span id="price2">${
+                      data.ppkg / 4
+                    }</span></div>
                     <div class="weight" id="weight250">250gm</div>
                 </div>
                 <div class="p-w-box">
-                    <div class="price">₹<span id="price3">${data.ppkg / 2
-        }</span></div>
+                    <div class="price">₹<span id="price3">${
+                      data.ppkg / 2
+                    }</span></div>
                     <div class="weight" id="weight500">500gm</div>
                 </div>
                 <div class="p-w-box">
-                    <div class="price">₹<span id="price4">${data.ppkg
-        }</span></div>
+                    <div class="price">₹<span id="price4">${
+                      data.ppkg
+                    }</span></div>
                     <div class="weight" id="weight1">1kg</div>
                 </div>
             </div>
@@ -89,8 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-
-
     return card;
   }
 
@@ -98,7 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchText = this.value.trim().toLowerCase();
     filterCards(searchText);
   });
-
 
   $(document).on("dblclick", "#clickable", function () {
     const ModelcardId = $(this).find("#itmid").text();
@@ -129,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  let icdppkg = document.getElementById("cdppkg");
 
   function updateModalElements(data) {
     $("#edTime").text(formatCustomDateTime(data.edtime));
@@ -136,6 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#itmNmguj").val(data.itmnmguj);
     $("#itmNm").val(data.itmnm);
     $("#ippKg").val(data.ppkg);
+    if (data.cdppkg === 1) {
+      icdppkg.checked = true;
+    } else {
+      icdppkg.checked = false;
+    }
   }
   // Function to handle custom price input
   function handleCustomPriceInput(inputElement, data) {
@@ -182,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Failed to read clipboard content: ", err);
       });
   });
-  $(document).ready(function () { });
+  $(document).ready(function () {});
 
   $(document).on("click", "#addItem", function () {
     // Assuming itemRef is the reference to the 'Items' collectio
@@ -227,10 +235,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-
   // Function to handle save and close button click
   function handleSaveAndClose(itemRef, ModelcardId) {
     const itmimgValue = $("#itmImg").attr("src");
+    let cDppKg;
+    if (icdppkg.checked === true) {
+      cDppKg = 1;
+    } else {
+      cDppKg = 0;
+    }
     if (typeof itmimgValue !== "undefined") {
       update(itemRef, {
         itmimg: itmimgValue,
@@ -238,13 +251,19 @@ document.addEventListener("DOMContentLoaded", function () {
         itmnm: $("#itmNm").val(),
         ppkg: $("#ippKg").val(),
         edtime: currentTime,
-      }).then(() => {
-        //location.reload();
-        showToast("#"+ModelcardId + " Updated Successfully", "success", "no");
-
-      }).catch((error) => {
-        alert("Error updating data: " + error);
-      });
+        cdppkg: cDppKg,
+      })
+        .then(() => {
+          //location.reload();
+          showToast(
+            "#" + ModelcardId + " Updated Successfully",
+            "success",
+            "no"
+          );
+        })
+        .catch((error) => {
+          alert("Error updating data: " + error);
+        });
     } else {
       alert("itmimg value is undefined. Cannot perform update.");
     }
@@ -254,7 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
     remove(itemRef)
       .then(() => {
         location.reload();
-      }).then(() => {
+      })
+      .then(() => {
         showToast("Card #" + cardId + " Deleted", "danger");
       })
       .catch((error) => {
@@ -270,20 +290,22 @@ document.addEventListener("DOMContentLoaded", function () {
         items = snapshot.val() || {}; // Update the global 'items' with fetched data
         cardsContainer.innerHTML = ""; // Clear existing cards
         existingIds.length = 0; // Clear existingIds array
-  
+
         if (Object.keys(items).length > 0) {
           // Sort items by edtime in descending order
-          const sortedItems = Object.entries(items).sort((a, b) => b[1].edtime - a[1].edtime);
-  
+          const sortedItems = Object.entries(items).sort(
+            (a, b) => b[1].edtime - a[1].edtime
+          );
+
           sortedItems.forEach(([itemId, cardData]) => {
             existingIds.push(parseInt(itemId));
             const card = createCard(cardData, itemId);
             cardsContainer.appendChild(card); // Append the card to the container
           });
-  
+
           // Store data in local storage
           localStorage.setItem("items", JSON.stringify(items));
-  
+
           showToast(
             "Total " + existingIds.length + " items available (from Firebase)",
             "primary"
@@ -302,18 +324,22 @@ document.addEventListener("DOMContentLoaded", function () {
         items = localItems; // Update the global 'items' with data from local storage
         cardsContainer.innerHTML = ""; // Clear existing cards
         existingIds.length = 0; // Clear existingIds array
-  
+
         // Sort items by edtime in descending order
-        const sortedItems = Object.entries(items).sort((a, b) => b[1].edtime - a[1].edtime);
-  
+        const sortedItems = Object.entries(items).sort(
+          (a, b) => b[1].edtime - a[1].edtime
+        );
+
         sortedItems.forEach(([itemId, cardData]) => {
           existingIds.push(parseInt(itemId));
           const card = createCard(cardData, itemId);
           cardsContainer.appendChild(card); // Append the card to the container
         });
-  
+
         showToast(
-          "Total " + existingIds.length + " items available (from local storage)",
+          "Total " +
+            existingIds.length +
+            " items available (from local storage)",
           "primary"
         );
       } else {
@@ -324,7 +350,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-  
 
   function filterCards(searchText) {
     const cards = document.querySelectorAll(".card");
@@ -344,14 +369,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       card.style.display =
         searchText === "" ||
-          englishMatch ||
-          gujaratiMatch ||
-          cardId.includes(searchText)
+        englishMatch ||
+        gujaratiMatch ||
+        cardId.includes(searchText)
           ? "block"
           : "none";
     });
   }
-  
+
   // Get the input element
   const itmNmInput = document.getElementById("ippKg");
 
@@ -390,7 +415,6 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#modalFooter").html(modalFooterData);
   }
 
-
   function formatCustomDateTime(timestamp) {
     const options = {
       day: "numeric",
@@ -423,8 +447,8 @@ document.addEventListener("DOMContentLoaded", function () {
     toast.setAttribute("data-bs-dismiss", "toast");
 
     if (autoClose === "no") {
-       toast.setAttribute("data-bs-autohide", "false");
-    } 
+      toast.setAttribute("data-bs-autohide", "false");
+    }
 
     // Create a div for the toast body and add the message
     const toastBody = document.createElement("div");
@@ -449,6 +473,4 @@ document.addEventListener("DOMContentLoaded", function () {
     const bsToast = new bootstrap.Toast(toast);
     bsToast.show();
   }
-
-
 });
