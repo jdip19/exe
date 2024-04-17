@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QuickText</title>
+  <link rel="stylesheet" href="../../../node_modules/@figma/plugin-typings">
   <style>
     .draggable_modal--positionedContainer--8AmbN.js-fullscreen-prevent-event-capture {
       height: 560px !important;
@@ -63,7 +64,7 @@
 
     #textArea {
       display: flex;
-      height: 66%;
+      height: -webkit-fill-available;
       position: relative;
     }
 
@@ -124,6 +125,20 @@
               d="M440 48C426.745 48 416 58.7452 416 72V353.444C416 387.993 387.993 416 353.444 416L72 416C58.7452 416 48 426.745 48 440C48 453.255 58.7452 464 72 464L440 464C453.255 464 464 453.255 464 440V72C464 58.7452 453.255 48 440 48Z"
               fill="white" />
             <rect x="48" y="48" width="320" height="320" rx="48.012" fill="white" />
+          </svg>
+        </button>
+        <button id="breakToIndividual" title="Break words to individual line "><svg width="512" height="512"
+            viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M48 64C48 55.1634 55.1634 48 64 48H358C366.837 48 374 55.1634 374 64V122.667C374 140.34 359.673 154.667 342 154.667H80C62.3269 154.667 48 140.34 48 122.667V64Z"
+              fill="white" />
+            <path
+              d="M48 218.667C48 209.83 55.1634 202.667 64 202.667H358C366.837 202.667 374 209.83 374 218.667V277.334C374 295.007 359.673 309.334 342 309.334H80C62.3269 309.334 48 295.007 48 277.334V218.667Z"
+              fill="white" />
+            <path
+              d="M48 373.333C48 364.496 55.1634 357.333 64 357.333H358C366.837 357.333 374 364.496 374 373.333V432C374 449.673 359.673 464 342 464H80C62.3269 464 48 449.673 48 432V373.333Z"
+              fill="white" />
+            <rect x="422" y="48" width="42" height="416" rx="16" fill="white" />
           </svg>
         </button>
         <button id="pasteToTextbox" title="Layer to Textbox (Please Use this 😕| Insted of copy-paste)"><svg width="512"
@@ -224,35 +239,7 @@
         </button>
       </div>
       <div>
-        <button id="breakToIndividual" title="Break words to individual line "><svg width="512" height="512"
-            viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M48 64C48 55.1634 55.1634 48 64 48H358C366.837 48 374 55.1634 374 64V122.667C374 140.34 359.673 154.667 342 154.667H80C62.3269 154.667 48 140.34 48 122.667V64Z"
-              fill="white" />
-            <path
-              d="M48 218.667C48 209.83 55.1634 202.667 64 202.667H358C366.837 202.667 374 209.83 374 218.667V277.334C374 295.007 359.673 309.334 342 309.334H80C62.3269 309.334 48 295.007 48 277.334V218.667Z"
-              fill="white" />
-            <path
-              d="M48 373.333C48 364.496 55.1634 357.333 64 357.333H358C366.837 357.333 374 364.496 374 373.333V432C374 449.673 359.673 464 342 464H80C62.3269 464 48 449.673 48 432V373.333Z"
-              fill="white" />
-            <rect x="422" y="48" width="42" height="416" rx="16" fill="white" />
-          </svg>
-        </button>
-        <button id="createTextLayersButton"
-          title="Breaklines to Individual Text Layer (You have to be lazy enough to use this 😛)"><svg width="512"
-            height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M48 64C48 55.1634 55.1634 48 64 48H448C456.837 48 464 55.1634 464 64V122.667C464 140.34 449.673 154.667 432 154.667H80C62.3269 154.667 48 140.34 48 122.667V64Z"
-              fill="white" />
-            <path
-              d="M48 218.667C48 209.83 55.1634 202.667 64 202.667H448C456.837 202.667 464 209.83 464 218.667V277.334C464 295.007 449.673 309.334 432 309.334H80C62.3269 309.334 48 295.007 48 277.334V218.667Z"
-              fill="white" />
-            <path
-              d="M48 373.333C48 364.496 55.1634 357.333 64 357.333H448C456.837 357.333 464 364.496 464 373.333V432C464 449.673 449.673 464 432 464H80C62.3269 464 48 449.673 48 432V373.333Z"
-              fill="white" />
-          </svg>
 
-        </button>
       </div>
     </div>
 
@@ -262,35 +249,34 @@
   <script>
 
     let inputText = document.getElementById('inputText');
-    clearButton = document.getElementById("clearTextbox");
+    const clearButton = document.getElementById("clearTextbox");
     const pasteToTextbox = document.getElementById("pasteToTextbox");
     const pasteToFigma = document.getElementById("pasteToFigma");
-    let textNode = 0;
+    const createTextLayersButton = document.getElementById('createTextLayersButton');
+
+    const capitalizeFirstButton = document.getElementById('capitalizeFirstButton');
+    const uppercaseButton = document.getElementById('uppercaseButton');
+    const lowercaseButton = document.getElementById('lowercaseButton');
+    const sentenceCaseButton = document.getElementById('sentenceCaseButton');
+    const inverseCaseButton = document.getElementById('inverseCaseButton');
+
+
 
     window.onload = function () {
-      const inputText = document.getElementById('inputText');
-      if (inputText) {
-        inputText.focus(); // Focus on the textarea when the plugin is loaded
-      }
+      inputText.focus(); // Focus on the textarea when the plugin is loaded
     };
-
-
-
-
 
     window.onmessage = event => {
       const msg = event.data.pluginMessage;
-      console.log("onmessage" + msg);
+      let msgValue = msg.value;
+
       switch (msg.type) {
         case 'LnSelected':
           pasteToFigma.innerHTML = msg.svg;
           pasteToTextbox.onclick = () => {
-            console.log("layer not selected and button clicked");
             if (navigator.clipboard && navigator.clipboard.readText) {
               navigator.clipboard.readText().then(clipText => {
-                // Paste the clipboard value into the inputText field
                 inputText.value = clipText;
-                console.log("Clipboard value pasted to textbox:", clipText);
               }).catch(error => {
                 console.error("Error reading clipboard:", error);
               });
@@ -298,21 +284,63 @@
               console.error("Clipboard API not supported");
             }
           };
-
           pasteToFigma.onclick = () => {
-            console.log("layer not selected and paste button clicked");
             parent.postMessage({ pluginMessage: { type: 'pasteToFigmaM', text: inputText.value } }, '*');
+          };
+
+          uppercaseButton.onclick = lowercaseButton.onclick = capitalizeFirstButton.onclick = sentenceCaseButton.onclick = inverseCaseButton.onclick = () => {
+            console.log("buttons clicked");
+            parent.postMessage({ pluginMessage: { type: 'LnSelected' } }, '*');
           };
           break;
 
         case "LSelected":
           pasteToFigma.innerHTML = msg.svg;
+
+          uppercaseButton.onclick = () => {
+            msgValue = msgValue.toUpperCase();
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: msgValue } }, '*');
+          };
+
+          lowercaseButton.onclick = () => {
+            msgValue = msgValue.toLowerCase();
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: msgValue } }, '*');
+          };
+
+          capitalizeFirstButton.onclick = () => {
+            const conjunctions = ['for', 'in', 'on', 'of', 'am', 'are', 'to', 'is'];
+            msgValue = msgValue.toLowerCase(); // Convert to lowercase first
+            msgValue = msgValue.replace(/\b(\w+)\b/g, (match, word) => {
+              // Check if the word is in the conjunctions list, if so, keep it lowercase
+              return conjunctions.includes(word) ? word : match.charAt(0).toUpperCase() + match.slice(1);
+            });
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: msgValue } }, '*');
+          };
+
+          sentenceCaseButton.onclick = () => {
+            msgValue = msgValue.replace(/(^\w|\.\s\w)/g, (match) => match.toUpperCase());
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: msgValue } }, '*');
+          };
+          document.getElementById('inverseCaseButton').onclick = () => {
+            // Toggle the case of each character in the text content
+            msgValue = msgValue.split('').map(char => {
+              if (char === char.toUpperCase()) {
+                return char.toLowerCase();
+              } else {
+                return char.toUpperCase();
+              }
+            }).join('');
+
+            // Set the manipulated text back to the input element
+            parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: msgValue } }, '*');
+          };
+          // createTextLayersButton.onclick = () => {
+          //   parent.postMessage({ pluginMessage: { type: 'createTextLayer', text: inputText.value } }, '*');
+          // };
           pasteToTextbox.onclick = () => {
-            console.log("layer selected and button clicked");
-            inputText.value = msg.value;
+            inputText.value = msgValue;
           };
           pasteToFigma.onclick = () => {
-            console.log("layer selected and paste button clicked");
             parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: inputText.value } }, '*');
           };
           break;
@@ -322,12 +350,8 @@
       }
     };
 
-
-
     inputText.addEventListener('keydown', event => {
-      // Check if Ctrl and Backspace keys are pressed simultaneously
       if (event.ctrlKey && event.key === 'Backspace') {
-        // Clear the input text and hide the clear button
         inputText.value = '';
         clearButton.style.display = 'none';
       }
@@ -339,78 +363,18 @@
     });
 
     inputText.addEventListener('input', () => {
-      if (inputText.value.trim() !== '') {
-        clearButton.style.display = 'inline'; // Show the clear button
-      } else {
-        clearButton.style.display = 'none';
-      }
+      clearButton.style.display = inputText.value.trim() !== '' ? 'inline' : 'none';
     });
-
-    document.getElementById('uppercaseButton').onclick = () => {
-      manipulateText((text) => text.toUpperCase());
-    };
-
-    document.getElementById('lowercaseButton').onclick = () => {
-      manipulateText((text) => text.toLowerCase());
-    };
-
-    document.getElementById('capitalizeFirstButton').onclick = () => {
-      manipulateText((text) => text.toLowerCase());
-      manipulateText((text) => text.replace(/^.|\s\S/g, (match) => match.toUpperCase()));
-    };
-
-    document.getElementById('sentenceCaseButton').onclick = () => {
-      manipulateText((text) => text.toLowerCase());
-      manipulateText((text) => text.replace(/(^\w|\.\s\w)/g, (match) => match.toUpperCase()));
-
-    };
-
-    document.getElementById('inverseCaseButton').onclick = () => {
-      // Toggle the case of each character in the text content
-      const manipulatedText = inputText.value.split('').map(char => {
-        if (char === char.toUpperCase()) {
-          return char.toLowerCase();
-        } else {
-          return char.toUpperCase();
-        }
-      }).join('');
-
-      // Set the manipulated text back to the input element
-      inputText.value = manipulatedText;
-    };
-
-    document.getElementById('breakToIndividual').onclick = () => {
-      const textValue = inputText.value.trim(); // Remove leading and trailing whitespaces
-
-      // Split the text into an array of words
-      const wordsArray = textValue.split(/\s+/);
-
-      // Join the words array back together with newline characters
-      const newTextValue = wordsArray.join('\n');
-
-      // Set the modified text value back to the input element
-      inputText.value = newTextValue;
-    };
-
-
-
-
-
 
     document.getElementById('copyButton').onclick = () => {
       inputText.select();
       document.execCommand('copy');
     };
 
-    document.getElementById('createTextLayersButton').onclick = () => {
+    createTextLayersButton.onclick = () => {
       parent.postMessage({ pluginMessage: { type: 'createTextLayer', text: inputText.value } }, '*');
     };
 
-
-    // Function to manipulate text based on a given function
-    function manipulateText(manipulationFunction) {
-      inputText.value = manipulationFunction(inputText.value);
-    }
 
   </script>
 </body>

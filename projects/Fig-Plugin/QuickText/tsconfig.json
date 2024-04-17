@@ -4,8 +4,8 @@
     "lib": ["es6","DOM"],
     "strict": true,
     "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma"
+      "@figma/plugin-typings",
+      "node_modules/@figma"
     ]
   }
 }

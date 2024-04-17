@@ -1,3 +1,4 @@
+
 {
   "name": "QuickText",
   "id": "1319644305156389480",
@@ -8,10 +9,5 @@
   "editorType": [
     "figma"
   ],
-  "ui": "ui.html",
-  "networkAccess": {
-    "allowedDomains": [
-      "none"
-    ]
-  }
+  "ui": "ui.html"
 }
