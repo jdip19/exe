@@ -14,10 +14,51 @@ figma.ui.onmessage = msg => {
     case 'pasteToFigmaM':
       handlePasteToFigmaM(msg);
       break;
+    case 'LnSelected':
+      figma.notify('Buddy! Select a TEXT layer first 😁');
+      break;
     default:
       break;
   }
 };
+
+function handleSelectedLayer(){
+  
+    const selection = figma.currentPage.selection;
+
+    const hasTextLayerSelected = selection.some(node => node.type === 'TEXT');
+    if (selection.length > 0 && selection[0].type === 'TEXT') {
+      textNode = selection[0] as TextNode;
+      console.log("layer selected" + textNode);
+
+
+      figma.ui.postMessage({
+        type: 'LSelected', svg: `
+      <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M455.726 275.973C466.758 264.942 466.758 247.058 455.726 236.028L275.961 56.2733C264.93 45.2422 247.045 45.2422 236.013 56.2733C224.982 67.3038 224.982 85.1878 236.013 96.2183L395.804 256L236.013 415.782C224.982 426.812 224.982 444.696 236.013 455.727C247.045 466.758 264.93 466.758 275.961 455.727L455.726 275.973ZM48 256C48 271.6 60.646 284.246 76.2457 284.246L435.752 284.246L435.752 227.754L76.2457 227.754C60.646 227.754 48 240.4 48 256V256Z" fill="white" />
+      </svg>`
+        , value: textNode ? textNode.characters : '' // Pass textNode characters if available
+      });
+    } else {
+      console.log("not selected");
+      figma.ui.postMessage({
+        type: 'LnSelected', svg: `
+      <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M48 64C48 55.1634 55.1634 48 64 48H448C456.837 48 464 55.1634 464 64V122.667C464 140.34 449.673 154.667 432 154.667H80C62.3269 154.667 48 140.34 48 122.667V64Z" fill="white" />
+        <path d="M48 218.667C48 209.83 55.1634 202.667 64 202.667H448C456.837 202.667 464 209.83 464 218.667V277.334C464 295.007 449.673 309.334 432 309.334H80C62.3269 309.334 48 295.007 48 277.334V218.667Z" fill="white" />
+        <path d="M48 373.333C48 364.496 55.1634 357.333 64 357.333H448C456.837 357.333 464 364.496 464 373.333V432C464 449.673 449.673 464 432 464H80C62.3269 464 48 449.673 48 432V373.333Z" fill="white" />
+      </svg>
+    `});
+    }
+  
+}
+handleSelectedLayer();
+
+// Check again after a short delay (e.g., 500 milliseconds)
+setTimeout(handleSelectedLayer, 500);
+figma.on('selectionchange', () => {
+  handleSelectedLayer(); // Handle selection change
+});
 
 // Function to handle pasteToTextbox message
 function handlePasteToTextbox(msg: any) {
@@ -33,7 +74,6 @@ function handlePasteToTextbox(msg: any) {
 // Function to handle pasteToFigmaS message
 function handlePasteToFigmaS(msg: any) {
   const text = msg.text;
-  console.log("pasteToFigmaS-Code");
 
   if (textNode) {
     const fontName = textNode.fontName as FontName;
@@ -94,33 +134,6 @@ function handlePasteToFigmaM(msg: any) {
 }
 
 // Event listener for selection change
-figma.on('selectionchange', () => {
-  const selection = figma.currentPage.selection;
-  const hasTextLayerSelected = selection.some(node => node.type === 'TEXT');
-  if (hasTextLayerSelected) {
-    textNode=selection[0] as TextNode;
-    console.log("layer selected"+textNode);
-
-
-    figma.ui.postMessage({
-      type: 'LSelected', svg: `
-      <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M455.726 275.973C466.758 264.942 466.758 247.058 455.726 236.028L275.961 56.2733C264.93 45.2422 247.045 45.2422 236.013 56.2733C224.982 67.3038 224.982 85.1878 236.013 96.2183L395.804 256L236.013 415.782C224.982 426.812 224.982 444.696 236.013 455.727C247.045 466.758 264.93 466.758 275.961 455.727L455.726 275.973ZM48 256C48 271.6 60.646 284.246 76.2457 284.246L435.752 284.246L435.752 227.754L76.2457 227.754C60.646 227.754 48 240.4 48 256V256Z" fill="white" />
-      </svg>`
-      , value: textNode ? textNode.characters : '' // Pass textNode characters if available
-    });
-  } else {
-    console.log("not selected");
-    figma.ui.postMessage({
-      type: 'LnSelected', svg: `
-      <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M48 64C48 55.1634 55.1634 48 64 48H448C456.837 48 464 55.1634 464 64V122.667C464 140.34 449.673 154.667 432 154.667H80C62.3269 154.667 48 140.34 48 122.667V64Z" fill="white" />
-        <path d="M48 218.667C48 209.83 55.1634 202.667 64 202.667H448C456.837 202.667 464 209.83 464 218.667V277.334C464 295.007 449.673 309.334 432 309.334H80C62.3269 309.334 48 295.007 48 277.334V218.667Z" fill="white" />
-        <path d="M48 373.333C48 364.496 55.1634 357.333 64 357.333H448C456.837 357.333 464 364.496 464 373.333V432C464 449.673 449.673 464 432 464H80C62.3269 464 48 449.673 48 432V373.333Z" fill="white" />
-      </svg>
-    `});
-  }
-});
 
 // Function to load a specific HTML view
 function loadView(view: string) {
