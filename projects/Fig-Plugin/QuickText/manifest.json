@@ -9,5 +9,23 @@
   "editorType": [
     "figma"
   ],
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "menu": [
+    {
+      "name": "TitleCase",
+      "command": "titlecase"
+    },
+    {
+      "name": "Sentencecase",
+      "command": "sentencecase"
+    },
+    {
+      "name": "UPPERCASE",
+      "command": "uppercase"
+    },
+    {
+      "name": "lowercase",
+      "command": "lowercase"
+    }
+  ]
 }

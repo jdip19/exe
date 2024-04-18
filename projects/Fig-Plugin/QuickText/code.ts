@@ -1,144 +1,61 @@
-figma.showUI(__html__);
-figma.ui.resize(300, 460);
 
-
-// Initialize variables
 let textNode: TextNode | null = null; // Initialize as null
+const selection = figma.currentPage.selection;
+textNode = selection.length === 1 && selection[0].type === 'TEXT' ? selection[0] as TextNode : null;
 
-// Function to handle message from the UI
-figma.ui.onmessage = msg => {
-  switch (msg.type) {
-    case 'pasteToFigmaS':
-      handlePasteToFigmaS(msg);
-      break;
-    case 'pasteToFigmaM':
-      handlePasteToFigmaM(msg);
-      break;
-    case 'LnSelected':
-      figma.notify('Buddy! Select a TEXT layer first 😁');
-      break;
-    default:
-      break;
-  }
-};
+if (textNode) {
+  const fontName = textNode.fontName as FontName;
+  if (fontName && 'family' in fontName && 'style' in fontName) {
+    const fontFamily = fontName.family as string;
+    const fontStyle = fontName.style as string;
 
-function handleSelectedLayer(){
-  
-    const selection = figma.currentPage.selection;
-
-    const hasTextLayerSelected = selection.some(node => node.type === 'TEXT');
-    if (selection.length > 0 && selection[0].type === 'TEXT') {
-      textNode = selection[0] as TextNode;
-      console.log("layer selected" + textNode);
-
-
-      figma.ui.postMessage({
-        type: 'LSelected', svg: `
-      <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M455.726 275.973C466.758 264.942 466.758 247.058 455.726 236.028L275.961 56.2733C264.93 45.2422 247.045 45.2422 236.013 56.2733C224.982 67.3038 224.982 85.1878 236.013 96.2183L395.804 256L236.013 415.782C224.982 426.812 224.982 444.696 236.013 455.727C247.045 466.758 264.93 466.758 275.961 455.727L455.726 275.973ZM48 256C48 271.6 60.646 284.246 76.2457 284.246L435.752 284.246L435.752 227.754L76.2457 227.754C60.646 227.754 48 240.4 48 256V256Z" fill="white" />
-      </svg>`
-        , value: textNode ? textNode.characters : '' // Pass textNode characters if available
+    figma.loadFontAsync({ family: fontFamily, style: fontStyle })
+      .then(() => {
+        textNode!.fontName = { family: fontFamily, style: fontStyle }; // Update textNode properties
+        handleTextCase(textNode!); // Call the function to handle text case based on command
+      })
+      .catch((error) => {
+        console.error('Error loading font:', error);
       });
-    } else {
-      console.log("not selected");
-      figma.ui.postMessage({
-        type: 'LnSelected', svg: `
-      <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M48 64C48 55.1634 55.1634 48 64 48H448C456.837 48 464 55.1634 464 64V122.667C464 140.34 449.673 154.667 432 154.667H80C62.3269 154.667 48 140.34 48 122.667V64Z" fill="white" />
-        <path d="M48 218.667C48 209.83 55.1634 202.667 64 202.667H448C456.837 202.667 464 209.83 464 218.667V277.334C464 295.007 449.673 309.334 432 309.334H80C62.3269 309.334 48 295.007 48 277.334V218.667Z" fill="white" />
-        <path d="M48 373.333C48 364.496 55.1634 357.333 64 357.333H448C456.837 357.333 464 364.496 464 373.333V432C464 449.673 449.673 464 432 464H80C62.3269 464 48 449.673 48 432V373.333Z" fill="white" />
-      </svg>
-    `});
-    }
-  
-}
-handleSelectedLayer();
-
-// Check again after a short delay (e.g., 500 milliseconds)
-setTimeout(handleSelectedLayer, 500);
-figma.on('selectionchange', () => {
-  handleSelectedLayer(); // Handle selection change
-});
-
-// Function to handle pasteToTextbox message
-function handlePasteToTextbox(msg: any) {
-  if (figma.currentPage.selection.length === 1 && figma.currentPage.selection[0].type === 'TEXT') {
-    textNode = figma.currentPage.selection[0] as TextNode; // Update textNode variable
-    console.log("textlayer" + textNode.characters);
-    figma.ui.postMessage({ type: 'updateInputText', value: textNode.characters });
   } else {
-    figma.notify('Please select a text layer to paste in the textbox.');
+    console.error('Invalid font name object:', fontName);
+  }
+} else {
+  figma.notify('Buddy! Just Select a single text layer. 😊');
+}
+
+function handleTextCase(node: TextNode): void {
+  switch (figma.command) {
+    case 'titlecase':
+      const conjunctions = ['for', 'in', 'on', 'of', 'am', 'are', 'and', 'to', 'is', 'at'];
+      let newText = node.characters.toLowerCase(); // Convert the text to lowercase first
+      newText = newText.replace(/\b(\w+)\b/g, (match, word) => {
+        // Check if the word is in the conjunctions list, if so, keep it lowercase
+        return conjunctions.indexOf(word) !== -1 ? word : match.charAt(0).toUpperCase() + match.slice(1);
+      });
+      node.characters = newText; // Update the node with the modified text
+      figma.notify('Tadaannn... 🥁 Your Text case changed to TitleCase.');
+      break;
+    case 'sentencecase':
+      node.characters = node.characters.toLowerCase();
+      node.characters = node.characters.replace(/(^\w|\.\s\w)/g, (match) => match.toUpperCase()); // Update the node with the modified text
+      figma.notify('Tadaannn... 🥁 Your Text case changed to Sentencecase.');
+      break;
+    case 'uppercase':
+      node.characters = node.characters.toUpperCase();
+      figma.notify('Tadaannn... 🥁 Your Text case changed to UPPERCASE.');
+      break;
+    case 'lowercase':
+      node.characters = node.characters.toLowerCase();
+      figma.notify('Tadaannn... 🥁 Your Text case changed to lowercase.');
+      break;
+
+    default:
+      console.error('Unknown command:', figma.command);
   }
 }
 
-// Function to handle pasteToFigmaS message
-function handlePasteToFigmaS(msg: any) {
-  const text = msg.text;
 
-  if (textNode) {
-    const fontName = textNode.fontName as FontName;
-    if (fontName && 'family' in fontName && 'style' in fontName) {
-      const fontFamily = fontName.family as string;
-      const fontStyle = fontName.style as string;
-
-      figma.loadFontAsync({ family: fontFamily, style: fontStyle })
-        .then(() => {
-          textNode!.fontName = { family: fontFamily, style: fontStyle }; // Update textNode properties
-          textNode!.characters = text;
-        })
-        .catch((error) => {
-          console.error('Error loading font:', error);
-        });
-    } else {
-      console.error('Invalid font name object:', fontName);
-    }
-  }
-}
-
-// Function to handle pasteToFigmaM message
-function handlePasteToFigmaM(msg: any) {
-  const breakLines = msg.text.split('\n');
-  const lines: string[] = [];
-
-  breakLines.forEach((line: string) => {
-    lines.push(line);
-  });
-
-  // Log the lines array to the console
-  console.log(lines);
-
-  const viewPort = figma.viewport.bounds;
-  const vX = viewPort.x;
-  const vY = viewPort.y;
-  const vW = viewPort.width;
-  const vH = viewPort.height;
-  const spacing = 20;
-
-  figma.loadFontAsync({ family: 'Inter', style: 'Regular' }).then(() => {
-    lines.forEach((line: string, index: number) => {
-      const textNode = figma.createText();
-      textNode.characters = line;
-
-      textNode.y = vY + index * (textNode.height + spacing);
-      textNode.x = vX + vW / 2 - textNode.width / 2;
-
-      figma.currentPage.appendChild(textNode);
-
-      textNode.fontName = { family: 'Inter', style: 'Regular' };
-    });
-  }).catch((error) => {
-    console.error('Error loading font:', error);
-  });
-
-  figma.notify(lines.length + ' Text layer created');
-}
-
-// Event listener for selection change
-
-// Function to load a specific HTML view
-function loadView(view: string) {
-  figma.ui.postMessage({ type: 'load-view', view });
-}
-
-// Load the initial view
-loadView('textareaView');
+setTimeout(() => {
+  figma.closePlugin();
+}, 1000);
