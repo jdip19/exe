@@ -245,10 +245,6 @@
 
 
 
-    window.onload = function () {
-      inputText.focus(); // Focus on the textarea when the plugin is loaded
-    };
-
     window.onmessage = event => {
       const msg = event.data.pluginMessage;
       let msgValue = msg.value;
@@ -291,6 +287,7 @@
           };
 
           sentenceCaseButton.onclick = () => {
+            msgValue = msgValue.toLowerCase();
             msgValue = msgValue.replace(/(^\w|\.\s\w)/g, (match) => match.toUpperCase());
             parent.postMessage({ pluginMessage: { type: 'pasteToFigmaS', text: msgValue } }, '*');
           };
