@@ -64,9 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="container card-footer">
                 <div class="p-w-box">
                     <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
-                    <div class="weight" id="weight">${Math.round(
-                      (1000 / data.ppkg) * 10
-                    )}gm</div>
+                    <div class="weight" id="weight">${data.cdppkg === 1 ? Math.round((1000 / (data.ppkg + data.ppkg * 0.12)) * 10) : Math.round((1000 / data.ppkg) * 10)}gm</div>
                 </div>
                 <div class="p-w-box">
                     <div class="price">₹<span id="price2">${
@@ -148,17 +146,27 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to handle custom price input
   function handleCustomPriceInput(inputElement, data) {
     const customPrice = parseFloat(inputElement.value);
+    let ppkg = parseFloat(data.ppkg);
+    let checkBox = data.cdppkg;
+    let pWeight250 = ppkg / 4;
+    let dPrice = ppkg * 0.12;
+    console.log("ppkg: " + ppkg + "\n" + checkBox + "\n" + pWeight250);
     const weightElement = inputElement
-      .closest(".card")
-      .querySelector(".weight");
+        .closest(".card")
+        .querySelector(".weight");
 
     if (!isNaN(customPrice)) {
-      const weightValue = Math.round((1000 / data.ppkg) * customPrice);
-      weightElement.textContent = weightValue + "gm";
+        if (checkBox === 1 && customPrice < pWeight250) {
+            ppkg = ppkg + dPrice;
+            console.log("new ppkg after increase: " + ppkg);
+        }
+        const weightValue = Math.round((1000 / ppkg) * customPrice);
+        weightElement.textContent = weightValue + "gm";
     } else {
-      console.log("Invalid input for customPrice");
+        console.log("Invalid input for customPrice");
     }
-  }
+}
+
   fetchDataFromFirebase();
 
   function fetchDataForCard(itemRef) {
@@ -380,7 +388,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Get the input element
   const itmNmInput = document.getElementById("ippKg");
 
-  // Add an event listener for the "input" event
   itmNmInput.addEventListener("input", function () {
     // Call the footerData function whenever the input value changes
     footerData();
