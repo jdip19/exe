@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="container card-footer">
                 <div class="p-w-box">
                     <div class="cusPriceDiv">₹<input id="cusPrice" class="cusPrice form-control" type="number" placeholder="₹" value="10"></div>
-                    <div class="weight" id="weight">${data.cdppkg === 1 ? Math.round((1000 / (data.ppkg + data.ppkg * 0.12)) * 10) : Math.round((1000 / data.ppkg) * 10)}gm</div>
+                    <div class="weight" id="weight">${data.cdppkg === 1 ? Math.round((1000 / (parseFloat(data.ppkg) + data.ppkg * 0.12)) * 10) : Math.round((1000 / data.ppkg) * 10)}gm</div>
                 </div>
                 <div class="p-w-box">
                     <div class="price">₹<span id="price2">${
