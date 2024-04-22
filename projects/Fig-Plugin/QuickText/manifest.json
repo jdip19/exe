@@ -26,6 +26,18 @@
     {
       "name": "lowercase",
       "command": "lowercase"
+    },
+    {
+      "name": "Add Breaklines",
+      "command": "addbreakline"
+    },
+    {
+      "name": "Remove Breaklines",
+      "command": "rmvbreakline"
+    },
+    {
+      "name": "Remove Space",
+      "command": "rmvspace"
     }
   ]
 }
