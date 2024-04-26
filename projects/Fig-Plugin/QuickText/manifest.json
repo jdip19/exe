@@ -1,11 +1,13 @@
-
 {
   "name": "QuickText",
-  "id": "1319644305156389480",
+  "id": "1365014672422582628",
   "api": "1.0.0",
   "main": "code.js",
-  "capabilities": [],
   "enableProposedApi": false,
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  },
   "editorType": [
     "figma"
   ],
