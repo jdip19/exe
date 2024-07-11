@@ -113,8 +113,8 @@
    * color-2(#343D35)
    * color-3(#FEF5E4)
    */
-	--color-1: hsla(35, 87%, 49%, 1);
-	--color-2: hsla(127, 8%, 22%, 1);
+	--color-1: #D3FF9D;
+	--color-2: #223027;
 	--color-3: hsla(39, 93%, 95%, 1);
 
   /* theme color variations
@@ -179,7 +179,7 @@
   /* text
    */
 	--color-text                   : var(--color-gray-18);
-	--color-text-dark              : #181818;
+	--color-text-dark              : #223027;
 	--color-text-light             : var(--color-gray-14);
 	--color-placeholder            : var(--color-gray-12);
 
@@ -1004,7 +1004,9 @@ p {
 	font-size     : inherit;
 	text-rendering: optimizeLegibility;
 }
-
+p.about{
+	margin-bottom: var(--vspace-0_25);
+}
 a {
 	text-decoration: none;
 }
@@ -2773,7 +2775,6 @@ td:last-child {
 	font-family: var(--font-1);
 	font-size  : var(--text-md);
 	line-height: var(--vspace-1);
-	color      : var(--color-1);
 	transform  : translate(0.2em, 0);
 	margin-top : 0;
 }
@@ -3197,14 +3198,6 @@ td:last-child {
 .s-header {
 	--header-height: 80px;
 	--logo-width   : 9.6rem;
-	--box-shadow   : 0 1px 1px rgba(0, 0, 0, 0.02),
-		             0 2px 2px rgba(0, 0, 0, 0.02),
-		             0 4px 4px rgba(0, 0, 0, 0.02),
-		             0 8px 8px rgba(0, 0, 0, 0.02);
-	--box-shadow-2:  0 2px 2px rgba(0, 0, 0, 0.03),
-		             0 4px 4px rgba(0, 0, 0, 0.03),
-		             0 8px 8px rgba(0, 0, 0, 0.03),
-		              16px 16px rgba(0, 0, 0, 0.03);
 	z-index         : 100;
 	background-color: transparent;
 	height          : var(--header-height);
@@ -3243,7 +3236,7 @@ td:last-child {
 }
 
 .s-header__logo img {
-	width         : var(--logo-width);
+	width         : 7rem;
 	margin        : 0;
 	vertical-align: bottom;
 }
@@ -3315,7 +3308,7 @@ td:last-child {
 
 .s-header__menu-toggle span {
 	display         : block;
-	background-color: var(--color-3);
+	background-color: var(--color-2);
 	width           : var(--toggle-line-width);
 	height          : var(--toggle-line-height);
 	margin-top      : -1px;
@@ -3377,7 +3370,7 @@ td:last-child {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 900px) {
 	.s-header {
-		--logo-width: 10rem;
+		--logo-width: 7rem;
 		top         : var(--vspace-0_25);
 	}
 
@@ -3582,8 +3575,7 @@ td:last-child {
 	--content-padding-bottom: 10.8rem;
 	--content-min-height    : calc(var(--vspace-1) * 27);
 	z-index                 : 2;
-	background-color        : var(--color-2-dark);
-	background              : linear-gradient(20deg, hsl(130deg, 8%, 14%) 40%, hsl(0deg, 0%, 13%) 100%);
+	background-color        : var(--color-1);
 	width                   : 100%;
 	height                  : max(var(--content-min-height), 100vh);
 	overflow                : hidden;
@@ -3597,7 +3589,7 @@ td:last-child {
 	z-index       : 2;
 	align-items   : center;
 	height        : 100%;
-	color         : var(--color-3);
+	color         : var(--color-text-dark);
 	padding-top   : var(--content-padding-top);
 	padding-bottom: var(--content-padding-bottom);
 	position      : relative;
@@ -3611,13 +3603,12 @@ td:last-child {
 .s-intro__content-text {
 	z-index    : 2;
 	grid-column: 1/span 11;
-	margin-top : var(--vspace-1);
+	
 }
 
 .s-intro__content-pretitle {
 	
 	padding-left : 10rem;
-	color        : var(--color-3);
 	transform    : translate(-9.6rem, 0);
 	position     : relative;
 }
@@ -3638,7 +3629,6 @@ td:last-child {
 	line-height  : 1;
 	margin-top   : 0;
 	margin-bottom: 0;
-	color        : var(--color-3);
 }
 
 .s-intro__content-media {
@@ -3857,7 +3847,8 @@ td:last-child {
 	}
 
 	.s-intro__content-title {
-		font-size: clamp(4rem, 10vw, 10.4rem);
+		/* font-size: clamp(16.2rem, 10vw, 10.4rem); */
+		font-size:clamp(14rem, 10vw, 10.4rem)
 	}
 
 	.s-intro__content-title br {
@@ -3887,6 +3878,9 @@ td:last-child {
 	.no-js .s-intro__content-title,
 	.ss-show .s-intro__content-title {
 		transition-delay: 0.9s;
+		font-size: clamp(14rem, 10vw, 10.4rem);
+        word-break: break-all;
+		margin-bottom: 1.4rem;
 	}
 
 	.no-js .s-intro__content-media img,
