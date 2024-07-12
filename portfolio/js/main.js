@@ -98,7 +98,7 @@
                     slidesPerView: 1,
                     spaceBetween: 20
                 },
-                // when window width is > 800px
+                // when window `width is > 800px
                 801: {
                     slidesPerView: 2,
                     spaceBetween: 40
