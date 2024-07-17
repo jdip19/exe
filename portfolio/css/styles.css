@@ -3294,9 +3294,8 @@ td:last-child {
 	display: block;
 	font-family: var(--font-2);
 	font-weight: 400;
-	font-size: 14rem;
 	line-height: var(--vspace-1);
-	color: var(--color-white);
+	color: var(--color-2);
 	padding: 0 1.2rem;
 	transition-property: color, background-color;
 }
@@ -3410,7 +3409,6 @@ td:last-child {
 		width: 100%;
 		height: var(--header-height);
 		box-shadow: var(--box-shadow);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 	}
 
 	.s-header__logo {
@@ -3485,6 +3483,12 @@ td:last-child {
 		transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
 		transition-delay: 0s;
 	}
+	.s-header__menu-links li {
+		border-bottom: 1px solid rgb(255 255 255 / 34%);
+	}
+	.s-header__contact{
+		position: absolute;
+	}
 
 	.menu-is-open .s-header__menu-links,
 	.menu-is-open .s-header__contact {
@@ -3513,12 +3517,13 @@ td:last-child {
 
 @media screen and (max-width: 400px) {
 	.s-header__nav {
-		padding-right: 7vw;
-		padding-left: 7vw;
+		padding-right: 0;
 	}
 
 	.s-header__nav a:not(.btn) {
 		font-size: 10rem;
+		color: var(--color-white);
+		
 	}
 }
 
