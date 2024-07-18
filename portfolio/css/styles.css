@@ -3427,7 +3427,7 @@ td:last-child {
 		background-color: var(--color-3);
 		box-shadow: var(--box-shadow-2);
 		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-		padding-top: calc(var(--header-height) + var(--vspace-3));
+		padding-top: calc(var(--header-height) + var(--vspace-2));
 		padding-right: calc(var(--gutter) + 4.4vw);
 		padding-left: calc(var(--gutter) + 4.4vw);
 		margin: 0;
@@ -3456,10 +3456,6 @@ td:last-child {
 		display: block;
 		margin-bottom: var(--vspace-1);
 		padding-left: calc(var(--gutter) + 4.4vw);
-	}
-
-	.s-header__contact {
-		margin-top: var(--vspace-1_5);
 	}
 
 	.s-header__contact .btn {
