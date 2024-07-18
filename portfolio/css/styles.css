@@ -3419,7 +3419,8 @@ td:last-child {
 	}
 
 	.s-header__nav {
-		height: 96vh;
+		height: 100vh;
+		position: fixed !important;
 		width: 100%;
 		text-transform: uppercase;
 		transform: scaleY(0);
@@ -3432,7 +3433,7 @@ td:last-child {
 		padding-left: calc(var(--gutter) + 4.4vw);
 		margin: 0;
 		position: absolute;
-		top: calc(var(--vspace-1_5) * -2);
+		top: calc(var(--vspace-1_5) * -1);
 		left: 0;
 	}
 
@@ -3936,7 +3937,7 @@ td:last-child {
 	.no-js .s-intro__content-title,
 	.ss-show .s-intro__content-title {
 		transition-delay: 0.9s;
-		font-size: clamp(13.4rem, 10vw, 14rem);
+		font-size: clamp(15rem, 10vw, 14rem);
 		word-break: break-all;
 		margin-bottom: 1.4rem;
 	}
