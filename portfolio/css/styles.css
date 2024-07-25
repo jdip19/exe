@@ -3432,7 +3432,6 @@ td:last-child {
 		padding-right: calc(var(--gutter) + 4.4vw);
 		padding-left: calc(var(--gutter) + 4.4vw);
 		margin: 0;
-		position: absolute;
 		top: calc(var(--vspace-1_5) * 0);
 		left: 0;
 	}
@@ -3939,7 +3938,7 @@ td:last-child {
 		transition-delay: 0.9s;
 		font-size: clamp(15rem, 10vw, 14rem);
 		word-break: break-all;
-		margin-bottom: 1.4rem;
+		margin-top: calc(100vw * 0.03);
 	}
 
 	.no-js .s-intro__content-media img,
