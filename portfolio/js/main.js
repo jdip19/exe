@@ -13,6 +13,18 @@
         mailChimpURL : 'https://facebook.us1.list-manage.com/subscribe/post?u=1abf75f6981256963a47d197a&amp;id=37c6d8f4d6' 
 
     };
+    //updating hight dynamically
+
+    function updateVh() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    // Initial calculation
+    updateVh();
+
+    // Recalculate on resize
+    window.addEventListener('resize', updateVh);
 
 
    /* preloader
