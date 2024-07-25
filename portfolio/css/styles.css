@@ -3433,7 +3433,7 @@ td:last-child {
 		padding-left: calc(var(--gutter) + 4.4vw);
 		margin: 0;
 		position: absolute;
-		top: calc(var(--vspace-1_5) * -1);
+		top: calc(var(--vspace-1_5) * 0);
 		left: 0;
 	}
 
