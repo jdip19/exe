@@ -106,6 +106,7 @@
 	--vh:100vh;
 	--font-1: "Encode Sans", sans-serif;
 	--font-2: headingfont;
+	--font-3:bodyfont;
 
 	/* monospace
    */
@@ -853,8 +854,8 @@ table {
 @media screen and (max-width: 600px) {
 	.row {
 		width: 100%;
-		padding-left: 6vw;
-		padding-right: 6vw;
+		padding-left: 4vw;
+		padding-right: 4vw;
 	}
 
 	.row .row {
@@ -1235,6 +1236,7 @@ body {
 	font-weight: 400;
 	line-height: var(--vspace-1);
 	color: var(--color-text);
+	text-transform: uppercase;
 }
 
 /* links
@@ -2808,7 +2810,18 @@ td:last-child {
 /* ------------------------------------------------------------------- 
  * ## list items
  * ----:--------------------------------------------------------------- */
-.wthumb::before{
+ .text-pretitle {
+	padding: 3vw;
+    background: var(--color-3);
+    color: var(--color-white);
+    text-transform: uppercase;
+    width: max-content;
+    margin-bottom: calc(100vw* 0.02);
+}
+ .row.work{
+	margin-bottom: var(--vspace-1);
+}
+ .wthumb::before{
 	content: "["counter(ctr, decimal-leading-zero) "]";
     counter-increment: ctr;
     display: block;
@@ -2816,15 +2829,34 @@ td:last-child {
     font-size: 1.6em;
     line-height: 1;
     color: var(--color-2);
+	font-family:var(--font-3);
 }
 .Wtitle {
     display: flex;
     text-transform: uppercase;
     flex-direction: column;
+    gap: var(--vspace-0_5);
+	margin-bottom: var(--vspace-1);
+}
+.Wtitle > *{
+	margin: 0;
 }
 .wthumb {
     display: flex;
     gap: calc(100vw*0.16);
+}
+.tag {
+    display: flex;
+    gap: 1rem;
+}
+.tag span{
+	border: 1px solid var(--color-2);
+    padding: 0.4rem 1rem;
+    display: block;
+}
+h2.list-items__item-title {
+    font-family: var(--font-3);
+    font-size: 5rem;
 }
 .grid-list-items__item {
     border-bottom: 1px solid var(--color-2);
@@ -3079,6 +3111,9 @@ td:last-child {
 /* --------------------------------------------------------------------
  * ## grid block
  * -------------------------------------------------------------------- */
+ .column.grid-block.grid-section-split{
+	padding: 0;
+ }
 .grid-block {
 	--col: 12;
 	--grid-gap-h: calc(var(--gutter) * 2);
@@ -3941,7 +3976,7 @@ td:last-child {
 	.no-js .s-intro__content-title,
 	.ss-show .s-intro__content-title {
 		transition-delay: 0.9s;
-		font-size: clamp(15rem, 10vw, 14rem);
+		font-size: clamp(16rem, 10vw, 14rem);
 		word-break: break-all;
 		margin-top: calc(100vw * 0.05);
 		line-height: 90%;
@@ -3990,9 +4025,7 @@ td:last-child {
 		width: 8.6rem;
 	}
 
-	.s-intro__scroll-down {
-		margin-left: var(--vspace-0_25);
-	}
+	
 
 	.s-intro__scroll-down span {
 		display: block;
@@ -4006,7 +4039,13 @@ td:last-child {
  *
  *
  * ------------------------------------------------------------------- */
-.s-about {
+ .s-intro__content-pretitle {
+    font-size: 3rem;
+    font-family: var(--font-2);
+    color: var(--color-2);
+	margin-bottom: -1rem;
+}
+ .s-about {
 	padding-top: var(--vspace-6);
 	padding-bottom: var(--vspace-6);
 	background-color: var(--color-2-dark);
@@ -4308,13 +4347,13 @@ td:last-child {
  *
  *
  * ------------------------------------------------------------------- */
-.s-footer {
-	font-size: calc(var(--text-size) * 0.95);
-	font-weight: 300;
-	color: rgba(255, 255, 255, 0.6);
-	background-color: #181818;
-	padding-top: var(--vspace-3);
-	padding-bottom: var(--vspace-3);
+ .s-footer {
+    font-size: calc(var(--text-size) * 0.95);
+    font-weight: 300;
+    background-color: var(--color-2);
+    padding-top: var(--vspace-3);
+    padding-bottom: var(--vspace-3);
+    color: var(--color-white);
 }
 
 .s-footer a {
