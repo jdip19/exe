@@ -3651,7 +3651,12 @@ h2.list-items__item-title {
 	overflow: hidden;
 	position: relative;
 }
-
+.cbtn {
+    width: 100%;
+    clip-path: polygon(79% 100%, 20% 100%, 26% 0, 72% 0%);
+    margin: 0;
+    background-color: var(--color-white);
+}
 /* --------------------------------------------------------------------
  * ## intro content
  * -------------------------------------------------------------------- */
@@ -3777,22 +3782,13 @@ h2.list-items__item-title {
 	text-align: center;
 }
 
-.s-intro__scroll-down::before {
-	content: '';
-	position: absolute;
-	top: 2px;
-	left: 17%;
-	width: 100%;
-	height: 58px;
-	background-color: #fff;
-	clip-path: polygon(70% 100%, 1% 100%, 12% 0, 60% 0%);
-	z-index: -1;
-}
 
 .s-intro__scroll-down a {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	color: var(--color-2);
+	gap:var(--vspace-0_375)
 }
 
 .s-intro__scroll-down span {
@@ -3808,8 +3804,6 @@ h2.list-items__item-title {
 	justify-content: center;
 	align-items: center;
 	height: var(--vspace-1_5);
-	width: var(--vspace-1_5);
-
 }
 
 .s-intro__scroll-down svg {
@@ -4347,12 +4341,23 @@ h2.list-items__item-title {
  *
  *
  * ------------------------------------------------------------------- */
+ .s-footer .s-intro__content-pretitle{
+	color: var(--color-white);
+ }
+.s-footer__content > * {
+    width: max-content;
+}
+.s-footer .cbtn {
+    height: calc(100vw* 0.1);
+    rotate: 180deg;
+    margin-bottom: var(--space);
+}
+	
  .s-footer {
     font-size: calc(var(--text-size) * 0.95);
     font-weight: 300;
     background-color: var(--color-2);
-    padding-top: var(--vspace-3);
-    padding-bottom: var(--vspace-3);
+    padding-bottom: var(--vspace-1);
     color: var(--color-white);
 }
 
@@ -4366,12 +4371,10 @@ h2.list-items__item-title {
 }
 
 .s-footer h3 {
-	color: var(--color-3);
-	margin-top: 0;
-}
-
-.s-footer__block {
-	margin-bottom: var(--vspace-0_5);
+	color: var(--color-white);
+    font-size: clamp(20rem, 10vw, 14rem);
+    margin: 0;
+    line-height: normal;
 }
 
 .s-footer__about>* {
@@ -4433,6 +4436,7 @@ h2.list-items__item-title {
  * ------------------------------------------------------------------- */
 .ss-copyright {
 	margin: 0 var(--vspace-2) 0 0;
+	color: var(--color-white);
 }
 
 .ss-copyright a {
@@ -4478,7 +4482,7 @@ h2.list-items__item-title {
 	height: var(--vspace-1_75);
 	width: var(--vspace-1_75);
 	border-radius: 50%;
-	border: 1px solid var(--color-3);
+	border: 1px solid var(--color-1);
 	position: relative;
 }
 
@@ -4495,7 +4499,7 @@ h2.list-items__item-title {
 .ss-go-top svg {
 	height: var(--vspace-0_875);
 	width: var(--vspace-0_875);
-	stroke: var(--color-3);
+	stroke: var(--color-1);
 	transition: all 0.3s ease-in-out;
 }
 
