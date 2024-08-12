@@ -3464,7 +3464,7 @@ h2.list-items__item-title {
 		display: inline-flex;
 		align-items: center;
 		padding: 0 2rem 0 8rem;
-		clip-path: polygon(16% 0, 250% 0%, 30% 150%, 35% 106%);
+		clip-path: polygon(16% 0, 250% 0%, 30% 150%, 34% 106%);
 	}
 
 	.column.lg-12.s-intro__content-inner {
