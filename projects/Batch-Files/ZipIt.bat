@@ -6,11 +6,14 @@ setlocal enabledelayedexpansion
 
     set "outputZipFile="
     set "fileList="
+    set "firstFileName="
 
     :parseArgs
     if "%~1" neq "" (
+        if not defined firstFileName (
+            set "firstFileName=%~n1"
+        )
         set "fileList=!fileList! "%~1" "
-        set "outputZipFile=!outputZipFile!_!~n1"
         shift
         goto parseArgs
     )
@@ -21,9 +24,13 @@ setlocal enabledelayedexpansion
         exit /b 1
     )
 
+    :: Use the first file name for the zip file name
+    set "outputZipFile=%firstFileName%"
+
     :: Remove quotes if present in the outputZipFile path and replace tilde with underscore
     set "outputZipFile=!outputZipFile:"=!"
     set "outputZipFile=!outputZipFile:~=_!"
+    set "outputZipFile=%firstFileName%"
 
     :: Create a temporary directory
     set "tempDir=%TEMP%\ZipItTemp_%random%"
