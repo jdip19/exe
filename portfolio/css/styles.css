@@ -3400,6 +3400,9 @@ h2.list-items__item-title {
 	position: absolute;
 	left: 0;
 }
+a.s-header__menu-toggle.is-clicked svg path {
+    stroke: white;
+}
 
 .s-header__menu-toggle span::before {
 	top: -10px;
