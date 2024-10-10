@@ -1,4 +1,4 @@
-let i=1,j=1,k=2;
+let i=1,j=1,k=3;
 let op="";
 
 
@@ -9,7 +9,7 @@ for(i;i<=3;i++){
     }
    
     op+="\n";
-    k=k+2;
+    k=k+3;
 }
 
 document.getElementById("op").textContent=op;

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Image Downloader</title>
+    <style>
+        input,
+        textarea {
+            width: 100%;
+        }
+
+        button {
+            padding: 16px;
+            width: 32%;
+            border: none;
+            background-color: #4CAF50;
+            /* Default background color */
+            color: white;
+            /* Text color */
+            transition: transform 0.1s ease, background-color 0.1s ease;
+            /* Smooth transition for scale and color */
+            cursor: pointer;
+            /* Change cursor to pointer */
+            border-radius: 4px;
+            /* Optional: Rounded corners */
+        }
+
+        button:active {
+            transform: scale(0.95);
+            /* Scale down the button when clicked */
+            background-color: #45a049;
+            /* Darker shade for button when active */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .row {
+            display: flex;
+            flex: 1 1 auto;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #downloadBtn {
+            background-color: #ef4255;
+        }
+
+        #svgDownloadBtn {
+            background-color: #ee7526;
+        }
+
+        #svgCopyBtn {
+            background-color: #efc519;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <textarea id="imageUrls" rows="10" placeholder="Paste image URLs here, one per line"></textarea><br><br>
+        <input type="text" id="folderName" placeholder="Optional: Enter folder name"><br><br>
+        <div class="row">
+            <button id="downloadBtn">Download Images</button>
+            <button id="svgDownloadBtn">Download Icon</button>
+            <button id="svgCopyBtn">Copy Icon</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
