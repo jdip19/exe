@@ -3364,8 +3364,10 @@ h2.list-items__item-title {
 
 /* header contact button
  */
-.s-header__contact-btn {
-	margin: 0;
+ .s-header__contact-btn {
+    margin: 0;
+    border: none;
+    border-radius: 0;
 }
 
 /* --------------------------------------------------------------------
