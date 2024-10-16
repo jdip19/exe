@@ -165,10 +165,10 @@
                             <div class="grid-list-items__item blog-card">
                                 <div class="blog-card__header">
                                     <div class="title-img">
-                                        <img src="../projects/UDownloader/icon128.png">
+                                        <img src="../projects/Tab Organizer/icon128.png">
 
                                         <div class="main-info">
-                                            <h3 class="blog-card__title"><a href="">Universal Downloader</a>
+                                            <h3 class="blog-card__title"><a href="">Tab Organizer</a>
                                             </h3>
                                             <div class="blog-card__cat-links">
                                                 <div class="tag"><span>chrome
@@ -178,13 +178,12 @@
                                         </div>
                                     </div>
                                     <div class="action blog-card__text">
-                                        <a href="#" id="downloadUDownloader" class="btn btn--stroke">Download</a>
+                                        <a href="#" id="downloadTabOrganizer" class="btn btn--stroke">Download</a>
                                     </div>
                                 </div>
                                 <div class="blog-card__text">
                                     <p>
-                                        you can download/copy flaticon's icons in one click also you can download
-                                        multiple images by pasting url and group them in folder
+                                        This chrome extension makes corporate timer fool and let you enjoy every moment of life
                                     </p>
                                 </div>
                             </div> <!-- end blog-card -->
@@ -328,15 +327,16 @@
         ];
 
         // List of files for SVGget
-        const svgFiles = [
-            'BatchFiles/background.js',
-            'BatchFiles/icon128.png',
-            'BatchFiles/icon256.png',
-            'BatchFiles/icon16.png',
-            'BatchFiles/icon48.png',
-            'BatchFiles/manifest.json',
-            'BatchFiles/popup.html',
-            'BatchFiles/popup.js'
+        const TabOrganizer = [
+            'Tab Organizer/background.js',
+            'Tab Organizer/content.js',
+            'Tab Organizer/icon128.png',
+            'Tab Organizer/icon256.png',
+            'Tab Organizer/icon16.png',
+            'Tab Organizer/icon48.png',
+            'Tab Organizer/manifest.json',
+            'Tab Organizer/popup.html',
+            'Tab Organizer/popup.js'
         ];
 
         // Function to fetch and add files to zip
@@ -367,12 +367,12 @@
         });
 
         // SVGget button
-        document.getElementById('batchFiles').addEventListener('click', function () {
+        document.getElementById('downloadTabOrganizer').addEventListener('click', function () {
             var zip = new JSZip();
-            fetchFilesToZip(svgFiles, 'batchFiles', zip)
+            fetchFilesToZip(TabOrganizer, 'Tab Organizer', zip)
                 .then(() => zip.generateAsync({ type: "blob" }))
                 .then(content => {
-                    saveAs(content, "batchFiles.zip");
+                    saveAs(content, "Tab Organizer.zip");
                 });
         });
     </script>
