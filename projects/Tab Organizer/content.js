@@ -1,17 +1,12 @@
-// Detect user activity and notify the background script
-document.addEventListener('mousemove', () => {
-  chrome.runtime.sendMessage({ activityDetected: true });
-  console.log("mouse");
-});
+// Listen for mouse movements and key presses
+document.addEventListener('mousemove', resetInactivityTimer);
+document.addEventListener('keydown', resetInactivityTimer);
 
-document.addEventListener('keydown', () => {
-  chrome.runtime.sendMessage({ activityDetected: true });
-  console.log("keybord");
-
-});
-
-// Scroll down by 30% when this script is injected into an active tab
-document.addEventListener('DOMContentLoaded', () => {
-  let scrollAmount = document.body.scrollHeight * 0.4; // 30% of the page height
-  window.scrollBy(0, scrollAmount);
-});
+// Function to send a message to the background script
+function resetInactivityTimer() {
+  if (chrome && chrome.runtime) {
+    chrome.runtime.sendMessage({ action: "resetInactivityTimer" });
+  } else {
+    console.error("chrome.runtime is not available.");
+  }
+}
