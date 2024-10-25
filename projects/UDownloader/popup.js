@@ -31,21 +31,18 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayImages(images) {
         imageList.innerHTML = ''; // Clear previous images
 
-        // Get selected filter value
         const selectedFilter = document.querySelector('input[name="imageFilter"]:checked').value;
-        const message = document.getElementById('message'); // Get the message element
-        message.style.display = 'none'; // Initially hide the message
+        const message = document.getElementById('message');
+        message.style.display = 'none';
 
         let hasImages = false;
 
-
         images.forEach((imageSrc) => {
-            // Filter based on the selected filter
             if ((selectedFilter === 'jpeg' && (imageSrc.endsWith('.jpg') || imageSrc.endsWith('.jpeg'))) ||
                 (selectedFilter === 'png' && imageSrc.endsWith('.png')) ||
                 (selectedFilter === 'webp' && imageSrc.endsWith('.webp'))) {
 
-                hasImages = true; // Set the flag to true if an image is added
+                hasImages = true;
                 const li = document.createElement('li');
                 const img = document.createElement('img');
                 img.src = imageSrc;
@@ -54,18 +51,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Show message if no images were found
         if (!hasImages) {
-            message.style.display = 'flex'; // Show the message if no images were added
+            message.style.display = 'flex';
         } else {
-            message.style.display = 'none'; // Hide the message if images were found
+            message.style.display = 'none';
         }
     }
 
-    // Event listener for radio buttons to filter images
     document.querySelectorAll('input[name="imageFilter"]').forEach(radio => {
         radio.addEventListener('change', function () {
-            // Load images from storage and filter on change
             chrome.storage.local.get('imageUrls', (data) => {
                 if (data.imageUrls) {
                     displayImages(data.imageUrls);
@@ -74,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Get the active tab
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.scripting.executeScript(
             {
@@ -85,9 +78,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (results && results[0] && results[0].result) {
                     const images = results[0].result;
                     if (images.length > 0) {
-                        // Store the new image URLs in storage
                         chrome.storage.local.set({ imageUrls: images }, () => {
-                            displayImages(images); // Display images immediately
+                            displayImages(images);
                         });
                     }
                 }
@@ -96,26 +88,45 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+document.getElementById('downloadBtn').addEventListener('click', downloadImages);
+document.getElementById('svgDownloadBtn').addEventListener('click', () => {
+    executeScriptOnActiveTab(downloadSvgWithAutoDetection);
+});
+document.getElementById('svgCopyBtn').addEventListener('click', () => {
+    executeScriptOnActiveTab(copySvgWithAutoDetection);
+});
 
+// Keyboard shortcuts for copy and download
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.altKey && e.key === 'c') {
+        executeScriptOnActiveTab(copySvgWithAutoDetection);
+    } else if (e.ctrlKey && e.altKey && e.key === 'd') {
+        executeScriptOnActiveTab(downloadSvgWithAutoDetection);
+    }
+});
 
+function executeScriptOnActiveTab(callbackFunction) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.scripting.executeScript({
+            target: { tabId: tabs[0].id },
+            function: callbackFunction
+        });
+    });
+}
 
-
-
-document.getElementById('downloadBtn').addEventListener('click', () => {
+function downloadImages() {
     const imageUrls = document.getElementById('imageUrls').value.split('\n').map(url => url.trim()).filter(url => url);
-    const folderNameInput = document.getElementById('folderName').value.trim(); // Get the folder name from user input
+    const folderNameInput = document.getElementById('folderName').value.trim();
 
     if (imageUrls.length > 0) {
-        // Use the folder name provided by the user, if any
         const folderName = folderNameInput !== '' ? folderNameInput : '';
 
         imageUrls.forEach(url => {
-            const fileName = url.split('/').pop(); // Extract file name from the URL
-
+            const fileName = url.split('/').pop();
             chrome.downloads.download({
                 url: url,
-                filename: folderName ? `${folderName}/${fileName}` : fileName, // If folderName exists, use it; otherwise, download as it is
-                saveAs: false // Automatically download without prompt
+                filename: folderName ? `${folderName}/${fileName}` : fileName,
+                saveAs: false
             });
         });
 
@@ -127,81 +138,73 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
     } else {
         alert("Please enter at least one valid image URL.");
     }
-});
-document.getElementById('svgDownloadBtn').addEventListener('click', () => {
+}
+chrome.commands.onCommand.addListener((command) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
+      if (tabs.length > 0) {
+        const tabId = tabs[0].id;
+  
+        if (command === "copy_svg") {
+          chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            function: copySvgWithAutoDetection
+          });
+        } else if (command === "download_svg") {
+          chrome.scripting.executeScript({
+            target: { tabId: tabId },
             function: downloadSvgWithAutoDetection
-        });
+          });
+        }
+      } else {
+        console.error("No active tab found.");
+      }
     });
-});
-
+  });
+  
 function downloadSvgWithAutoDetection() {
-    // Check if the edit button exists and trigger it to reveal the SVG if necessary
     const editButton = document.querySelector('#detail_edit_icon');
     if (editButton) {
-        editButton.click(); // Click the button to ensure the SVG is visible
+        editButton.click();
     }
 
-    // Wait for the SVG to load
     setTimeout(() => {
         const svgElement = document.querySelector('.detail__editor__icon-holder svg');
         if (svgElement) {
             const serializer = new XMLSerializer();
             const svgString = serializer.serializeToString(svgElement);
-
-            // Create a Blob for the SVG content
             const blob = new Blob([svgString], { type: 'image/svg+xml' });
-
-            // Create a link and trigger the download
             const link = document.createElement('a');
-            const fileName = 'downloaded-icon.svg';  // Default name for the file
             link.href = URL.createObjectURL(blob);
-            link.download = fileName;
+            link.download = 'downloaded-icon.svg';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            // alert('SVG file downloaded successfully');
         } else {
             alert('SVG element not found. Please ensure it is present on the page.');
         }
-    }, 2000); // Adjust the timeout delay if needed based on page behavior
+    }, 2000);
 }
-document.getElementById('svgCopyBtn').addEventListener('click', () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
-            function: copySvgWithAutoDetection
-        });
-    });
-});
 
 function copySvgWithAutoDetection() {
-    // Check if the edit button exists and trigger it to reveal the SVG if necessary
     const editButton = document.querySelector('#detail_edit_icon');
     if (editButton) {
-        editButton.click(); // Click the button to ensure the SVG is visible
+        editButton.click();
     }
 
-    // Wait for the SVG to load
     setTimeout(() => {
         const svgElement = document.querySelector('.detail__editor__icon-holder svg');
         if (svgElement) {
             const serializer = new XMLSerializer();
             const svgString = serializer.serializeToString(svgElement);
 
-            // Copy the SVG content to the clipboard
             const textarea = document.createElement('textarea');
             textarea.value = svgString;
             document.body.appendChild(textarea);
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            // alert('SVG content copied to clipboard.');
         } else {
             alert('SVG element not found. Please ensure it is present on the page.');
         }
-    }, 2000); // Adjust the timeout delay if needed based on page behavior
+    }, 2000);
 }
-

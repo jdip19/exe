@@ -1,13 +1,31 @@
 {
   "manifest_version": 3,
-  "name": "Image Downloader",
+  "name": "UDownloader",
   "version": "1.0",
   "permissions": [
     "downloads",
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "tabs"
   ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "commands": {
+    "copy_svg": {
+      "suggested_key": {
+        "default": "Alt+Shift+C"
+      },
+      "description": "Copy SVG code to clipboard"
+    },
+    "download_svg": {
+      "suggested_key": {
+        "default": "Alt+Shift+D"
+      },
+      "description": "Download SVG file"
+    }
+  },
   "background": {
     "service_worker": "background.js"
   },
@@ -16,12 +34,8 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "contentScript.js"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
     }
   ],
   "icons": {
