@@ -11,6 +11,7 @@
     <title>Imager</title>
     <meta name="Imager" content="Imager is Image manager which helps to resize your image">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="imager.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&family=Red+Rose:wght@300..700&display=swap"
@@ -26,12 +27,12 @@
             <h1 class="text-center">Image Resizer Tool</h1>
             <p><span id="counter"></span> Files Resized till now 😎</p>
         </div>
-        <div class="imgV">
-            <div id="previewContainer"></div>
-        </div>
         <div class="drop-zone mt-3" id="dropZone">
             <p>Drag & drop your images here or click to select files</p>
             <input type="file" id="fileInput" multiple accept="image/*" hidden>
+        </div>
+        <div class="imgV">
+            <div id="previewContainer"></div>
         </div>
         <!-- <div class="row">
             <div class="flex">512 X 512<input type="checkbox" class="form-check"></div>
