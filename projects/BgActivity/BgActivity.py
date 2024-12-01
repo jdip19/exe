@@ -1,27 +1,74 @@
 import pyautogui
 import time
+import random
+from pynput import mouse, keyboard
 
 # Time interval in seconds
-interval = 10  # Move mouse every 10 seconds
-moveX = 30
-moveY = 50
+interval = 10  # Move mouse after 10 seconds of inactivity
 
+# Get the screen size to ensure the cursor doesn't go out of bounds
+screen_width, screen_height = pyautogui.size()
+
+# Variable to track the last activity time
+last_activity_time = time.time()
+
+def on_mouse_move(x, y):
+    try:
+        global last_activity_time
+        last_activity_time = time.time()
+        print(f"Mouse movement detected at ({x}, {y})")
+    except Exception as e:
+        print(f"Mouse move error: {e}")
+
+def on_mouse_click(x, y, button, pressed):
+    try:
+        global last_activity_time
+        last_activity_time = time.time()
+        print(f"Mouse click detected at ({x}, {y}), button: {button}, pressed: {pressed}")
+    except Exception as e:
+        print(f"Mouse click error: {e}")
+
+def on_key_press(key):
+    try:
+        global last_activity_time
+        last_activity_time = time.time()
+        print(f"Keyboard activity detected: {key}")
+    except Exception as e:
+        print(f"Key press error: {e}")
+
+# Set up listeners for mouse and keyboard events
+mouse_listener = mouse.Listener(on_move=on_mouse_move, on_click=on_mouse_click)
+keyboard_listener = keyboard.Listener(on_press=on_key_press)
+
+# Start the listeners and ensure they are running
+mouse_listener.start()
+keyboard_listener.start()
+
+# Main loop for mouse movement after inactivity
 try:
     while True:
-        # Get current mouse position
-        x, y = pyautogui.position()
+        # Check the time since the last activity
+        time_since_last_activity = time.time() - last_activity_time
 
-        # Print the position before the move
-        print("Before moving:", x, y)
+        if time_since_last_activity >= interval:
+            # Generate random values for moveX and moveY within screen bounds
+            moveX = random.randint(0, screen_width)
+            moveY = random.randint(0, screen_height)
 
-        # Move the mouse slightly
-        pyautogui.moveTo(x + moveX, y + moveY, duration=0.1)
+            # Move the mouse to the random position
+            pyautogui.moveTo(moveX, moveY, duration=0.1)
 
-        # Get the new mouse position after moving
-        new_x, new_y = pyautogui.position()
-        print("Now cursor position:", new_x, new_y)
+            # Print the new cursor position
+            print(f"Mouse moved to position: {moveX}, {moveY}")
 
-        # Wait for the specified interval
-        time.sleep(interval)
+            # Reset the last activity time to prevent immediate further movement
+            last_activity_time = time.time()
+
+        # Sleep for a short while to avoid high CPU usage
+        time.sleep(0.1)
 except KeyboardInterrupt:
     print("Script stopped by user.", flush=True)
+
+# Stop the listeners when the script exits
+mouse_listener.stop()
+keyboard_listener.stop()

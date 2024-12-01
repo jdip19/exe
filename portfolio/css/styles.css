@@ -958,6 +958,7 @@ table {
 		margin-left: 0;
 		margin-right: 0;
 	}
+	
 }
 
 @media screen and (max-width: 700px) {
@@ -1009,7 +1010,7 @@ body {
 }
 
 p {
-	font-size: inherit;
+	font-size: 18px;
 	text-rendering: optimizeLegibility;
 }
 
@@ -3240,6 +3241,9 @@ h2.list-items__item-title {
 		--col: 4;
 	}
 }
+@media screen and (max-width: 400px) {
+	
+}
 
 
 
@@ -3295,15 +3299,15 @@ h2.list-items__item-title {
 }
 
 .s-header__logo::before {
-	content: '';
-	position: absolute;
-	top: -2.0rem;
-	left: -2.4rem;
-	width: 386%;
-	height: 86px;
-	background-color: #fff;
-	clip-path: polygon(0 0, 50% 0, 30% 150%, 0 100%);
-	z-index: -1;
+    content: '';
+    position: absolute;
+    top: -2.2rem;
+    left: -2.4rem;
+    width: 386%;
+    height: 86px;
+    background-color: #fff;
+    clip-path: polygon(0 0, 50% 0, 25% 168%, 0 98%);
+    z-index: -1;
 }
 
 .s-header__logo a {
@@ -3345,7 +3349,8 @@ h2.list-items__item-title {
 
 .s-header__menu-links a {
 	display: block;
-	font-family: var(--font-2);
+	font-size: calc(var(--text-size) * 0.8);
+	font-family: var(--font-1);
 	font-weight: 400;
 	line-height: var(--vspace-1);
 	color: var(--color-2);
@@ -3470,6 +3475,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 		align-items: center;
 		padding: 0 2rem 0 8rem;
 		clip-path: polygon(16% 0, 250% 0%, 30% 150%, 34% 106%);
+		font-size: calc(var(--text-size) * 0.8);
 	}
 
 	.column.lg-12.s-intro__content-inner {
@@ -3478,10 +3484,10 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	.column.lg-12.s-intro__content-inner h1 {
-		font-size: clamp(22rem, 10vw, 14rem);
+		font-size: clamp(24rem, 8vw,26rem);
 	}
 	.column.lg-12.s-intro__content-inner h1:nth-child(3) {
-		margin-left: calc(100vw * 0.3);
+		text-align: right;
 		margin-top: -2rem;
 	}
 
@@ -3637,10 +3643,22 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 }
 
-@media screen and (max-width: 600px) {
-	.s-header__logo {}
-
-	.s-header__menu-toggle {}
+@media screen and (max-width: 899px) {
+	.column.lg-12.s-intro__content-inner h1 {
+		font-size: clamp(14rem, 8vw,26rem);
+		word-break: break-all;
+		margin-top: calc(100vw * 0.05);
+		line-height: 90%;
+	}
+	.column.lg-12.s-intro__content-inner h1:nth-child(3) {
+		margin-top: 2rem;
+	}
+	p.about {
+		font-size: 14px;
+	}
+	.s-header__logo img {
+		width: 6rem;
+	}
 }
 
 @media screen and (max-width: 400px) {
@@ -3648,7 +3666,14 @@ a.s-header__menu-toggle.is-clicked svg path {
 		padding-right: 0;
 	}
 
-	.s-header__nav a:not(.btn) {}
+	.no-js .s-intro__content-title,
+	.ss-show .s-intro__content-title {
+		transition-delay: 0.9s;
+		font-size: clamp(16rem, 10vw, 14rem);
+		word-break: break-all;
+		margin-top: calc(100vw * 0.05);
+		line-height: 90%;
+	}
 }
 
 
@@ -3741,7 +3766,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 
 .cbtn {
 	width: 100%;
-	clip-path: polygon(79% 100%, 20% 100%, 26% 0, 72% 0%);
+	clip-path: polygon(79% 102%, 20% 102%, 27% 0, 72% 0%);
 	margin: 0;
 	background-color: var(--color-white);
 }
@@ -3883,7 +3908,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 .s-intro__scroll-down span {
 	display: block;
 	font-family: var(--font-1);
-	font-size: var(--text-size);
+	font-size: calc(var(--text-size) * 0.8);
 	font-weight: 300;
 	line-height: var(--vspace-2);
 }
@@ -3999,6 +4024,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	transition-delay: 1.5s;
 	opacity: 1;
 	transform: translate(0, 0);
+	margin-top: var(--vspace-0_125);
 }
 
 .no-js .s-intro__scroll-down,
@@ -4027,10 +4053,6 @@ a.s-header__menu-toggle.is-clicked svg path {
 		grid-column-end: span 8;
 	}
 
-	.s-intro__content-title {
-		/* font-size: clamp(16.2rem, 10vw, 10.4rem); */
-		font-size: clamp(14rem, 10vw, 10.4rem)
-	}
 
 	.s-intro__content-title br {
 		display: none;
@@ -4056,14 +4078,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 		transition-delay: 0.6s;
 	}
 
-	.no-js .s-intro__content-title,
-	.ss-show .s-intro__content-title {
-		transition-delay: 0.9s;
-		font-size: clamp(16rem, 10vw, 14rem);
-		word-break: break-all;
-		margin-top: calc(100vw * 0.05);
-		line-height: 90%;
-	}
+	
 
 	.no-js .s-intro__content-media img,
 	.ss-show .s-intro__content-media img {
