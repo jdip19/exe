@@ -398,14 +398,14 @@
 })(document.documentElement);
 
 
-const horizontalSections = gsap.utils.toArray('section.horizontal')
+const horizontalSections = gsap.utils.toArray('section.horizontal');
 
 horizontalSections.forEach(function (sec, i) {	
   
-  var thisPinWrap = sec.querySelector('.pin-wrap');
-  var thisAnimWrap = thisPinWrap.querySelector('.animation-wrap');
-  
-  var getToValue = () => -(thisAnimWrap.scrollWidth - window.innerWidth); 
+  const thisPinWrap = sec.querySelector('.pin-wrap');
+  const thisAnimWrap = thisPinWrap.querySelector('.animation-wrap');
+  const getToValue = () => -(thisAnimWrap.scrollWidth - window.innerWidth);
+  const lastItemWidth = thisAnimWrap.lastElementChild.offsetWidth;
 
   gsap.fromTo(thisAnimWrap, { 
     x: () => thisAnimWrap.classList.contains('to-right') ? 0 : getToValue() 
@@ -415,13 +415,11 @@ horizontalSections.forEach(function (sec, i) {
     scrollTrigger: {
       trigger: sec,		
       start: "top top",
-      end: () => "+=" + (thisAnimWrap.scrollWidth - window.innerWidth),
+      end: () => "+=" + (thisAnimWrap.scrollWidth+1000), // Adjusted end value
       pin: thisPinWrap,
       invalidateOnRefresh: true,
-      //anticipatePin: 1,
       scrub: true,
-      //markers: true,
     }
   });
 
-});	
+});

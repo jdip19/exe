@@ -2813,9 +2813,6 @@ td:last-child {
 /* ------------------------------------------------------------------- 
  * ## list items
  * ----:--------------------------------------------------------------- */
-section.horizontal {
-	overflow-x: hidden;
-}
 
 section.horizontal .pin-wrap,
 section.horizontal .animation-wrap {
@@ -2827,12 +2824,21 @@ section.horizontal .animation-wrap {
 
 section.horizontal .item {
 	position: relative;
-	flex: 0 0 calc(100vw - (100vw* 0.072));
+	flex: 0 0 100%;
 	height: calc(100vh);
+	padding:25vh 0
 }
-.pin-wrap
-{
-	top:-1px ;
+
+.animation-wrap {
+	display: flex;
+	overflow: visible; /* Ensure overflow allows scrolling */
+ }
+ .animation-wrap .item {
+	flex-shrink: 0;
+ }
+ 
+ .row.section-header.grid-section-split__header {
+    position: absolute;
 }
 
 /*
@@ -2843,9 +2849,7 @@ section.horizontal .item {
     float: left;
 } */
 
-.pimg img{
-	height: 
-}
+
 .text-pretitle {
 	padding: 1rem;
 	background: var(--color-3);
@@ -2903,6 +2907,7 @@ section.horizontal .item {
 h2.list-items__item-title {
 	font-family: var(--font-3);
 	font-size: 5rem;
+	margin-bottom: var(--vspace-0_125);
 }
 
 
@@ -3516,7 +3521,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	.column.lg-12.s-intro__content-inner h1 {
-		font-size: clamp(24rem, 8vw, 26rem);
+		font-size: clamp(22rem, 8vw, 26rem);
 	}
 
 	.column.lg-12.s-intro__content-inner h1:nth-child(3) {
@@ -3525,7 +3530,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	p.about {
-		width: 27%;
+		width: 30%;
 	}
 
 	.column.lg-12.about {
@@ -3687,7 +3692,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 
 @media screen and (max-width: 899px) {
 	.column.lg-12.s-intro__content-inner h1 {
-		font-size: clamp(16rem, 8vw, 26rem);
+		font-size: clamp(13.4rem, 8vw, 26rem);
 		word-break: break-all;
 		margin-top: calc(100vw * 0.05);
 		line-height: 90%;
@@ -4186,7 +4191,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	font-size: 3rem;
 	font-family: var(--font-2);
 	color: var(--color-2);
-	margin-bottom: -1rem;
+	margin-bottom: -1.8rem;
 }
 
 .s-about {
