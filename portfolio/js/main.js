@@ -401,10 +401,10 @@
 const horizontalSections = gsap.utils.toArray('section.horizontal');
 
 horizontalSections.forEach(function (sec, i) {	
-  
+    
   const thisPinWrap = sec.querySelector('.pin-wrap');
   const thisAnimWrap = thisPinWrap.querySelector('.animation-wrap');
-  const getToValue = () => -(thisAnimWrap.scrollWidth - window.innerWidth);
+  const getToValue = () => -(thisAnimWrap.scrollWidth - (thisAnimWrap.scrollWidth/3));
   const lastItemWidth = thisAnimWrap.lastElementChild.offsetWidth;
 
   gsap.fromTo(thisAnimWrap, { 
@@ -415,7 +415,7 @@ horizontalSections.forEach(function (sec, i) {
     scrollTrigger: {
       trigger: sec,		
       start: "top top",
-      end: () => "+=" + (thisAnimWrap.scrollWidth+1000), // Adjusted end value
+      end: () => "+=" + (thisAnimWrap.scrollWidth), // Adjusted end value
       pin: thisPinWrap,
       invalidateOnRefresh: true,
       scrub: true,

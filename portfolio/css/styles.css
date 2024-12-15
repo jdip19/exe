@@ -2848,7 +2848,15 @@ section.horizontal .item {
     counter-reset: item;
     float: left;
 } */
-
+.pimg {
+    display: flex;
+    flex-grow: 1;
+    height: 50vh;
+}
+.pimg img {
+    flex-grow: 1;
+    object-fit: cover;
+}
 
 .text-pretitle {
 	padding: 1rem;
@@ -2886,9 +2894,8 @@ section.horizontal .item {
 
 .wthumb {
     display: flex;
-    flex-grow: 1;
     justify-content: space-between;
-    padding: 1.4rem 0;
+    padding: 2rem 0 0 0;
 	flex-wrap: wrap;
 }
 
