@@ -25,14 +25,19 @@ Promise.all(
     console.error('Error loading fonts:', error);
   });
 
-
 function handleTextCase(node: TextNode): void {
-  let newText = node.characters;
+  const originalCharacters = node.characters;
+  const originalFills = [];
+
+  // Store the original fills for each character
+  for (let i = 0; i < originalCharacters.length; i++) {
+    originalFills.push(node.getRangeFills(i, i + 1));
+  }
+
+  let newText = originalCharacters;
 
   // Get the current text style ID dynamically from the selected text node
   const currentTextStyleId = node.textStyleId;
-
-  // Apply text transformation based on the command
   switch (figma.command) {
     case 'titlecase':
       const conjunctions = ['for', 'an', 'a', 'in', 'on', 'of', 'am', 'are', 'and', 'to', 'is', 'at', 'also'];
@@ -136,6 +141,13 @@ function handleTextCase(node: TextNode): void {
 
   // Update the node with the modified text
   node.characters = newText;
+
+  // Reapply the original fills to the corresponding character ranges
+  for (let i = 0; i < originalCharacters.length; i++) {
+    if (originalFills[i] !== null) {
+      node.setRangeFills(i, i + 1, originalFills[i] as Paint[]);
+    }
+  }
 
   // Apply the text style after the transformation is done
   node.setTextStyleIdAsync(currentTextStyleId as string).catch(error => {
