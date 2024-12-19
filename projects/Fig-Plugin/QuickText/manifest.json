@@ -34,11 +34,7 @@
       "command": "addbreakline"
     },
     {
-      "name": "Remove Breaklines",
-      "command": "rmvbreakline"
-    },
-    {
-      "name": "Remove Space",
+      "name": "Remove Breaklines & Space",
       "command": "rmvspace"
     }
   ]
