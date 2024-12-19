@@ -40,7 +40,7 @@ function handleTextCase(node: TextNode): void {
   const currentTextStyleId = node.textStyleId;
   switch (figma.command) {
     case 'titlecase':
-      const conjunctions = ['for', 'an', 'a', 'in', 'on', 'of', 'am', 'are', 'and', 'to', 'is', 'at', 'also'];
+      const conjunctions = ['for', 'an', 'a', 'in', 'on', 'of', 'am', 'are', 'and', 'to', 'is', 'at', 'also','with'];
 
       const TitleCase = newText.split(' ').every(word => {
         const firstLetter = word.charAt(0);
