@@ -2794,8 +2794,14 @@ td:last-child {
 }
 
 .text-pretitle {
+	padding: 0.6rem 1rem;
+	background: var(--color-3);
+	color: var(--color-white);
+	text-transform: uppercase;
+	width: max-content !important;
+	margin-bottom: calc(100vw* 0.01);
 	font-family: var(--font-1);
-	font-size: var(--text-md);
+	font-size: var(--text-sm);
 	line-height: var(--vspace-1);
 	transform: translate(0.2em, 0);
 	margin-top: 0;
@@ -2860,14 +2866,7 @@ section.horizontal .item {
 	object-fit: cover;
 }
 
-.text-pretitle {
-	padding: 1rem;
-	background: var(--color-3);
-	color: var(--color-white);
-	text-transform: uppercase;
-	width: max-content !important;
-	margin-bottom: calc(100vw* 0.02);
-}
+
 
 .row.work {
 	margin-bottom: var(--vspace-1);
@@ -3171,6 +3170,7 @@ h2.list-items__item-title {
  * -------------------------------------------------------------------- */
 .column.grid-block.grid-section-split {
 	padding: 0;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 .grid-block {
@@ -3284,6 +3284,35 @@ h2.list-items__item-title {
 @media screen and (max-width: 600px) {
 	.grid-block {
 		--col: 1;
+	}
+	section.horizontal{
+		padding-left: 2vw;
+        padding-right: 2vw;
+	}
+
+	section.horizontal .pin-wrap,
+	section.horizontal .animation-wrap {
+		display: flex;
+		position: relative;
+		z-index: 1;
+		height: 100vh;
+		width: 100%;
+	}
+	.wthumb::before,h2.list-items__item-title {
+		font-size: 3.2rem;
+		line-height:0.8;
+		
+	}
+	.Wtitle p {
+		margin-bottom: 1rem;
+		font-size: var(--text-sm);
+	}
+	section.horizontal .item {
+		padding: 22vh 0;
+	}
+	.tag span {
+		padding: 0.2rem 1rem;
+		font-size: var(--text-sm);
 	}
 
 }
@@ -4294,9 +4323,7 @@ a.s-header__menu-toggle.is-clicked svg path {
  * responsive:
  * expertise
  * ------------------------------------------------------------------- */
-@media screen and (max-width: 800px) {
-
-}
+@media screen and (max-width: 800px) {}
 
 
 
