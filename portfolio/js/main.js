@@ -415,7 +415,7 @@ horizontalSections.forEach(function (sec, i) {
     scrollTrigger: {
       trigger: sec,		
       start: "top top",
-      end: () => "+=" + (thisPinWrap.scrollWidth), // Adjusted end value
+      end: () => "+=" + (thisAnimWrap.scrollWidth), // Adjusted end value
       pin: thisPinWrap,
       invalidateOnRefresh: true,
       scrub: true,
