@@ -1317,14 +1317,6 @@ h1,
 	letter-spacing: -0.015em;
 }
 
-@media screen and (max-width: 500px) {
-
-	h1,
-	.h1 {
-		font-size: var(--text-xxxl);
-		line-height: calc(1.625 * var(--space));
-	}
-}
 
 h2,
 .h2 {
@@ -2824,27 +2816,21 @@ td:last-child {
  * ## list items
  * ----:--------------------------------------------------------------- */
 
-section.horizontal .pin-wrap,
-section.horizontal .animation-wrap {
-	display: flex;
-	position: relative;
-	z-index: 1;
-	height: 100vh;
-}
 
-.grid-list-items.list-items.show-ctr.animation-wrap.to-right {
-	padding: 30vh 0 0 0;
-}
+
 
 section.horizontal .item {
-	position: relative;
-	flex: 0 0 100%;
+    display: flex;
+    position: relative;
+    flex: 1 0 100%;
+    flex-direction: column;
 }
 
 .animation-wrap {
 	display: flex;
 	overflow: visible;
 	/* Ensure overflow allows scrolling */
+	padding-bottom:10vw;	
 }
 
 .animation-wrap .item {
@@ -2855,17 +2841,15 @@ section.horizontal .item {
 	position: absolute;
 }
 
-/*
-	  
-  }
-  section.horizontal .animation-wrap.to-right {
-    counter-reset: item;
-    float: left;
-} */
+section.horizontal {
+	padding-left: 2vw;
+	padding-right: 2vw;
+}
+
+
 .pimg {
 	display: flex;
-	flex-grow: 1;
-	height: 50vh;
+	flex-grow: 1;	
 }
 
 .pimg img {
@@ -2905,6 +2889,7 @@ section.horizontal .item {
 	justify-content: space-between;
 	padding: 2rem 0 0 0;
 	flex-wrap: wrap;
+	gap:12px;
 }
 
 .tag {
@@ -2921,7 +2906,7 @@ section.horizontal .item {
 
 h2.list-items__item-title {
 	font-family: var(--font-3);
-	font-size: 5rem;
+	font-size: 4rem;
 	margin-bottom: var(--vspace-0_125);
 }
 
@@ -3143,7 +3128,7 @@ h2.list-items__item-title {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 1200px) {
 	.text-display-title {
-		font-size: clamp(4rem, 8vw, var(--text-display-2));
+		font-size: clamp(4rem, 6vw, var(--text-display-2));
 	}
 }
 
@@ -3293,10 +3278,7 @@ h2.list-items__item-title {
 		--col: 1;
 	}
 
-	section.horizontal {
-		padding-left: 2vw;
-		padding-right: 2vw;
-	}
+
 
 	section.horizontal .pin-wrap,
 	section.horizontal .animation-wrap {
@@ -3305,13 +3287,6 @@ h2.list-items__item-title {
 		z-index: 1;
 		height: 100vh;
 		width: 100%;
-	}
-
-	.wthumb::before,
-	h2.list-items__item-title {
-		font-size: 3.2rem;
-		line-height: 0.8;
-
 	}
 
 	.Wtitle p {
@@ -3673,7 +3648,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 
 	.s-header__nav a:not(.btn) {
 		display: inline-block;
-		font-size: var(--text-xxl);
+		font-size: var(--text-xl);
 		color: var(--color-white);
 		line-height: 1;
 		padding: var(--vspace-0_5) 0;
@@ -3747,19 +3722,10 @@ a.s-header__menu-toggle.is-clicked svg path {
 }
 
 @media screen and (max-width: 899px) {
-	.column.lg-12.s-intro__content-inner h1 {
-		font-size: var(--text-display-3);
-		word-break: break-all;
-		margin-top: calc(100vw * 0.05);
-		line-height: 90%;
-	}
 
-	.column.lg-12.s-intro__content-inner h1:nth-child(3) {
-		margin-top: 2rem;
-	}
 
 	p.about {
-		font-size: clamp(1rem, 10vw, 1.8rem);
+		font-size: clamp(1rem, 4vw, 4rem)
 	}
 
 	.s-header__logo img {
@@ -3771,15 +3737,14 @@ a.s-header__menu-toggle.is-clicked svg path {
 	.s-header__nav {
 		padding-right: 0;
 	}
-
-	.no-js .s-intro__content-title,
 	.ss-show .s-intro__content-title {
-		transition-delay: 0.9s;
-		font-size: clamp(16rem, 10vw, 14rem);
-		word-break: break-all;
-		margin-top: calc(100vw * 0.05);
-		line-height: 90%;
+		font-size: clamp(12rem, 10vw, 14rem);
 	}
+	.wthumb::before, h2.list-items__item-title {
+		font-size: 3.2rem;
+		line-height: 0.8;
+	}
+	
 }
 
 
@@ -3923,10 +3888,11 @@ a.s-header__menu-toggle.is-clicked svg path {
 }
 
 .s-intro__content-title {
-	font-size: clamp(5rem, 7vw, 11.6rem);
-	line-height: 1;
-	margin-top: 0;
-	margin-bottom: 0;
+	font-size: clamp(16rem, 10vw, 50rem);
+	word-break: break-all;
+	margin-top: calc(100vw * 0.05);
+	line-height: 90%;
+	transition-delay: 0.9s;
 }
 
 .s-intro__content-media {
@@ -4123,8 +4089,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	transition-delay: 1.2s;
 }
 
-.no-js .s-intro__content-title,
-.ss-show .s-intro__content-title,
+
 .no-js .about,
 .ss-show .about {
 	transition-delay: 1.5s;
@@ -4244,7 +4209,7 @@ a.s-header__menu-toggle.is-clicked svg path {
  *
  * ------------------------------------------------------------------- */
 .s-intro__content-pretitle {
-	font-size: 3rem;
+	font-size: 100%;
 	font-family: var(--font-2);
 	color: var(--color-2);
 	margin-bottom: -1.8rem;
@@ -4325,8 +4290,8 @@ a.s-header__menu-toggle.is-clicked svg path {
  *
  * ------------------------------------------------------------------- */
 .s-expertise {
-	padding-top: var(--vspace-6);
-	padding-bottom: var(--vspace-5);
+	padding-top: var(--vspace-4);
+	padding-bottom: var(--vspace-4);
 }
 
 .s-expertise__content-main {
@@ -4754,8 +4719,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 		height: var(--vspace-0_75);
 		width: var(--vspace-0_75);
 	}
+
 	.s-footer h3 {
-		font-size: clamp(17rem, 10vw, 32rem);
+		font-size: clamp(14rem, 10vw, 32rem);
 	}
 }
 
@@ -5058,6 +5024,18 @@ a.s-header__menu-toggle.is-clicked svg path {
 	padding-left: 0;
 }
 
+@media screen and (min-width: 500px) {
+	.column.lg-12.s-intro__content-inner h1 {
+		font-size: var(--text-display-3);
+		word-break: break-all;
+		margin-top: calc(100vw * 0.03);
+		line-height: 90%;
+	}
+}
+
+
+
+
 @media screen and (min-width: 1400px) {
 	.s-footer h3 {
 		font-size: clamp(26rem, 14vw, 32rem)
@@ -5067,16 +5045,14 @@ a.s-header__menu-toggle.is-clicked svg path {
 		flex: 1 0 auto;
 	}
 
-	section.horizontal .item {
-		padding: 16vh 0 0 0;
-	}
 
-	.grid-list-items.list-items.show-ctr.animation-wrap.to-right {
-		padding-top: calc(100vh * 0.16)
-	}
 
 	.text-display-title {
-		font-size: clamp(2rem, 8vw, var(--text-display-2));
+		font-size: clamp(2rem, 6vw, var(--text-display-2));
+	}
+
+	.column.lg-12.s-intro__content-inner h1 {
+		font-size: clamp(24rem, 10vw, 50rem);
 	}
 
 
@@ -5084,7 +5060,15 @@ a.s-header__menu-toggle.is-clicked svg path {
 
 @media screen and (min-width: 1760px) {
 	.text-display-title {
-		font-size: clamp(2rem, 8vw, 14rem);
+		font-size: clamp(2rem, 6vw, 14rem);
+	}
+
+	.column.lg-12.s-intro__content-inner h1 {
+		font-size: clamp(40rem, 10vw, 50rem);
+	}
+
+	p.about {
+		font-size: 20px;
 	}
 
 

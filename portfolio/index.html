@@ -128,7 +128,7 @@
                                 </div>
                                 <span>Scroll Down</span>
                             </a>
-                        </div> 
+                        </div>
 
                     </div> <!-- s-intro__content-inner -->
 
@@ -143,7 +143,8 @@
                             <div class="s-expertise__content-main grid-section-split__primary pin-wrap">
                                 <div class="section-header grid-section-split__header">
                                     <div class="text-pretitle">Recent Work</div>
-                                    <h1 class="text-display-title">HIGHLIGHTING MY FAV<span class="title-line"></span> UI/UX
+                                    <h1 class="text-display-title">HIGHLIGHTING MY FAV<span class="title-line"></span>
+                                        UI/UX
                                         PROJECTS.</h1>
                                 </div> <!-- end section-header -->
                                 <div class="grid-list-items list-items show-ctr animation-wrap to-right">
@@ -152,7 +153,8 @@
                                         <div class="pimg">
                                             <img src="images/tcb-2024.webp" alt="">
                                         </div>
-                                            <div class="Wtitle wthumb">
+                                        <div class="Wtitle wthumb">
+                                            <div>
                                                 <div>
                                                     <a href="single.html">
                                                         <h2 class="list-items__item-title">THE CRAZY BEAUTY</h2>
@@ -162,13 +164,15 @@
                                                 </div>
                                                 <div class="tag"><span>app</span><span>web</span><span>pos</span></div>
                                             </div>
+                                        </div>
                                     </div> <!-- list-item -->
 
                                     <div class="grid-list-items__item list-items__item item">
                                         <div class="pimg">
                                             <img src="images/tcb-2024.webp" alt="">
                                         </div>
-                                            <div class="Wtitle wthumb">
+                                        <div class="Wtitle wthumb">
+                                            <div>
                                                 <div>
                                                     <a href="single.html">
                                                         <h2 class="list-items__item-title">THE CRAZY BEAUTY</h2>
@@ -178,13 +182,15 @@
                                                 </div>
                                                 <div class="tag"><span>app</span><span>web</span><span>pos</span></div>
                                             </div>
+                                        </div>
                                     </div> <!-- list-item -->
 
                                     <div class="grid-list-items__item list-items__item item">
                                         <div class="pimg">
                                             <img src="images/tcb-2024.webp" alt="">
                                         </div>
-                                            <div class="Wtitle wthumb">
+                                        <div class="Wtitle wthumb">
+                                            <div>
                                                 <div>
                                                     <a href="single.html">
                                                         <h2 class="list-items__item-title">THE CRAZY BEAUTY</h2>
@@ -194,6 +200,7 @@
                                                 </div>
                                                 <div class="tag"><span>app</span><span>web</span><span>pos</span></div>
                                             </div>
+                                        </div>
                                     </div> <!-- list-item -->
 
                                 </div> <!-- grid-list-items -->
@@ -251,12 +258,20 @@
 
     <!-- Java Script
     ================================================== -->
-    <script src="js/plugins.js"></script> 
+    <script src="js/plugins.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="js/main.js"></script>
+    <script>
 
+        const head = document.querySelector('.grid-section-split__header');
+        const container = document.querySelector('.animation-wrap.to-right');
+
+        const headHeight = head.offsetHeight; // Get the height of .head
+        container.style.paddingTop = `${headHeight + 32}px`;
+        console.log(container.style.paddingTop);
+    </script>
 
 
 </body>
