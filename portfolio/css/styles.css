@@ -2804,8 +2804,8 @@ td:last-child {
 }
 
 .text-display-title {
-	font-size: clamp(4rem, 10vw, var(--text-display-2));
-	line-height: 1.0606;
+	font-size: clamp(2rem, 6vw, 14rem);
+	line-height: 100%;
 	letter-spacing: -0.012em;
 	color: var(--color-text-dark);
 	margin-top: 0;
@@ -2816,7 +2816,13 @@ td:last-child {
  * ## list items
  * ----:--------------------------------------------------------------- */
 
-
+ section.horizontal .pin-wrap, section.horizontal .animation-wrap {
+    display: flex;
+    position: relative;
+    z-index: 1;
+	height: auto;
+    width: 100%;
+}
 
 
 section.horizontal .item {
@@ -2863,7 +2869,7 @@ section.horizontal {
 	margin-bottom: var(--vspace-1);
 }
 
-.wthumb::before {
+.Wtitle::before {
 	content: "[" counter(ctr, decimal-leading-zero) "]";
 	counter-increment: ctr;
 	display: block;
@@ -2878,19 +2884,21 @@ section.horizontal {
 	display: flex;
 	text-transform: uppercase;
 	flex-direction: row;
+	padding: 2rem 0 0 0;
+	flex-wrap: wrap;
+	gap:12px;
+
+}
+.Wtitle > div:first-of-type {
+    justify-content: space-between;
+	flex-grow: 1;
 }
 
 .Wtitle>* {
 	margin: 0;
+	display: flex;
 }
 
-.wthumb {
-	display: flex;
-	justify-content: space-between;
-	padding: 2rem 0 0 0;
-	flex-wrap: wrap;
-	gap:12px;
-}
 
 .tag {
 	display: flex;
@@ -3277,7 +3285,14 @@ h2.list-items__item-title {
 	.grid-block {
 		--col: 1;
 	}
-
+	.Wtitle {
+		justify-content: space-between;
+	
+	}
+	.Wtitle > div:first-of-type{
+		flex-direction: column;
+		flex-grow: 0;
+	}
 
 
 	section.horizontal .pin-wrap,
@@ -3723,11 +3738,6 @@ a.s-header__menu-toggle.is-clicked svg path {
 
 @media screen and (max-width: 899px) {
 
-
-	p.about {
-		font-size: clamp(1rem, 4vw, 4rem)
-	}
-
 	.s-header__logo img {
 		width: 6rem;
 	}
@@ -3740,7 +3750,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	.ss-show .s-intro__content-title {
 		font-size: clamp(12rem, 10vw, 14rem);
 	}
-	.wthumb::before, h2.list-items__item-title {
+	.Wtitle::before, h2.list-items__item-title {
 		font-size: 3.2rem;
 		line-height: 0.8;
 	}
@@ -5026,9 +5036,8 @@ a.s-header__menu-toggle.is-clicked svg path {
 
 @media screen and (min-width: 500px) {
 	.column.lg-12.s-intro__content-inner h1 {
-		font-size: var(--text-display-3);
 		word-break: break-all;
-		margin-top: calc(100vw * 0.03);
+		margin-top: calc(100vw * 0.01);
 		line-height: 90%;
 	}
 }
