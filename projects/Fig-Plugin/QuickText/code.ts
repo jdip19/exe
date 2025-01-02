@@ -40,44 +40,70 @@ function handleTextCase(node: TextNode): void {
   const currentTextStyleId = node.textStyleId;
   switch (figma.command) {
     case 'titlecase':
-      const conjunctions = ['for', 'an', 'a', 'in', 'on', 'of', 'am', 'are', 'and', 'to', 'is', 'at', 'also','with'];
+      const conjunctions = ['for', 'as', 'an', 'a', 'in', 'on', 'of', 'am', 'are', 'and', 'to', 'is', 'at', 'also', 'with'];
 
+      // Check if the text is already in title case
       const TitleCase = newText.split(' ').every(word => {
         const firstLetter = word.charAt(0);
         const restOfWord = word.slice(1);
         return firstLetter.toUpperCase() === firstLetter && restOfWord.toLowerCase() === restOfWord;
       });
 
-      newText = newText.replace(/\b(\w+)\b/g, (match, word) => {
-        if (word.toUpperCase() === word || conjunctions.indexOf(word.toLowerCase()) !== -1) {
-          return word;
+      // Replace words based on title case rules
+      newText = newText.replace(/\b(\w+('\w+)?|\w+)\b/g, (match, word) => {
+        if (conjunctions.indexOf(word.toLowerCase()) !== -1) {
+          // Keep conjunctions lowercase
+          return word.toLowerCase();
+        } else if (word.includes("'") || word.includes("’")) {
+          // Handle apostrophe words like "plugin's" or "it's"
+          const apostropheIndex = word.indexOf("'") !== -1 ? word.indexOf("'") : word.indexOf("’");
+          const beforeApostrophe = word.slice(0, apostropheIndex + 1); // part before and including apostrophe
+          const afterApostrophe = word.slice(apostropheIndex + 1); // part after apostrophe
+
+          // Capitalize the first part, and keep the second part in lowercase
+          return beforeApostrophe.charAt(0).toUpperCase() + beforeApostrophe.slice(1).toLowerCase() + afterApostrophe.toLowerCase();
         } else {
+          // Standard capitalization for other words
           return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase();
         }
       });
 
+      // Special case: if the text was fully uppercase, convert it to lowercase and then apply title case
       if (newText === newText.toUpperCase()) {
         newText = newText.toLowerCase();
-        newText = newText.replace(/\b(\w+)\b/g, (match, word) => {
+        newText = newText.replace(/\b(\w+('\w+)?|\w+)\b/g, (match, word) => {
           if (conjunctions.indexOf(word.toLowerCase()) !== -1) {
             return word.toLowerCase();
+          } else if (word.includes("'") || word.includes("’")) {
+            const apostropheIndex = word.indexOf("'") !== -1 ? word.indexOf("'") : word.indexOf("’");
+            const beforeApostrophe = word.slice(0, apostropheIndex + 1);
+            const afterApostrophe = word.slice(apostropheIndex + 1);
+            return beforeApostrophe.charAt(0).toUpperCase() + beforeApostrophe.slice(1).toLowerCase() + afterApostrophe.toLowerCase();
           } else {
             return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
           }
         });
-      } else if (TitleCase) {
+      }
+      // Special case: if the text is already in title case, keep it lowercase for conjunctions and apply proper casing
+      else if (TitleCase) {
         newText = newText.toLowerCase();
-        newText = newText.replace(/\b(\w+)\b/g, (match, word) => {
+        newText = newText.replace(/\b(\w+('\w+)?|\w+)\b/g, (match, word) => {
           if (conjunctions.indexOf(word.toLowerCase()) !== -1) {
             return word.toLowerCase();
+          } else if (word.includes("'") || word.includes("’")) {
+            const apostropheIndex = word.indexOf("'") !== -1 ? word.indexOf("'") : word.indexOf("’");
+            const beforeApostrophe = word.slice(0, apostropheIndex + 1);
+            const afterApostrophe = word.slice(apostropheIndex + 1);
+            return beforeApostrophe.charAt(0).toUpperCase() + beforeApostrophe.slice(1).toLowerCase() + afterApostrophe.toLowerCase();
           } else {
             return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
           }
         });
       }
 
-      figma.notify('Tadaannn... 🥁 Your Text case changed to TitleCase.');
+      figma.notify('Tadaannn... 🥁 Case changed to TitleCase through Obstacles.');
       break;
+
 
     case 'sentencecase':
       const allUppercase = newText.split(' ').every(word => word.toUpperCase() === word);
