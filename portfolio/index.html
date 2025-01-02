@@ -263,15 +263,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="js/main.js"></script>
-    <script>
+        <script>
+            const head = document.querySelector('.grid-section-split__header');
+    const container = document.querySelector('.animation-wrap.to-right');
 
-        const head = document.querySelector('.grid-section-split__header');
-        const container = document.querySelector('.animation-wrap.to-right');
+    // Get the top position and height of the heading
+    const headPositionY = head.getBoundingClientRect().top;
+    const headHeight = head.offsetHeight;
 
-        const headHeight = head.offsetHeight; // Get the height of .head
-        container.style.paddingTop = `${headHeight + 32}px`;
-        console.log(container.style.paddingTop);
-    </script>
+    // Set padding for the container
+    container.style.paddingTop = `${headHeight + 32}px`;
+
+    // Calculate and set the available height for the container
+    container.style.height = `calc(100vh - ${headPositionY}px)`;
+        </script>
 
 
 </body>
