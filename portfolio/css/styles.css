@@ -1,86 +1,8 @@
 @charset "UTF-8";
-/* =================================================================== 
- * Monica Main Stylesheet
- * Template Ver. 1.0.0
- * 12-13-2022
- * ------------------------------------------------------------------
- *
- * TOC:
- * # SETTINGS
- *		## fonts
- *    	## colors
- *	  	## spacing and typescale
- *		## grid variables
- * # CSS RESET
- * # GRID
- *		## extra large devices
- *		## large devices
- *		## medium devices 
- *		## tablet devices
- *		## mobile devices
- *		## small mobile devices
- *		## additional column stackpoints 
- * # BASE SETUP
- * # UTILITY CLASSES
- * # TYPOGRAPHY 
- *		## additional typography & helper classes
- *		## lists
- *		## media 
- *		## spacing
- * # PRELOADER
- *		## page loaded
- * # FORM 
- *		## style placeholder text
- *		## change autocomplete styles in Chrome
- * # BUTTONS
- * # TABLE
- * # COMPONENTS
- *		## pagination 
- *		## alert box 
- *		## skillbars
- *		## stats tabs
- * # PROJECT-WIDE SHARED STYLES
- *		## list items
- *		## social list
- *		## blog card
- *		## testimonials
- *		## swiper overrides
- * # GRID-BASED LAYOUTS
- *		## grid block
- *		## list grid
- * # PAGE WRAP
- * # SITE HEADER
- *		## logo
- *		## main navigation
- *		## mobile menu toggle
- * # PAGEHEADER & PAGECONTENT
- * # INTRO
- *		## intro content
- *		## intro scroll down
- *		## intro transitions
- * # ABOUT
- * # EXPERTISE
- * # CLIENTS
- *		## clients list
- * # CTA
- * # JOURNAL
- * # FOOTER
- *		## newsletter
- *		## copyright
- *		## go top
- * # BLOG STYLES 
- * # PAGE STYLES 
- *		## services page
- *		## contact page
- *
- * ------------------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css');
 
-
-/* ===================================================================
- * # SETTINGS
- *
- *
- * ------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------- 
  * ## fonts 
@@ -95,13 +17,11 @@
 	src: url(placard-next-cufonfonts/PlacardNextRegular.TTF);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap');
 
 /* ------------------------------------------------------------------- 
  * ## colors
  * ------------------------------------------------------------------- */
 :root {
-
 
 	--vh: 100vh;
 	--font-1: "Encode Sans", sans-serif;
@@ -237,6 +157,8 @@
 
 	/* vertical spacing 
    */
+	--l-f-pad: calc(100vw* 0.072);
+	--h2cspace: 40px;
 	--vspace-0_125: calc(0.125 * var(--space));
 	--vspace-0_25: calc(0.25 * var(--space));
 	--vspace-0_375: calc(0.375 * var(--space));
@@ -314,6 +236,8 @@
 @media screen and (max-width: 600px) {
 	:root {
 		--multiplier: .9375;
+		--l-f-pad: calc(100vw* 0.060);
+
 	}
 }
 
@@ -2822,17 +2746,18 @@ section.horizontal .animation-wrap {
 	display: flex;
 	position: relative;
 	z-index: 1;
-	height: 100vh;
+	height: 90vh;
 	width: 100%;
 }
 
 section.horizontal .item {
-    display: flex;
-    position: relative;
-    flex: 1 0 100%;
-    flex-direction: column;
-    overflow: hidden;
+	display: flex;
+	position: relative;
+	flex: 1 0 100%;
+	flex-direction: column;
+	overflow: hidden;
 }
+
 .animation-wrap {
 	overflow: visible;
 }
@@ -2847,15 +2772,15 @@ section.horizontal .item {
 
 
 .pimg {
-    display: flex;
-    flex-grow: 1;
-    overflow: hidden;
+	display: flex;
+	flex-grow: 1;
+	overflow: hidden;
 }
 
 .pimg img {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
 }
 
 
@@ -2869,7 +2794,7 @@ section.horizontal .item {
 	counter-increment: ctr;
 	display: block;
 	font-weight: 500;
-	font-size: 1.6em;
+	font-size: 2.4rem;
 	line-height: 1;
 	color: var(--color-2);
 	font-family: var(--font-3);
@@ -2910,7 +2835,7 @@ section.horizontal .item {
 
 h2.list-items__item-title {
 	font-family: var(--font-3);
-	font-size: 4rem;
+	font-size: 3.4rem;
 	margin-bottom: var(--vspace-0_125);
 }
 
@@ -2960,6 +2885,10 @@ h2.list-items__item-title {
 
 .list-items__item-icon svg path {
 	fill: var(--color-1);
+}
+
+.grid-list-items__item.blog-card {
+	padding-top: var(--h2cspace);
 }
 
 /* ------------------------------------------------------------------- 
@@ -3132,7 +3061,7 @@ h2.list-items__item-title {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 1200px) {
 	.text-display-title {
-		font-size: clamp(4rem, 6vw, var(--text-display-2));
+		font-size: clamp(5rem, 6vw, var(--text-display-2));
 	}
 }
 
@@ -3292,11 +3221,7 @@ h2.list-items__item-title {
 
 	section.horizontal .pin-wrap,
 	section.horizontal .animation-wrap {
-		display: flex;
-		position: relative;
-		z-index: 1;
-		height: 100vh;
-		width: 100%;
+		height: 94vh;
 	}
 
 	.Wtitle p {
@@ -3510,11 +3435,20 @@ a.s-header__menu-toggle.is-clicked svg path {
 	bottom: 0;
 	transform: rotate(225deg);
 }
-.s-expertise {
-	padding-top: var(--vspace-5) !important;
-	padding-bottom: var(--vspace-5) !important;
-	padding-left: var(--vspace-0_125);
-	padding-right: var(--vspace-0_125);
+
+.s-expertise,
+.s-resources,.s-footer {
+	padding-left: var(--l-f-pad);
+	padding-right: var(--l-f-pad);
+}
+
+.s-expertise,
+.s-resources {
+	padding-top: var(--vspace-5);
+	padding-bottom: var(--vspace-5);
+}
+section#resources {
+	padding-top: 0;
 }
 
 /* ------------------------------------------------------------------- 
@@ -3558,7 +3492,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	.column.lg-12.s-intro__content-inner {
-		padding: 0 calc(100vw*0.072);
+		padding: 0 var(--l-f-pad);
 		height: 100%;
 	}
 
@@ -3594,12 +3528,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 		padding-top: max(10rem, 10vh) !important;
 	}
 
-	.s-expertise {
-		padding-top: var(--vspace-5) !important;
-		padding-bottom: var(--vspace-5) !important;
-		padding-left: calc(100vw* 0.072);
-		padding-right: calc(100vw* 0.072);
-	}
+	
+
+
 
 	.cbtn {
 		clip-path: polygon(84% 100%, 20% 100%, 26% 0, 76% 0%);
@@ -3642,7 +3573,6 @@ a.s-header__menu-toggle.is-clicked svg path {
 		align-items: center;
 	}
 
-	.s-header__logo {}
 
 	.s-header__nav {
 		height: calc(var(--vh, 1vh) * 100);
@@ -4132,6 +4062,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 		height: 100%;
 		--col: 8;
 		--grid-gap-v: 0;
+		padding-left: var(--l-f-pad);
+		padding-right: var(--l-f-pad);
+		;
 	}
 
 	.s-intro__content-text {
@@ -4303,11 +4236,6 @@ a.s-header__menu-toggle.is-clicked svg path {
  *
  *
  * ------------------------------------------------------------------- */
-.s-expertise {
-	padding-top: var(--vspace-4);
-	padding-bottom: var(--vspace-4);
-}
-
 .s-expertise__content-main {
 	margin-top: var(--vspace-1_5);
 }
@@ -4735,8 +4663,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	.s-footer h3 {
-		font-size: clamp(14rem, 10vw, 32rem);
+		font-size: clamp(12rem, 10vw, 32rem);
 	}
+
 }
 
 
