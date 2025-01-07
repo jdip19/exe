@@ -2887,9 +2887,10 @@ h2.list-items__item-title {
 	fill: var(--color-1);
 }
 
-.grid-list-items__item.blog-card {
+.grid-list-items__item.reas-card {
 	padding-top: var(--h2cspace);
 }
+
 
 /* ------------------------------------------------------------------- 
  * ## social list
@@ -2934,24 +2935,39 @@ h2.list-items__item-title {
 /* ------------------------------------------------------------------- 
  * ## blog card
  * ------------------------------------------------------------------- */
-.blog-card__header {
+.reas-card {
 	margin-bottom: var(--vspace-0_75);
 }
 
-.blog-card__cat-links {
+.reas-card  div{
+	display: flex;
+}
+.reas-card .title-img
+{
+    gap: var(--vspace-0_75);
+}
+.reas-card .main-info,.reas-card .reas-card__text{
+	flex-direction: column;
+    gap: var(--vspace-0_75);
+}
+.reas-card {
+	flex-direction: column;
+}
+
+.reas-card__cat-links {
 	font-size: var(--text-sm);
 }
 
-.blog-card__cat-links a {
+.reas-card__cat-links a {
 	color: var(--color-1);
 }
 
-.blog-card__title {
+.reas-card__title {
 	margin: 0;
 	line-height: 1.1574;
 }
 
-.blog-card__title a {
+.reas-card__title a {
 	color: var(--color-text-dark);
 }
 
@@ -4444,7 +4460,7 @@ section#resources {
 	margin: 0 auto;
 }
 
-.s-journal .blog-card-title a {
+.s-journal .reas-card-title a {
 	color: var(--color-3);
 }
 
