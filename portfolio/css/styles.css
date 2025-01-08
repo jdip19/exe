@@ -2204,7 +2204,7 @@ button.btn--large {
 
 .btn--stroke,
 button.btn--stroke {
-	background: transparent !important;
+	background: transparent;
 	border: 2px solid var(--color-btn-stroke);
 	color: var(--color-btn-stroke-text);
 }
@@ -2213,7 +2213,7 @@ button.btn--stroke {
 button.btn--stroke:focus,
 .btn--stroke:hover,
 button.btn--stroke:hover {
-	background: var(--color-btn-stroke-hover) !important;
+	background: var(--color-btn-stroke-hover);
 	border: 2px solid var(--color-btn-stroke-hover);
 	color: var(--color-btn-stroke-hover-text);
 }
@@ -2887,9 +2887,7 @@ h2.list-items__item-title {
 	fill: var(--color-1);
 }
 
-.grid-list-items__item.reas-card {
-	padding-top: var(--h2cspace);
-}
+
 
 
 /* ------------------------------------------------------------------- 
@@ -2935,12 +2933,24 @@ h2.list-items__item-title {
 /* ------------------------------------------------------------------- 
  * ## blog card
  * ------------------------------------------------------------------- */
-.reas-card {
-	margin-bottom: var(--vspace-0_75);
-}
 
 .reas-card  div{
 	display: flex;
+}
+#downloadUDownloader i {
+    font-size: 24px;
+    vertical-align: middle;
+}
+.reas-card .reas-card__text {
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.reas-card .btn {
+    padding: 0 16px;
+    width: fit-content;
+    margin: 0;
+    border-width: 1px;
+	border-radius: 0;
 }
 .reas-card .title-img
 {
@@ -2950,8 +2960,24 @@ h2.list-items__item-title {
 	flex-direction: column;
     gap: var(--vspace-0_75);
 }
+.reas-card .card {
+    border-bottom: 1px solid;
+    padding-bottom: 16px;
+}
+
 .reas-card {
+	display: flex;
 	flex-direction: column;
+	padding-top: var(--h2cspace);
+	gap: var(--vspace-0_875);
+}
+.reas-card .card:last-child
+{
+	padding-bottom: 0;
+	border: 0;
+}
+.reas-card img {
+    height: 7rem
 }
 
 .reas-card__cat-links {
@@ -2969,6 +2995,11 @@ h2.list-items__item-title {
 
 .reas-card__title a {
 	color: var(--color-text-dark);
+}
+.reas-card .btn:hover{
+	background-color: var(--color-1);
+	border-color: var(--color-1);
+	color: var(--color-2);
 }
 
 /* --------------------------------------------------------------------
@@ -3249,6 +3280,21 @@ h2.list-items__item-title {
 	.tag span {
 		padding: 0.2rem 1rem;
 		font-size: var(--text-sm);
+	}
+	.reas-card .card {
+		flex-direction: column;
+		gap: var(--vspace-0_75);
+	}
+	.reas-card .card > div {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.reas-card .main-info{
+		gap:0;
+	}
+	.reas-card .btn {
+		height: auto;
+		width: 100%;
 	}
 
 }

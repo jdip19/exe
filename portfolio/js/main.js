@@ -1,16 +1,37 @@
-/* ===================================================================
- * Monica 1.0.0 - Main JS
- *
- * ------------------------------------------------------------------- */
+function loadScript(url) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = () => resolve(`Script loaded: ${url}`);
+        script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+        document.head.appendChild(script);
+    });
+}
 
-(function(html) {
+// Load JSZip and FileSaver.js
+(async function () {
+    try {
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js');
+        console.log('JSZip loaded successfully');
+
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js');
+        console.log('FileSaver.js loaded successfully');
+
+        // Your code that depends on these libraries can go here
+    } catch (error) {
+        console.error(error);
+    }
+})();
+
+
+(function (html) {
 
     'use strict';
 
     const cfg = {
 
         // MailChimp URL
-        mailChimpURL : 'https://facebook.us1.list-manage.com/subscribe/post?u=1abf75f6981256963a47d197a&amp;id=37c6d8f4d6' 
+        mailChimpURL: 'https://facebook.us1.list-manage.com/subscribe/post?u=1abf75f6981256963a47d197a&amp;id=37c6d8f4d6'
 
     };
     //updating hight dynamically
@@ -27,22 +48,22 @@
     window.addEventListener('resize', updateVh);
 
 
-   /* preloader
-    * -------------------------------------------------- */
-    const ssPreloader = function() {
+    /* preloader
+     * -------------------------------------------------- */
+    const ssPreloader = function () {
 
         const siteBody = document.querySelector('body');
         const preloader = document.querySelector('#preloader');
         if (!preloader) return;
 
         html.classList.add('ss-preload');
-        
-        window.addEventListener('load', function() {
+
+        window.addEventListener('load', function () {
             html.classList.remove('ss-preload');
             html.classList.add('ss-loaded');
-            
+
             preloader.addEventListener('transitionend', function afterTransition(e) {
-                if (e.target.matches('#preloader'))  {
+                if (e.target.matches('#preloader')) {
                     siteBody.classList.add('ss-show');
                     e.target.style.display = 'none';
                     preloader.removeEventListener(e.type, afterTransition);
@@ -53,9 +74,9 @@
     }; // end ssPreloader
 
 
-   /* mobile menu
-    * ---------------------------------------------------- */ 
-    const ssMobileMenu = function() {
+    /* mobile menu
+     * ---------------------------------------------------- */
+    const ssMobileMenu = function () {
 
         const toggleButton = document.querySelector('.s-header__menu-toggle');
         const mainNavWrap = document.querySelector('.s-header__nav');
@@ -63,15 +84,15 @@
 
         if (!(toggleButton && mainNavWrap)) return;
 
-        toggleButton.addEventListener('click', function(e) {
+        toggleButton.addEventListener('click', function (e) {
             e.preventDefault();
             toggleButton.classList.toggle('is-clicked');
             siteBody.classList.toggle('menu-is-open');
         });
 
-        mainNavWrap.querySelectorAll('.s-header__nav a').forEach(function(link) {
+        mainNavWrap.querySelectorAll('.s-header__nav a').forEach(function (link) {
 
-            link.addEventListener("click", function(event) {
+            link.addEventListener("click", function (event) {
 
                 // at 900px and below
                 if (window.matchMedia('(max-width: 900px)').matches) {
@@ -81,7 +102,7 @@
             });
         });
 
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
 
             // above 900px
             if (window.matchMedia('(min-width: 901px)').matches) {
@@ -93,9 +114,9 @@
     }; // end ssMobileMenu
 
 
-   /* swiper
-    * ------------------------------------------------------ */ 
-    const ssSwiper = function() {
+    /* swiper
+     * ------------------------------------------------------ */
+    const ssSwiper = function () {
 
         const homeSliderSwiper = new Swiper('.home-slider', {
 
@@ -157,9 +178,9 @@
     }; // end ssSwiper
 
 
-   /* mailchimp form
-    * ---------------------------------------------------- */ 
-    const ssMailChimpForm = function() {
+    /* mailchimp form
+     * ---------------------------------------------------- */
+    const ssMailChimpForm = function () {
 
         const mcForm = document.querySelector('#mc-form');
 
@@ -223,7 +244,7 @@
         window.displayMailChimpStatus = function (data) {
 
             // Make sure the data is in the right format and that there's a status container
-            if (!data.result || !data.msg || !mcStatus ) return;
+            if (!data.result || !data.msg || !mcStatus) return;
 
             // Update our status message
             mcStatus.innerHTML = data.msg;
@@ -253,8 +274,8 @@
             url += serialize + '&c=displayMailChimpStatus';
 
             // Create script with url and callback (if specified)
-            var ref = window.document.getElementsByTagName( 'script' )[ 0 ];
-            var script = window.document.createElement( 'script' );
+            var ref = window.document.getElementsByTagName('script')[0];
+            var script = window.document.createElement('script');
             script.src = url;
 
             // Create global variable for the status container
@@ -263,7 +284,7 @@
             window.mcStatus.innerText = 'Submitting...';
 
             // Insert script tag into the DOM
-            ref.parentNode.insertBefore( script, ref );
+            ref.parentNode.insertBefore(script, ref);
 
             // After the script is loaded (and executed), remove it
             script.onload = function () {
@@ -293,20 +314,20 @@
     }; // end ssMailChimpForm
 
 
-   /* alert boxes
-    * ------------------------------------------------------ */
-    const ssAlertBoxes = function() {
+    /* alert boxes
+     * ------------------------------------------------------ */
+    const ssAlertBoxes = function () {
 
         const boxes = document.querySelectorAll('.alert-box');
-  
-        boxes.forEach(function(box){
 
-            box.addEventListener('click', function(e) {
+        boxes.forEach(function (box) {
+
+            box.addEventListener('click', function (e) {
                 if (e.target.matches('.alert-box__close')) {
                     e.stopPropagation();
                     e.target.parentElement.classList.add('hideit');
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         box.style.display = 'none';
                     }, 500)
                 }
@@ -318,7 +339,7 @@
 
     /* Back to Top
     * ------------------------------------------------------ */
-    const ssBackToTop = function() {
+    const ssBackToTop = function () {
 
         const pxShow = 900;
         const goTopButton = document.querySelector(".ss-go-top");
@@ -328,9 +349,9 @@
         // Show or hide the button
         if (window.scrollY >= pxShow) goTopButton.classList.add("link-is-visible");
 
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             if (window.scrollY >= pxShow) {
-                if(!goTopButton.classList.contains('link-is-visible')) goTopButton.classList.add("link-is-visible")
+                if (!goTopButton.classList.contains('link-is-visible')) goTopButton.classList.add("link-is-visible")
             } else {
                 goTopButton.classList.remove("link-is-visible")
             }
@@ -339,9 +360,9 @@
     }; // end ssBackToTop
 
 
-   /* smoothscroll
-    * ------------------------------------------------------ */
-    const ssMoveTo = function() {
+    /* smoothscroll
+     * ------------------------------------------------------ */
+    const ssMoveTo = function () {
 
         const easeFunctions = {
             easeInQuad: function (t, b, c, d) {
@@ -350,24 +371,24 @@
             },
             easeOutQuad: function (t, b, c, d) {
                 t /= d;
-                return -c * t* (t - 2) + b;
+                return -c * t * (t - 2) + b;
             },
             easeInOutQuad: function (t, b, c, d) {
-                t /= d/2;
-                if (t < 1) return c/2*t*t + b;
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
                 t--;
-                return -c/2 * (t*(t-2) - 1) + b;
+                return -c / 2 * (t * (t - 2) - 1) + b;
             },
             easeInOutCubic: function (t, b, c, d) {
-                t /= d/2;
-                if (t < 1) return c/2*t*t*t + b;
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t * t + b;
                 t -= 2;
-                return c/2*(t*t*t + 2) + b;
+                return c / 2 * (t * t * t + 2) + b;
             }
         }
 
         const triggers = document.querySelectorAll('.smoothscroll');
-        
+
         const moveTo = new MoveTo({
             tolerance: 0,
             duration: 1200,
@@ -375,15 +396,15 @@
             container: window
         }, easeFunctions);
 
-        triggers.forEach(function(trigger) {
+        triggers.forEach(function (trigger) {
             moveTo.registerTrigger(trigger);
         });
 
     }; // end ssMoveTo
 
 
-   /* Initialize
-    * ------------------------------------------------------ */
+    /* Initialize
+     * ------------------------------------------------------ */
     (function ssInit() {
 
         ssPreloader();
@@ -400,26 +421,83 @@
 
 const horizontalSections = gsap.utils.toArray('section.horizontal');
 
-horizontalSections.forEach(function (sec, i) {	
-    
-  const thisPinWrap = sec.querySelector('.pin-wrap');
-  const thisAnimWrap = thisPinWrap.querySelector('.animation-wrap');
-  const getToValue = () => -(thisAnimWrap.scrollWidth - (thisAnimWrap.scrollWidth/3));
-  const lastItemWidth = thisAnimWrap.lastElementChild.offsetWidth;
+horizontalSections.forEach(function (sec, i) {
 
-  gsap.fromTo(thisAnimWrap, { 
-    x: () => thisAnimWrap.classList.contains('to-right') ? 0 : getToValue() 
-  }, { 
-    x: () => thisAnimWrap.classList.contains('to-right') ? getToValue() : 0, 
-    ease: "none",
-    scrollTrigger: {
-      trigger: sec,		
-      start: "top top",
-      end: () => "+=" + (thisAnimWrap.scrollWidth), // Adjusted end value
-      pin: thisPinWrap,
-      invalidateOnRefresh: true,
-      scrub: true,
-    }
-  });
+    const thisPinWrap = sec.querySelector('.pin-wrap');
+    const thisAnimWrap = thisPinWrap.querySelector('.animation-wrap');
+    const getToValue = () => -(thisAnimWrap.scrollWidth - (thisAnimWrap.scrollWidth / 3));
+    const lastItemWidth = thisAnimWrap.lastElementChild.offsetWidth;
+
+    gsap.fromTo(thisAnimWrap, {
+        x: () => thisAnimWrap.classList.contains('to-right') ? 0 : getToValue()
+    }, {
+        x: () => thisAnimWrap.classList.contains('to-right') ? getToValue() : 0,
+        ease: "none",
+        scrollTrigger: {
+            trigger: sec,
+            start: "top top",
+            end: () => "+=" + (thisAnimWrap.scrollWidth), // Adjusted end value
+            pin: thisPinWrap,
+            invalidateOnRefresh: true,
+            scrub: true,
+        }
+    });
 
 });
+
+const baseGitHubUrl = '../../projects/'; // Update with your repo details
+
+// List of files for UDownloader
+const udFiles = [
+    'UDownloader/background.js',
+    'UDownloader/contentScript.js',
+    'UDownloader/icon128.png',
+    'UDownloader/icon16.png',
+    'UDownloader/icon48.png',
+    'UDownloader/manifest.json',
+    'UDownloader/popup.html',
+    'UDownloader/readme.md',
+    'UDownloader/popup.js'
+];
+
+// List of files for SVGget
+const TabOrganizer = [
+    'Tab Organizer/background.js',
+    'Tab Organizer/content.js',
+    'Tab Organizer/icon128.png',
+    'Tab Organizer/icon256.png',
+    'Tab Organizer/icon16.png',
+    'Tab Organizer/icon48.png',
+    'Tab Organizer/manifest.json',
+    'Tab Organizer/popup.html',
+    'Tab Organizer/popup.js'
+];
+
+// Function to fetch and add files to zip
+function fetchFilesToZip(fileArray, folderName, zip) {
+    const fetchPromises = fileArray.map(file => {
+        return fetch(baseGitHubUrl + file)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob(); // Use blob for non-text files
+            })
+            .then(blob => {
+                zip.folder(folderName).file(file.split('/').pop(), blob); // Add file to the zip
+            })
+            .catch(error => console.error('Error fetching file:', error));
+    });
+
+    return Promise.all(fetchPromises);
+}
+
+// UDownloader button
+document.getElementById('downloadUDownloader').addEventListener('click', function () {
+    var zip = new JSZip();
+    fetchFilesToZip(udFiles, 'UDownloader', zip)
+        .then(() => zip.generateAsync({ type: "blob" }))
+        .then(content => {
+            saveAs(content, "UDownloader.zip");
+        });
+});
+
+// SVGget button

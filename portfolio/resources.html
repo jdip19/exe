@@ -198,41 +198,6 @@
                     </div> <!-- end grid-block-->
                 </div> <!-- end row -->
 
-                <!-- pagination -->
-                <div class="row navigation pagination">
-                    <div class="column xl-12">
-                        <nav class="pgn">
-                            <ul>
-                                <li>
-                                    <a class="pgn__prev" href="#0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24">
-                                            <path
-                                                d="M12.707 17.293L8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z" />
-                                        </svg>
-                                    </a>
-                                </li>
-                                <li><a class="pgn__num" href="#0">1</a></li>
-                                <li><span class="pgn__num current">2</span></li>
-                                <li><a class="pgn__num" href="#0">3</a></li>
-                                <li><a class="pgn__num" href="#0">4</a></li>
-                                <li><a class="pgn__num" href="#0">5</a></li>
-                                <li><span class="pgn__num dots">…</span></li>
-                                <li><a class="pgn__num" href="#0">8</a></li>
-                                <li>
-                                    <a class="pgn__next" href="#0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24">
-                                            <path
-                                                d="M11.293 17.293l1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" />
-                                        </svg>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div> <!-- end column -->
-                </div> <!-- end pagination -->
-
             </section>
 
         </section> <!-- s-content-->
@@ -313,74 +278,8 @@
     ================================================== -->
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script>
-        const baseGitHubUrl = '../projects/'; // Update with your repo details
-
-        // List of files for UDownloader
-        const udFiles = [
-            'UDownloader/background.js',
-            'UDownloader/contentScript.js',
-            'UDownloader/icon128.png',
-            'UDownloader/icon16.png',
-            'UDownloader/icon48.png',
-            'UDownloader/manifest.json',
-            'UDownloader/popup.html',
-            'UDownloader/popup.js'
-        ];
-
-        // List of files for SVGget
-        const TabOrganizer = [
-            'Tab Organizer/background.js',
-            'Tab Organizer/content.js',
-            'Tab Organizer/icon128.png',
-            'Tab Organizer/icon256.png',
-            'Tab Organizer/icon16.png',
-            'Tab Organizer/icon48.png',
-            'Tab Organizer/manifest.json',
-            'Tab Organizer/popup.html',
-            'Tab Organizer/popup.js'
-        ];
-
-        // Function to fetch and add files to zip
-        function fetchFilesToZip(fileArray, folderName, zip) {
-            const fetchPromises = fileArray.map(file => {
-                return fetch(baseGitHubUrl + file)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Network response was not ok');
-                        return response.blob(); // Use blob for non-text files
-                    })
-                    .then(blob => {
-                        zip.folder(folderName).file(file.split('/').pop(), blob); // Add file to the zip
-                    })
-                    .catch(error => console.error('Error fetching file:', error));
-            });
-
-            return Promise.all(fetchPromises);
-        }
-
-        // UDownloader button
-        document.getElementById('downloadUDownloader').addEventListener('click', function () {
-            var zip = new JSZip();
-            fetchFilesToZip(udFiles, 'UDownloader', zip)
-                .then(() => zip.generateAsync({ type: "blob" }))
-                .then(content => {
-                    saveAs(content, "UDownloader.zip");
-                });
-        });
-
-        // SVGget button
-        document.getElementById('downloadTabOrganizer').addEventListener('click', function () {
-            var zip = new JSZip();
-            fetchFilesToZip(TabOrganizer, 'Tab Organizer', zip)
-                .then(() => zip.generateAsync({ type: "blob" }))
-                .then(content => {
-                    saveAs(content, "Tab Organizer.zip");
-                });
-        });
-    </script>
-
+   
+    
 </body>
 
 </html>
