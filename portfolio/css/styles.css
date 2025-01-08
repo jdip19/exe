@@ -1,86 +1,8 @@
 @charset "UTF-8";
-/* =================================================================== 
- * Monica Main Stylesheet
- * Template Ver. 1.0.0
- * 12-13-2022
- * ------------------------------------------------------------------
- *
- * TOC:
- * # SETTINGS
- *		## fonts
- *    	## colors
- *	  	## spacing and typescale
- *		## grid variables
- * # CSS RESET
- * # GRID
- *		## extra large devices
- *		## large devices
- *		## medium devices 
- *		## tablet devices
- *		## mobile devices
- *		## small mobile devices
- *		## additional column stackpoints 
- * # BASE SETUP
- * # UTILITY CLASSES
- * # TYPOGRAPHY 
- *		## additional typography & helper classes
- *		## lists
- *		## media 
- *		## spacing
- * # PRELOADER
- *		## page loaded
- * # FORM 
- *		## style placeholder text
- *		## change autocomplete styles in Chrome
- * # BUTTONS
- * # TABLE
- * # COMPONENTS
- *		## pagination 
- *		## alert box 
- *		## skillbars
- *		## stats tabs
- * # PROJECT-WIDE SHARED STYLES
- *		## list items
- *		## social list
- *		## blog card
- *		## testimonials
- *		## swiper overrides
- * # GRID-BASED LAYOUTS
- *		## grid block
- *		## list grid
- * # PAGE WRAP
- * # SITE HEADER
- *		## logo
- *		## main navigation
- *		## mobile menu toggle
- * # PAGEHEADER & PAGECONTENT
- * # INTRO
- *		## intro content
- *		## intro scroll down
- *		## intro transitions
- * # ABOUT
- * # EXPERTISE
- * # CLIENTS
- *		## clients list
- * # CTA
- * # JOURNAL
- * # FOOTER
- *		## newsletter
- *		## copyright
- *		## go top
- * # BLOG STYLES 
- * # PAGE STYLES 
- *		## services page
- *		## contact page
- *
- * ------------------------------------------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-straight/css/uicons-thin-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-straight/css/uicons-regular-straight.css');
 
-
-/* ===================================================================
- * # SETTINGS
- *
- *
- * ------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------- 
  * ## fonts 
@@ -95,13 +17,11 @@
 	src: url(placard-next-cufonfonts/PlacardNextRegular.TTF);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@100..900&display=swap');
 
 /* ------------------------------------------------------------------- 
  * ## colors
  * ------------------------------------------------------------------- */
 :root {
-
 
 	--vh: 100vh;
 	--font-1: "Encode Sans", sans-serif;
@@ -237,6 +157,8 @@
 
 	/* vertical spacing 
    */
+	--l-f-pad: calc(100vw* 0.072);
+	--h2cspace: 40px;
 	--vspace-0_125: calc(0.125 * var(--space));
 	--vspace-0_25: calc(0.25 * var(--space));
 	--vspace-0_375: calc(0.375 * var(--space));
@@ -314,6 +236,8 @@
 @media screen and (max-width: 600px) {
 	:root {
 		--multiplier: .9375;
+		--l-f-pad: calc(100vw* 0.060);
+
 	}
 }
 
@@ -1785,7 +1709,6 @@ blockquote,
 figure,
 figcaption,
 table,
-p,
 ul,
 ol,
 dl,
@@ -2816,27 +2739,27 @@ td:last-child {
  * ## list items
  * ----:--------------------------------------------------------------- */
 
- section.horizontal .pin-wrap, section.horizontal .animation-wrap {
-    display: flex;
-    position: relative;
-    z-index: 1;
-	height: auto;
-    width: 100%;
+
+
+section.horizontal .pin-wrap,
+section.horizontal .animation-wrap {
+	display: flex;
+	position: relative;
+	z-index: 1;
+	height: 90vh;
+	width: 100%;
 }
 
-
 section.horizontal .item {
-    display: flex;
-    position: relative;
-    flex: 1 0 100%;
-    flex-direction: column;
+	display: flex;
+	position: relative;
+	flex: 1 0 100%;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 .animation-wrap {
-	display: flex;
 	overflow: visible;
-	/* Ensure overflow allows scrolling */
-	padding-bottom:10vw;	
 }
 
 .animation-wrap .item {
@@ -2847,20 +2770,17 @@ section.horizontal .item {
 	position: absolute;
 }
 
-section.horizontal {
-	padding-left: 2vw;
-	padding-right: 2vw;
-}
-
 
 .pimg {
 	display: flex;
-	flex-grow: 1;	
+	flex-grow: 1;
+	overflow: hidden;
 }
 
 .pimg img {
-	flex-grow: 1;
 	object-fit: cover;
+	height: 100%;
+	width: 100%;
 }
 
 
@@ -2874,7 +2794,7 @@ section.horizontal {
 	counter-increment: ctr;
 	display: block;
 	font-weight: 500;
-	font-size: 1.6em;
+	font-size: 2.4rem;
 	line-height: 1;
 	color: var(--color-2);
 	font-family: var(--font-3);
@@ -2886,11 +2806,12 @@ section.horizontal {
 	flex-direction: row;
 	padding: 2rem 0 0 0;
 	flex-wrap: wrap;
-	gap:12px;
+	gap: 12px;
 
 }
-.Wtitle > div:first-of-type {
-    justify-content: space-between;
+
+.Wtitle>div:first-of-type {
+	justify-content: space-between;
 	flex-grow: 1;
 }
 
@@ -2914,7 +2835,7 @@ section.horizontal {
 
 h2.list-items__item-title {
 	font-family: var(--font-3);
-	font-size: 4rem;
+	font-size: 3.4rem;
 	margin-bottom: var(--vspace-0_125);
 }
 
@@ -2941,7 +2862,7 @@ h2.list-items__item-title {
 .list-items__item-title,
 .list-items__item-small-title {
 	color: var(--color-text-dark);
-	margin-top: 0;
+	margin-top: -4px;
 }
 
 .list-items__item-icon {
@@ -2965,6 +2886,11 @@ h2.list-items__item-title {
 .list-items__item-icon svg path {
 	fill: var(--color-1);
 }
+
+.grid-list-items__item.reas-card {
+	padding-top: var(--h2cspace);
+}
+
 
 /* ------------------------------------------------------------------- 
  * ## social list
@@ -3009,24 +2935,39 @@ h2.list-items__item-title {
 /* ------------------------------------------------------------------- 
  * ## blog card
  * ------------------------------------------------------------------- */
-.blog-card__header {
+.reas-card {
 	margin-bottom: var(--vspace-0_75);
 }
 
-.blog-card__cat-links {
+.reas-card  div{
+	display: flex;
+}
+.reas-card .title-img
+{
+    gap: var(--vspace-0_75);
+}
+.reas-card .main-info,.reas-card .reas-card__text{
+	flex-direction: column;
+    gap: var(--vspace-0_75);
+}
+.reas-card {
+	flex-direction: column;
+}
+
+.reas-card__cat-links {
 	font-size: var(--text-sm);
 }
 
-.blog-card__cat-links a {
+.reas-card__cat-links a {
 	color: var(--color-1);
 }
 
-.blog-card__title {
+.reas-card__title {
 	margin: 0;
 	line-height: 1.1574;
 }
 
-.blog-card__title a {
+.reas-card__title a {
 	color: var(--color-text-dark);
 }
 
@@ -3136,7 +3077,7 @@ h2.list-items__item-title {
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 1200px) {
 	.text-display-title {
-		font-size: clamp(4rem, 6vw, var(--text-display-2));
+		font-size: clamp(5rem, 6vw, var(--text-display-2));
 	}
 }
 
@@ -3232,9 +3173,6 @@ h2.list-items__item-title {
 	column-gap: var(--gap);
 }
 
-.grid-list-items__item {
-	margin-bottom: var(--vspace-0_5);
-}
 
 /* ------------------------------------------------------------------- 
  * responsive:
@@ -3285,11 +3223,13 @@ h2.list-items__item-title {
 	.grid-block {
 		--col: 1;
 	}
+
 	.Wtitle {
 		justify-content: space-between;
-	
+
 	}
-	.Wtitle > div:first-of-type{
+
+	.Wtitle>div:first-of-type {
 		flex-direction: column;
 		flex-grow: 0;
 	}
@@ -3297,11 +3237,7 @@ h2.list-items__item-title {
 
 	section.horizontal .pin-wrap,
 	section.horizontal .animation-wrap {
-		display: flex;
-		position: relative;
-		z-index: 1;
-		height: 100vh;
-		width: 100%;
+		height: 94vh;
 	}
 
 	.Wtitle p {
@@ -3516,6 +3452,21 @@ a.s-header__menu-toggle.is-clicked svg path {
 	transform: rotate(225deg);
 }
 
+.s-expertise,
+.s-resources,.s-footer {
+	padding-left: var(--l-f-pad);
+	padding-right: var(--l-f-pad);
+}
+
+.s-expertise,
+.s-resources {
+	padding-top: var(--vspace-5);
+	padding-bottom: var(--vspace-5);
+}
+section#resources {
+	padding-top: 0;
+}
+
 /* ------------------------------------------------------------------- 
  * responsive:
  * site-header
@@ -3557,7 +3508,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	.column.lg-12.s-intro__content-inner {
-		padding: 0 calc(100vw*0.072);
+		padding: 0 var(--l-f-pad);
 		height: 100%;
 	}
 
@@ -3593,12 +3544,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 		padding-top: max(10rem, 10vh) !important;
 	}
 
-	.s-expertise {
-		padding-top: var(--vspace-5) !important;
-		padding-bottom: var(--vspace-5) !important;
-		padding-left: calc(100vw* 0.072);
-		padding-right: calc(100vw* 0.072);
-	}
+	
+
+
 
 	.cbtn {
 		clip-path: polygon(84% 100%, 20% 100%, 26% 0, 76% 0%);
@@ -3641,7 +3589,6 @@ a.s-header__menu-toggle.is-clicked svg path {
 		align-items: center;
 	}
 
-	.s-header__logo {}
 
 	.s-header__nav {
 		height: calc(var(--vh, 1vh) * 100);
@@ -3747,14 +3694,17 @@ a.s-header__menu-toggle.is-clicked svg path {
 	.s-header__nav {
 		padding-right: 0;
 	}
+
 	.ss-show .s-intro__content-title {
 		font-size: clamp(12rem, 10vw, 14rem);
 	}
-	.Wtitle::before, h2.list-items__item-title {
+
+	.Wtitle::before,
+	h2.list-items__item-title {
 		font-size: 3.2rem;
 		line-height: 0.8;
 	}
-	
+
 }
 
 
@@ -4128,6 +4078,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 		height: 100%;
 		--col: 8;
 		--grid-gap-v: 0;
+		padding-left: var(--l-f-pad);
+		padding-right: var(--l-f-pad);
+		;
 	}
 
 	.s-intro__content-text {
@@ -4299,11 +4252,6 @@ a.s-header__menu-toggle.is-clicked svg path {
  *
  *
  * ------------------------------------------------------------------- */
-.s-expertise {
-	padding-top: var(--vspace-4);
-	padding-bottom: var(--vspace-4);
-}
-
 .s-expertise__content-main {
 	margin-top: var(--vspace-1_5);
 }
@@ -4512,7 +4460,7 @@ a.s-header__menu-toggle.is-clicked svg path {
 	margin: 0 auto;
 }
 
-.s-journal .blog-card-title a {
+.s-journal .reas-card-title a {
 	color: var(--color-3);
 }
 
@@ -4731,8 +4679,9 @@ a.s-header__menu-toggle.is-clicked svg path {
 	}
 
 	.s-footer h3 {
-		font-size: clamp(14rem, 10vw, 32rem);
+		font-size: clamp(12rem, 10vw, 32rem);
 	}
+
 }
 
 
@@ -5048,10 +4997,6 @@ a.s-header__menu-toggle.is-clicked svg path {
 @media screen and (min-width: 1400px) {
 	.s-footer h3 {
 		font-size: clamp(26rem, 14vw, 32rem)
-	}
-
-	.pimg {
-		flex: 1 0 auto;
 	}
 
 
