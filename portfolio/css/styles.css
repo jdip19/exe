@@ -2114,7 +2114,6 @@ button,
 input[type=submit],
 input[type=reset],
 input[type=button] {
-	--btn-height: var(--vspace-btn);
 	display: inline-block;
 	font-family: var(--font-1);
 	font-weight: 300;
@@ -2769,7 +2768,16 @@ section.horizontal .item {
 .section-header.grid-section-split__header {
 	position: absolute;
 }
-
+.s-expertise a {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    overflow: hidden;
+	color: var(--color-text-dark);
+}
+.s-expertise a:hover h2.list-items__item-title{
+	color:var(--color-1)
+}
 
 .pimg {
 	display: flex;
@@ -2789,7 +2797,7 @@ section.horizontal .item {
 	margin-bottom: var(--vspace-1);
 }
 
-.Wtitle::before {
+/* .Wtitle::before {
 	content: "[" counter(ctr, decimal-leading-zero) "]";
 	counter-increment: ctr;
 	display: block;
@@ -2798,7 +2806,7 @@ section.horizontal .item {
 	line-height: 1;
 	color: var(--color-2);
 	font-family: var(--font-3);
-}
+} */
 
 .Wtitle {
 	display: flex;
@@ -2837,7 +2845,7 @@ section.horizontal .item {
 h2.list-items__item-title {
 	font-family: var(--font-3);
 	font-size: 3.4rem;
-	margin-bottom: var(--vspace-0_125);
+	margin-bottom: 0
 }
 
 
@@ -2947,7 +2955,7 @@ h2.list-items__item-title {
     justify-content: space-between;
 }
 .reas-card .btn {
-    padding: 0 16px;
+    padding: 8px 16px;
     width: fit-content;
     margin: 0;
     border-width: 1px;
