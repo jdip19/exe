@@ -5,6 +5,7 @@
   "permissions": [
     "downloads",
     "activeTab",
+    "contextMenus",
     "scripting",
     "storage",
     "tabs"
