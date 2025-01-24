@@ -2,16 +2,22 @@
   "manifest_version": 3,
   "name": "UDownloader",
   "version": "1.0",
+  "description": "A browser extension to copy or download png icons",
   "permissions": [
     "downloads",
     "activeTab",
     "contextMenus",
+    "cookies",
     "scripting",
     "storage",
     "tabs"
   ],
-  "host_permissions": [
-    "<all_urls>"
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
   ],
   "commands": {
     "copy_svg": {
@@ -33,12 +39,6 @@
   "action": {
     "default_popup": "popup.html"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript.js"]
-    }
-  ],
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",

@@ -1,18 +1,20 @@
+// Handle context menu clicks
+// Handle context menu clicks
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
         id: "copySvg",
-        title: "Copy SVG",
-        contexts: ["link"] // Context menu appears only on links
+        title: "Copy SVG Content",
+        contexts: ["link"]
     });
 
     chrome.contextMenus.create({
         id: "downloadSvg",
-        title: "Download SVG",
+        title: "Download SVG File",
         contexts: ["link"]
     });
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener((info) => {
     if (info.menuItemId === "copySvg") {
         handleSvgExtraction(info.linkUrl, "copy");
     } else if (info.menuItemId === "downloadSvg") {
@@ -20,70 +22,68 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
+// Function to extract SVG (copy/download) from the page
 function handleSvgExtraction(detailLink, action) {
-    if (detailLink) {
-        chrome.tabs.create({ url: detailLink, active: true }, (tab) => {
-            chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo) {
-                if (tabId === tab.id && changeInfo.status === "complete") {
-                    chrome.tabs.onUpdated.removeListener(listener); // Avoid duplicate listeners
-
-                    chrome.scripting.executeScript({
-                        target: { tabId: tab.id },
-                        function: extractSvg,
-                        args: [action] // Pass "copy" or "download" to the function
-                    }, () => {
-                        if (chrome.runtime.lastError) {
-                            console.error("Error injecting script:", chrome.runtime.lastError.message);
-                        }
-                    });
-                }
-            });
+    chrome.tabs.create({ url: detailLink, active: false }, (tab) => {
+        // After the page is opened in the background, inject the script to get the SVG
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: extractAndHandleSvg,
+            args: [action]  // Pass the action to the function
         });
-    } else {
-        console.error("Invalid detail link provided.");
-    }
+    });
 }
 
-function extractSvg(action) {
-    const editButton = document.querySelector("#detail_edit_icon");
+// This function is executed on the target page
+function extractAndHandleSvg(action) {
+    const editButton = document.querySelector('#detail_edit_icon');
     if (editButton) {
+        // Simulate a click to load the SVG content
         editButton.click();
+        // Delay a bit to give the SVG time to load
         setTimeout(() => {
-            const svgElement = document.querySelector(".detail__editor__icon-holder svg");
-            console.log
+            const svgElement = document.querySelector('.detail__editor__icon-holder svg');
             if (svgElement) {
-                const serializer = new XMLSerializer();
-                const svgString = serializer.serializeToString(svgElement);
-
-                if (action === "copy") {
-                    // Copy the SVG to the clipboard
-                    const textarea = document.createElement("textarea");
-                    textarea.value = svgString;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand("copy");
-                    document.body.removeChild(textarea);
-                    alert("SVG copied to clipboard!");
-                } else if (action === "download") {
-                    // Download the SVG
-                    const blob = new Blob([svgString], { type: "image/svg+xml" });
-                    const link = document.createElement("a");
-                    link.href = URL.createObjectURL(blob);
-                    link.download = "downloaded-icon.svg";
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    alert("SVG downloaded successfully!");
+             console.log("founded SVG element"+svgElement.outerHTML);
+                // Send a message to the background script to handle copy or download
+                // chrome.runtime.sendMessage({ action: action, svgContent: svgElement.outerHTML });
+                if (action === 'copy') {
+                    console.log('Copying SVG content to clipboard...');
+                    copySvgToClipboard(svgElement.outerHTML);
+                } else if (action === 'download') {
+                    console.log('Downloading SVG file...');
+                    downloadSvg(svgElement.outerHTML);
                 }
-            } else {
-                alert("SVG element not found.");
             }
-        }, 3000); // Wait for the SVG to render
-    } else {
-        alert("Edit button not found on the detail page.");
+        }, 4000);
     }
 }
 
+// Function to copy SVG to clipboard
+function copySvgToClipboard(svgContent) {
+    const textarea = document.createElement('textarea');
+    textarea.value = svgContent;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('SVG copied to clipboard!');
+}
+
+// Function to download SVG as a file
+function downloadSvg(svgContent) {
+    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'downloaded-icon.svg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    alert('SVG downloaded successfully!');
+}
+
+
+//Command for copying and downloading
 chrome.commands.onCommand.addListener((command) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs[0]?.id) {
@@ -109,6 +109,7 @@ function copySvgWithAutoDetection() {
     if (editButton) editButton.click();
     setTimeout(() => {
         const svgElement = document.querySelector('.detail__editor__icon-holder svg');
+        console.log(svgElement);
         if (svgElement) {
             const serializer = new XMLSerializer();
             const svgString = serializer.serializeToString(svgElement);

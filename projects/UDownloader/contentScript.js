@@ -1,4 +1,4 @@
-// Get all image elements in the current webpage
+//Get all image elements in the current webpage
 const images = Array.from(document.querySelectorAll('img'));
 
 // Filter for PNG and JPEG images and return their URLs
@@ -8,3 +8,4 @@ const imageUrls = images
 
 // Save the image URLs in chrome.storage
 chrome.storage.local.set({ imageUrls });
+
