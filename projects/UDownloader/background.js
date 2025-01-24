@@ -40,48 +40,44 @@ function extractAndHandleSvg(action) {
     if (editButton) {
         // Simulate a click to load the SVG content
         editButton.click();
-        // Delay a bit to give the SVG time to load
+
+        // Delay to give the SVG time to load
         setTimeout(() => {
             const svgElement = document.querySelector('.detail__editor__icon-holder svg');
+            let icnm = document.querySelector('aside.detail__sidebar.col--stretch div h1').textContent.trim();
+            icnm+=' - '+document.querySelector('a.link--normal.mg-right-lv1').textContent.trim();
+            icnm ? console.log("Icon name:", icnm) : alert('Icon name not found.');
             if (svgElement) {
-             console.log("founded SVG element"+svgElement.outerHTML);
-                // Send a message to the background script to handle copy or download
-                // chrome.runtime.sendMessage({ action: action, svgContent: svgElement.outerHTML });
+
                 if (action === 'copy') {
-                    console.log('Copying SVG content to clipboard...');
-                    copySvgToClipboard(svgElement.outerHTML);
+                    // Copy SVG content to clipboard
+                    const textarea = document.createElement('textarea');
+                    textarea.value = svgElement.outerHTML;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('SVG copied to clipboard!');
                 } else if (action === 'download') {
-                    console.log('Downloading SVG file...');
-                    downloadSvg(svgElement.outerHTML);
+                    // Download SVG as a file
+                    const svgContent = svgElement.outerHTML;
+                    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = icnm;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    alert('SVG downloaded successfully!');
                 }
+            } else {
+                console.error('SVG element not found.');
             }
         }, 4000);
+    } else {
+        console.error('Edit button not found.');
     }
 }
-
-// Function to copy SVG to clipboard
-function copySvgToClipboard(svgContent) {
-    const textarea = document.createElement('textarea');
-    textarea.value = svgContent;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    alert('SVG copied to clipboard!');
-}
-
-// Function to download SVG as a file
-function downloadSvg(svgContent) {
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'downloaded-icon.svg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    alert('SVG downloaded successfully!');
-}
-
 
 //Command for copying and downloading
 chrome.commands.onCommand.addListener((command) => {
